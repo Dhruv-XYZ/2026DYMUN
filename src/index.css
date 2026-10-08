@@ -8,10 +8,10 @@
  * DYMUN '26 design tokens.
  *
  * Tailwind's default palette is switched off on purpose. Only the colours below exist,
- * so a stray default class such as bg-neutral-900 or text-blue-500 cannot render.
+ * so a stray default class (one of Tailwind's own greys or blues) cannot render.
  * `npm run audit:palette` checks the source for anything outside this list.
  */
-@theme {
+@theme static {
   --color-*: initial;
 
   --color-ink: #0a0a0a; /* dark backgrounds */
@@ -223,6 +223,38 @@
   line-height: 0.92;
   letter-spacing: -0.035em;
   text-transform: uppercase;
+}
+
+/* The registration rows: a name and a fee, each as large as it will go. */
+@utility display-row {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: clamp(2.25rem, 8.5vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+/* A line that opens under a row on hover or keyboard focus. Where there is no hover
+   (touch screens) it is simply always open. */
+@layer components {
+  .reveal-row {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (hover: hover) {
+    .reveal-row {
+      grid-template-rows: 0fr;
+    }
+
+    .group:hover > .reveal-row,
+    .group:focus-visible > .reveal-row,
+    .group:focus-within > .reveal-row {
+      grid-template-rows: 1fr;
+    }
+  }
 }
 
 /* Tiny, wide-tracked labels set against the giant headlines. */

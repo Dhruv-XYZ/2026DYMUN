@@ -1,13 +1,27 @@
-"use client";
-
+import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+
+/**
+ * Aceternity "3D Marquee": a tilted wall of image tiles whose columns drift up and down.
+ * Changed for DYMUN: gold hairlines and rings, square corners, no rounded frame, and
+ * `paused` / `speed` so it can stand still or slow down.
+ */
 export const ThreeDMarquee = ({
   images,
   className,
+  paused = false,
+  speed = 1,
+  getAlt,
 }: {
   images: string[];
   className?: string;
+  /** true stops the drift (reduced motion). */
+  paused?: boolean;
+  /** 1 is the normal pace, 0.5 half as fast. */
+  speed?: number;
+  /** Alt text for the image at this position. Leave unset for decorative tiles. */
+  getAlt?: (index: number) => string;
 }) => {
   // Split the images array into 4 equal parts
   const chunkSize = Math.ceil(images.length / 4);
@@ -18,7 +32,7 @@ export const ThreeDMarquee = ({
   return (
     <div
       className={cn(
-        "mx-auto block h-[600px] overflow-hidden rounded-2xl max-sm:h-100",
+        "mx-auto block h-[600px] overflow-hidden max-sm:h-100",
         className,
       )}
     >
@@ -32,9 +46,11 @@ export const ThreeDMarquee = ({
           >
             {chunks.map((subarray, colIndex) => (
               <motion.div
-                animate={{ y: colIndex % 2 === 0 ? 100 : -100 }}
+                animate={
+                  paused ? undefined : { y: colIndex % 2 === 0 ? 100 : -100 }
+                }
                 transition={{
-                  duration: colIndex % 2 === 0 ? 10 : 15,
+                  duration: (colIndex % 2 === 0 ? 10 : 15) / Math.max(speed, 0.1),
                   repeat: Infinity,
                   repeatType: "reverse",
                 }}
@@ -55,8 +71,10 @@ export const ThreeDMarquee = ({
                       }}
                       key={imageIndex + image}
                       src={image}
-                      alt={`Image ${imageIndex + 1}`}
-                      className="aspect-[970/700] rounded-lg object-cover ring ring-gray-950/5 hover:shadow-2xl"
+                      alt={getAlt ? getAlt(colIndex * chunkSize + imageIndex) : ""}
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-[970/700] object-cover ring ring-gold/30"
                       width={970}
                       height={700}
                     />
@@ -71,6 +89,8 @@ export const ThreeDMarquee = ({
   );
 };
 
+const lineColor = "color-mix(in srgb, var(--color-gold) 45%, transparent)";
+
 const GridLineHorizontal = ({
   className,
   offset,
@@ -83,14 +103,13 @@ const GridLineHorizontal = ({
       style={
         {
           "--background": "#ffffff",
-          "--color": "rgba(0, 0, 0, 0.2)",
+          "--color": lineColor,
           "--height": "1px",
           "--width": "5px",
           "--fade-stop": "90%",
           "--offset": offset || "200px", //-100px if you want to keep the line inside
-          "--color-dark": "rgba(255, 255, 255, 0.2)",
           maskComposite: "exclude",
-        } as React.CSSProperties
+        } as CSSProperties
       }
       className={cn(
         "absolute left-[calc(var(--offset)/2*-1)] h-[var(--height)] w-[calc(100%+var(--offset))]",
@@ -99,7 +118,6 @@ const GridLineHorizontal = ({
         "[mask:linear-gradient(to_left,var(--background)_var(--fade-stop),transparent),_linear-gradient(to_right,var(--background)_var(--fade-stop),transparent),_linear-gradient(black,black)]",
         "[mask-composite:exclude]",
         "z-30",
-        "dark:bg-[linear-gradient(to_right,var(--color-dark),var(--color-dark)_50%,transparent_0,transparent)]",
         className,
       )}
     ></div>
@@ -118,14 +136,13 @@ const GridLineVertical = ({
       style={
         {
           "--background": "#ffffff",
-          "--color": "rgba(0, 0, 0, 0.2)",
+          "--color": lineColor,
           "--height": "5px",
           "--width": "1px",
           "--fade-stop": "90%",
           "--offset": offset || "150px", //-100px if you want to keep the line inside
-          "--color-dark": "rgba(255, 255, 255, 0.2)",
           maskComposite: "exclude",
-        } as React.CSSProperties
+        } as CSSProperties
       }
       className={cn(
         "absolute top-[calc(var(--offset)/2*-1)] h-[calc(100%+var(--offset))] w-[var(--width)]",
@@ -134,7 +151,6 @@ const GridLineVertical = ({
         "[mask:linear-gradient(to_top,var(--background)_var(--fade-stop),transparent),_linear-gradient(to_bottom,var(--background)_var(--fade-stop),transparent),_linear-gradient(black,black)]",
         "[mask-composite:exclude]",
         "z-30",
-        "dark:bg-[linear-gradient(to_bottom,var(--color-dark),var(--color-dark)_50%,transparent_0,transparent)]",
         className,
       )}
     ></div>

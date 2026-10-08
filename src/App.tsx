@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence } from 'motion/react'
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
 import { Dock } from '@/components/Dock'
+import { Footer } from '@/components/Footer'
 import { Logo } from '@/components/Logo'
 import { Preloader } from '@/components/Preloader'
 import { site } from '@/data/site.js'
@@ -109,6 +110,8 @@ export default function App() {
           <Route path="*" element={<Home ready={!loading} />} />
         </Routes>
       </main>
+
+      <Footer />
     </BrowserRouter>
   )
 }

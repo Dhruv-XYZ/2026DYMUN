@@ -46,5 +46,19 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), galleryManifest()],
   resolve: {
     alias: { '@': fromRoot('./src') },
+    dedupe: ['react', 'react-dom'],
+  },
+  // These libraries are only imported lazily (globe, hover sparkles). Listing them here
+  // makes the dev server prepare them at start-up, instead of discovering them later
+  // and reloading the page in the middle of a visit.
+  optimizeDeps: {
+    include: [
+      'three',
+      '@react-three/fiber',
+      '@react-three/drei',
+      '@tsparticles/react',
+      '@tsparticles/slim',
+      '@tsparticles/engine',
+    ],
   },
 })

@@ -1,6 +1,5 @@
-"use client";
-
-import { cn } from "@/lib/utils";
+import { useEffect, useRef } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import {
   motion,
   useAnimationFrame,
@@ -8,9 +7,16 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
-  MotionValue,
 } from "motion/react";
-import { useEffect, useRef } from "react";
+import type { MotionValue } from "motion/react";
+import { cn } from "@/lib/utils";
+
+// The DYMUN palette. Kept outside the component so the default never changes identity.
+const DEFAULT_GRADIENT = [
+  "var(--color-gold-light)",
+  "var(--color-orange)",
+  "var(--color-gold)",
+];
 
 // Helper component for gradient layers
 function GradientLayer({
@@ -42,28 +48,35 @@ function GradientLayer({
 }
 
 interface NoiseBackgroundProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   className?: string;
   containerClassName?: string;
   gradientColors?: string[];
+  /** Opacity of the grain. Defaults to the section's own grain strength. */
   noiseIntensity?: number;
+  /** How strong the colour glow is: 1 is the original, lower is fainter. */
+  strength?: number;
   speed?: number;
-  backdropBlur?: boolean;
   animating?: boolean;
 }
 
+/**
+ * Aceternity "Noise Background": soft colour glows that wander under a layer of grain.
+ *
+ * Changed for DYMUN:
+ * - It is a plain full-bleed layer. The rounded, padded, shadowed frame is gone.
+ * - Gold and orange glows, with `strength` to keep them faint on cream.
+ * - The grain is the site's own inline SVG, not an image fetched from another server.
+ * - overflow: clip instead of hidden, so sticky elements inside a section still stick.
+ */
 export const NoiseBackground = ({
   children,
   className,
   containerClassName,
-  gradientColors = [
-    "rgb(255, 100, 150)",
-    "rgb(100, 150, 255)",
-    "rgb(255, 200, 100)",
-  ],
-  noiseIntensity = 0.2,
+  gradientColors = DEFAULT_GRADIENT,
+  noiseIntensity,
+  strength = 1,
   speed = 0.1,
-  backdropBlur = false,
   animating = true,
 }: NoiseBackgroundProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -92,28 +105,15 @@ export const NoiseBackground = ({
     y.set(centerY);
   }, [x, y]);
 
-  // Generate random velocity
-  const generateRandomVelocityRef = useRef(() => {
+  // A fresh random direction at the current speed
+  const randomVelocity = () => {
     const angle = Math.random() * Math.PI * 2;
-    const magnitude = speed * (0.5 + Math.random() * 0.5); // Random speed between 0.5x and 1x
+    const magnitude = speed * (0.5 + Math.random() * 0.5); // between 0.5x and 1x
     return {
       x: Math.cos(angle) * magnitude,
       y: Math.sin(angle) * magnitude,
     };
-  });
-
-  // Update generateRandomVelocity when speed changes
-  useEffect(() => {
-    generateRandomVelocityRef.current = () => {
-      const angle = Math.random() * Math.PI * 2;
-      const magnitude = speed * (0.5 + Math.random() * 0.5);
-      return {
-        x: Math.cos(angle) * magnitude,
-        y: Math.sin(angle) * magnitude,
-      };
-    };
-    velocityRef.current = generateRandomVelocityRef.current();
-  }, [speed]);
+  };
 
   // Animate using motion/react's useAnimationFrame
   useAnimationFrame((time) => {
@@ -124,8 +124,11 @@ export const NoiseBackground = ({
     const maxY = rect.height;
 
     // Change direction randomly every 1.5-3 seconds
-    if (time - lastDirectionChangeRef.current > 1500 + Math.random() * 1500) {
-      velocityRef.current = generateRandomVelocityRef.current();
+    if (
+      (velocityRef.current.x === 0 && velocityRef.current.y === 0) ||
+      time - lastDirectionChangeRef.current > 1500 + Math.random() * 1500
+    ) {
+      velocityRef.current = randomVelocity();
       lastDirectionChangeRef.current = time;
     }
 
@@ -138,7 +141,6 @@ export const NoiseBackground = ({
     let newY = currentY + velocityRef.current.y * deltaTime;
 
     // When hitting edges, generate a completely new random direction
-    // This ensures truly random movement in all 360 degrees, not just horizontal/vertical
     const padding = 20; // Keep some distance from edges
 
     if (
@@ -147,13 +149,7 @@ export const NoiseBackground = ({
       newY < padding ||
       newY > maxY - padding
     ) {
-      // Generate completely random direction (full 360 degrees)
-      const angle = Math.random() * Math.PI * 2;
-      const magnitude = speed * (0.5 + Math.random() * 0.5);
-      velocityRef.current = {
-        x: Math.cos(angle) * magnitude,
-        y: Math.sin(angle) * magnitude,
-      };
+      velocityRef.current = randomVelocity();
       // Reset timer to allow immediate new direction
       lastDirectionChangeRef.current = time;
       // Clamp position to stay within bounds
@@ -168,64 +164,54 @@ export const NoiseBackground = ({
   return (
     <div
       ref={containerRef}
-      className={cn(
-        "group relative overflow-hidden rounded-2xl bg-neutral-200 p-2 backdrop-blur-sm dark:bg-neutral-800",
-        "shadow-[0px_0.5px_1px_0px_var(--color-neutral-400)_inset,0px_1px_0px_0px_var(--color-neutral-100)]",
-        "dark:shadow-[0px_1px_0px_0px_var(--color-neutral-950)_inset,0px_1px_0px_0px_var(--color-neutral-800)]",
-        backdropBlur &&
-          "after:absolute after:inset-0 after:h-full after:w-full after:backdrop-blur-lg after:content-['']",
-        containerClassName,
-      )}
-      style={
-        {
-          "--noise-opacity": noiseIntensity,
-        } as React.CSSProperties
-      }
+      className={cn("group relative overflow-clip", containerClassName)}
     >
       {/* Moving gradient layers */}
       <GradientLayer
         springX={springX}
         springY={springY}
         gradientColor={gradientColors[0]}
-        opacity={0.4}
+        opacity={0.4 * strength}
         multiplier={1}
       />
       <GradientLayer
         springX={springX}
         springY={springY}
-        gradientColor={gradientColors[1]}
-        opacity={0.3}
+        gradientColor={gradientColors[1] || gradientColors[0]}
+        opacity={0.3 * strength}
         multiplier={0.7}
       />
       <GradientLayer
         springX={springX}
         springY={springY}
         gradientColor={gradientColors[2] || gradientColors[0]}
-        opacity={0.25}
+        opacity={0.25 * strength}
         multiplier={1.2}
       />
 
       {/* Top gradient strip */}
       <motion.div
-        className="absolute inset-x-0 top-0 h-1 rounded-t-2xl opacity-80 blur-sm"
+        className="absolute inset-x-0 top-0 h-1 opacity-70 blur-sm"
         style={{
           background: `linear-gradient(to right, ${gradientColors.join(", ")})`,
           x: animating ? topGradientX : 0,
         }}
       />
 
-      {/* Static Noise Pattern */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <img
-          src="https://assets.aceternity.com/noise.webp"
-          alt=""
-          className="h-full w-full object-cover opacity-[var(--noise-opacity)]"
-          style={{ mixBlendMode: "overlay" }}
-        />
-      </div>
+      {/* Static noise pattern: the site's inline SVG grain */}
+      <div
+        className="pointer-events-none absolute inset-0 [background-image:var(--grain-image)] [background-size:240px_240px]"
+        style={
+          {
+            opacity: noiseIntensity ?? "var(--grain-opacity)",
+          } as CSSProperties
+        }
+      />
 
       {/* Content */}
-      <div className={cn("relative z-10", className)}>{children}</div>
+      {children !== undefined && (
+        <div className={cn("relative z-10", className)}>{children}</div>
+      )}
     </div>
   );
 };

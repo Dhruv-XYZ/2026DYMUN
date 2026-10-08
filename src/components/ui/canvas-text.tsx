@@ -1,18 +1,31 @@
-"use client";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { useEffect, useRef, useState, useCallback } from "react";
 
 interface CanvasTextProps {
   text: string;
   className?: string;
+  /** A background-colour class. Its colour fills the letters, underneath the lines. */
   backgroundClassName?: string;
+  /** Line colours: plain colours or CSS variables such as "var(--color-gold)". */
   colors?: string[];
+  /** Seconds for one full sway of the lines. */
   animationDuration?: number;
   lineWidth?: number;
   lineGap?: number;
   curveIntensity?: number;
   overlay?: boolean;
+  /** true draws one still frame instead of animating. */
+  paused?: boolean;
 }
+
+// The DYMUN palette. Kept outside the component so the default is the same array on
+// every render (a fresh array each time would restart the drawing effect).
+const DEFAULT_COLORS = [
+  "var(--color-gold)",
+  "var(--color-gold-light)",
+  "var(--color-orange)",
+  "var(--color-gold-dark)",
+];
 
 function resolveColor(color: string): string {
   if (color.startsWith("var(")) {
@@ -25,47 +38,30 @@ function resolveColor(color: string): string {
   return color;
 }
 
+/**
+ * Aceternity "Canvas Text": a word drawn on a canvas, filled with one colour and
+ * crossed by swaying coloured lines.
+ * Changed for DYMUN: palette colours, the heading's letter-spacing is honoured, it
+ * pauses when off screen, and `paused` gives a still frame for reduced motion.
+ */
 export function CanvasText({
   text,
   className = "",
-  backgroundClassName = "bg-white dark:bg-neutral-950",
-  colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#ffeaa7", "#dfe6e9"],
+  backgroundClassName = "bg-ink",
+  colors = DEFAULT_COLORS,
   animationDuration = 5,
   lineWidth = 1.5,
   lineGap = 10,
   curveIntensity = 60,
   overlay = false,
+  paused = false,
 }: CanvasTextProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const bgRef = useRef<HTMLSpanElement>(null);
-  const animationRef = useRef<number>(0);
-  const startTimeRef = useRef<number>(0);
-  const [bgColor, setBgColor] = useState("#0a0a0a");
-  const [resolvedColors, setResolvedColors] = useState<string[]>([]);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [font, setFont] = useState("");
-
-  const updateColors = useCallback(() => {
-    if (bgRef.current) {
-      const computed = window.getComputedStyle(bgRef.current);
-      setBgColor(computed.backgroundColor);
-    }
-    const resolved = colors.map(resolveColor);
-    setResolvedColors(resolved);
-  }, [colors]);
-
-  useEffect(() => {
-    updateColors();
-
-    const observer = new MutationObserver(updateColors);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, [updateColors]);
+  const [font, setFont] = useState({ shorthand: "", letterSpacing: "0px" });
+  const colorKey = colors.join("|");
 
   useEffect(() => {
     const textEl = textRef.current;
@@ -78,63 +74,68 @@ export function CanvasText({
         width: Math.ceil(rect.width) || 400,
         height: Math.ceil(rect.height) || 200,
       });
-      setFont(
-        `${computed.fontWeight} ${computed.fontSize} ${computed.fontFamily}`,
-      );
+      setFont({
+        shorthand: `${computed.fontWeight} ${computed.fontSize} ${computed.fontFamily}`,
+        letterSpacing:
+          computed.letterSpacing === "normal" ? "0px" : computed.letterSpacing,
+      });
     };
 
     updateDimensions();
 
     const resizeObserver = new ResizeObserver(updateDimensions);
     resizeObserver.observe(textEl);
+    document.fonts?.ready.then(updateDimensions).catch(() => {});
 
     return () => resizeObserver.disconnect();
   }, [text, className]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (
-      !canvas ||
-      resolvedColors.length === 0 ||
-      dimensions.width === 0 ||
-      !font
-    )
-      return;
+    const bg = bgRef.current;
+    if (!canvas || !bg || dimensions.width === 0 || !font.shorthand) return;
 
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
+    const fillColor = window.getComputedStyle(bg).backgroundColor;
+    const lineColors = colorKey.split("|").map(resolveColor);
+    if (lineColors.length === 0) return;
+
     const { width, height } = dimensions;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     canvas.width = width * dpr;
     canvas.height = height * dpr;
 
-    ctx.font = font;
+    const applyFont = () => {
+      ctx.font = font.shorthand;
+      if ("letterSpacing" in ctx) ctx.letterSpacing = font.letterSpacing;
+    };
+
+    applyFont();
     const metrics = ctx.measureText(text);
     const ascent = metrics.actualBoundingBoxAscent;
     const descent = metrics.actualBoundingBoxDescent;
     const baselineY = (height + ascent - descent) / 2;
 
     const numLines = Math.floor(height / lineGap) + 10;
-    startTimeRef.current = performance.now();
 
-    const animate = (currentTime: number) => {
-      const elapsed = (currentTime - startTimeRef.current) / 1000;
+    const draw = (elapsed: number) => {
       const phase = (elapsed / animationDuration) * Math.PI * 2;
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
 
       ctx.globalCompositeOperation = "source-over";
-      ctx.font = font;
+      applyFont();
       ctx.textBaseline = "alphabetic";
       ctx.textAlign = "left";
       ctx.fillStyle = "#000";
       ctx.fillText(text, 0, baselineY);
 
       ctx.globalCompositeOperation = "source-in";
-      ctx.fillStyle = bgColor;
+      ctx.fillStyle = fillColor;
       ctx.fillRect(0, 0, width, height);
 
       ctx.globalCompositeOperation = "source-atop";
@@ -144,8 +145,7 @@ export function CanvasText({
         const curve1 = Math.sin(phase) * curveIntensity;
         const curve2 = Math.sin(phase + 0.5) * curveIntensity * 0.6;
 
-        const colorIndex = i % resolvedColors.length;
-        ctx.strokeStyle = resolvedColors[colorIndex];
+        ctx.strokeStyle = lineColors[i % lineColors.length];
         ctx.lineWidth = lineWidth;
 
         ctx.beginPath();
@@ -160,25 +160,44 @@ export function CanvasText({
         );
         ctx.stroke();
       }
-
-      animationRef.current = requestAnimationFrame(animate);
     };
 
-    animationRef.current = requestAnimationFrame(animate);
+    if (paused) {
+      draw(animationDuration * 0.2);
+      return;
+    }
+
+    let frame = 0;
+    let visible = true;
+    const start = performance.now();
+
+    const loop = (now: number) => {
+      frame = requestAnimationFrame(loop);
+      if (!visible || document.hidden) return;
+      draw((now - start) / 1000);
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      visible = entries[0]?.isIntersecting ?? true;
+    });
+    observer.observe(canvas);
+    frame = requestAnimationFrame(loop);
 
     return () => {
-      cancelAnimationFrame(animationRef.current);
+      cancelAnimationFrame(frame);
+      observer.disconnect();
     };
   }, [
     text,
     font,
-    bgColor,
-    resolvedColors,
+    colorKey,
+    backgroundClassName,
     animationDuration,
     lineWidth,
     lineGap,
     curveIntensity,
     dimensions,
+    paused,
   ]);
 
   return (

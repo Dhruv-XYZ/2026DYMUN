@@ -33,6 +33,13 @@ export const site = {
   },
 }
 
+/** Small words in the footer. The "pending" lines show until contact details are filled in above. */
+export const footer = {
+  menu: 'Explore',
+  emailPending: 'Email TBA', // TODO: replace by setting site.contact.email
+  phonePending: 'Phone TBA', // TODO: replace by setting site.contact.phone
+}
+
 /** Navigation. `id` is the section on the home page, `path` its own page if it has one. */
 export const nav = [
   { id: 'home', label: 'Home' },

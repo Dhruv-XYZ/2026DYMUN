@@ -17,6 +17,30 @@ export const registrationTiers = [
   { id: 'observer', name: 'Observer', fee: 'TBA', details: 'Fee and inclusions to be announced.' }, // TODO: replace
 ]
 
+/** The words used by the registration form. */
+export const registrationForm = {
+  title: 'Registration form',
+  fields: {
+    name: 'Full name',
+    grade: 'Grade',
+    school: 'School',
+    email: 'Email',
+    committee: 'Committee preference',
+    experience: 'Experience',
+  },
+  choose: 'Choose',
+  submit: 'Send registration',
+  errors: {
+    name: 'Enter your full name.',
+    grade: 'Choose your grade.',
+    school: 'Enter the name of your school.',
+    email: 'Enter your email address.',
+    emailFormat: 'Enter an email address like name@example.com.',
+    committee: 'Choose a committee.',
+    experience: 'Choose your experience.',
+  },
+}
+
 /** Choices for the "experience" field of the form. */
 export const experienceLevels = [
   'This will be my first conference',
