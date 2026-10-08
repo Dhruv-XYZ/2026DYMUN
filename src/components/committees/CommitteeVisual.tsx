@@ -16,7 +16,7 @@ function linesFor(name: string): string[] {
 
 /**
  * The picture for one committee. There are no committee icons, so it is drawn in CSS:
- * the name in giant outline type over a slowly turning gold to orange glow, with grain.
+ * the name in giant solid cream type over a slowly turning gold to orange glow, with grain.
  *
  * The glow's angle, centre and warm colour all come from the committee's position in
  * the list, so every committee looks a little different while staying in the palette.
@@ -62,12 +62,18 @@ export function CommitteeVisual({
           filter: 'blur(56px)',
         }}
       />
-      {/* Darkens the edges so the gold and orange stay a glow, not a fill. */}
+      {/* An even ink wash keeps the gold and orange a glow, not a fill... */}
+      <div
+        className="absolute inset-0"
+        style={{ background: 'color-mix(in srgb, var(--color-ink) 42%, transparent)' }}
+      />
+      {/* ...and a darker band across the middle sits behind the name, so the name
+          stays readable wherever the glow has turned to. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(115% 95% at 50% 60%, transparent 38%, color-mix(in srgb, var(--color-ink) 90%, transparent) 100%)',
+            'radial-gradient(90% 46% at 50% 50%, color-mix(in srgb, var(--color-ink) 78%, transparent) 0%, transparent 100%)',
         }}
       />
       <div className="grain-layer" />
@@ -76,14 +82,12 @@ export function CommitteeVisual({
         {lines.map((line) => (
           <span
             key={line}
-            className="block leading-[0.9] font-black tracking-[-0.04em] text-amber-black uppercase"
-            // The dark fill hides the seams inside the letters. "lighten" then lets the
-            // glow behind show through that fill, so the type reads as a true outline.
+            className="block leading-[0.9] font-black tracking-[-0.04em] text-text uppercase"
+            // Solid cream letters: an outline alone disappeared against the bright
+            // parts of the glow. The soft shadow separates them from what is behind.
             style={{
               fontSize,
-              WebkitTextStroke: '3px var(--color-gold-light)',
-              paintOrder: 'stroke fill',
-              mixBlendMode: 'lighten',
+              textShadow: '0 2px 28px var(--color-ink), 0 0 6px var(--color-ink)',
             }}
           >
             {line}
