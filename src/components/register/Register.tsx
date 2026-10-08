@@ -1,10 +1,11 @@
 import { lazy, Suspense } from 'react'
 import { Reveal } from '@/components/Reveal'
 import { Section, SectionHeading } from '@/components/Section'
-import { registrationForm, registrationTiers } from '@/data/registration.js'
+import { enquiryForm } from '@/data/enquiry.js'
+import { registrationTiers } from '@/data/registration.js'
 import { sections } from '@/data/site.js'
 import { useDeviceProfile } from '@/hooks/use-device'
-import { RegisterForm } from './RegisterForm'
+import { EnquiryForm } from './EnquiryForm'
 
 const CoverWord = lazy(() => import('./CoverWord'))
 
@@ -59,9 +60,10 @@ export function Register() {
 
       <div className="grid gap-10 px-5 pt-20 md:px-10 md:pt-28 lg:grid-cols-[minmax(0,0.5fr)_minmax(0,1fr)]">
         <Reveal>
-          <p className="label text-fg-muted">{registrationForm.title}</p>
+          <p className="label text-fg-muted">{enquiryForm.title}</p>
+          <p className="mt-4 max-w-[28ch] text-fg-muted">{enquiryForm.intro}</p>
         </Reveal>
-        <RegisterForm />
+        <EnquiryForm />
       </div>
     </Section>
   )

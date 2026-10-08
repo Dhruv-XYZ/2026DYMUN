@@ -28,7 +28,8 @@ component to change wording.
 | Committees and agendas | `src/data/committees.js` |
 | Schedule | `src/data/schedule.js` |
 | Secretariat | `src/data/team.js` |
-| Registration rows, form wording, form endpoint | `src/data/registration.js` |
+| Registration rows (Delegate, Delegation, Observer) and fees | `src/data/registration.js` |
+| Enquiry form: Web3Forms key, wording, spam limits | `src/data/enquiry.js` |
 | Participating schools (not shown while empty) | `src/data/schools.js` |
 
 Anything still unknown is marked `// TODO: replace` in those files. Search for `TODO` to
@@ -48,10 +49,17 @@ being used. Team photos go in `public/team/`, with the path set in `team.js`.
 `'/logo.svg'`). The text wordmark is replaced everywhere. `public/favicon.svg` is a
 placeholder mark too.
 
-**Registration form.** Replace `REGISTER_ENDPOINT` in `registration.js` with the real
-form endpoint. Until then the form checks the fields but sends nothing, and tells the
-visitor that registration is not open yet. The form collects students' names, schools
-and email addresses, so agree with the school where that data goes before switching it on.
+**Enquiry form.** The Register section ends with an enquiry form sent through
+[Web3Forms](https://web3forms.com). Create a free access key there using the inbox that
+should receive enquiries, and paste it into `WEB3FORMS_ACCESS_KEY` in `src/data/enquiry.js`
+(the key is meant to be public). Until then the form checks the fields but sends nothing,
+and says enquiries are not open yet.
+
+Spam protection: every field has a presence and range check (name 2 to 80 characters,
+email valid and under 254, phone 7 to 15 digits if given, message 10 to 1000), a hidden
+field that only bots fill in, and a minimum of 3 seconds between the form appearing and
+being sent. The limits are in `LIMITS` in `enquiry.js`. The form collects names, emails
+and optional phone numbers and schools, so agree with the school where that data goes.
 
 ## Needs from the team
 
@@ -63,7 +71,7 @@ and email addresses, so agree with the school where that data goes before switch
 - [ ] Secretariat names, roles and photos (`team.js`)
 - [ ] Schedule: order of events and timings (`schedule.js`)
 - [ ] Contact email and phone, social links (`site.contact`, `site.socials`)
-- [ ] Registration endpoint (`REGISTER_ENDPOINT`)
+- [ ] Web3Forms access key (`WEB3FORMS_ACCESS_KEY` in `src/data/enquiry.js`), and where enquiries should be emailed
 - [ ] Confirm the spelling COPUOS (the poster prints "COPOUS")
 - [ ] Full committee names, if you want them shown beside the abbreviations
 - [ ] Real quotes from past delegates or chairs, if you want a Voices section

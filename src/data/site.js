@@ -105,9 +105,6 @@ export const sections = {
     label: 'Register',
     lead: 'Take your',
     accent: 'seat.',
-    notConnected: 'Registration is not open yet.', // shown until REGISTER_ENDPOINT is set
-    success: 'Thank you. Your registration has been received.',
-    failure: 'Something went wrong. Please try again.',
   },
   contact: {
     label: 'Contact',
