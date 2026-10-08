@@ -77,6 +77,14 @@ export const sections = {
       'Diplomacy, debate and bold ideas, where the leaders of tomorrow take on the challenges of today.',
     ],
     stats: { days: 'Days', committees: 'Committees', grades: 'Grades' },
+    /** The text beside the globe. */
+    globe: {
+      venueLabel: 'Held in',
+      country: 'India',
+      caption: 'Delegates, chairs and ideas from every corner. Drag the globe to look around.',
+      hint: 'Drag to spin',
+      enable: 'Spin the globe',
+    },
   },
   committees: {
     label: 'Committees',

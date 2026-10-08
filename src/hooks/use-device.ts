@@ -23,14 +23,19 @@ interface NavigatorHints {
   connection?: { saveData?: boolean }
 }
 
-/** Few cores, little memory, or the visitor asked the browser to save data. */
+/**
+ * Very little power: two cores or fewer, 2 GB of memory or less, or the visitor asked
+ * the browser to save data. The bar is low on purpose. Four cores is an ordinary
+ * laptop or phone, and treating it as weak left capable devices with a still picture
+ * where a spinning globe belongs.
+ */
 function detectLowPower(): boolean {
   if (typeof navigator === 'undefined') return false
   const hints = navigator as Navigator & NavigatorHints
   const cores = navigator.hardwareConcurrency
   return (
-    (typeof cores === 'number' && cores <= 4) ||
-    (typeof hints.deviceMemory === 'number' && hints.deviceMemory <= 4) ||
+    (typeof cores === 'number' && cores <= 2) ||
+    (typeof hints.deviceMemory === 'number' && hints.deviceMemory <= 2) ||
     hints.connection?.saveData === true
   )
 }

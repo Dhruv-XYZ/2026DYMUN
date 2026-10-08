@@ -53,12 +53,24 @@ const CONFIG: Globe3DConfig = {
   bumpScale: 2,
 }
 
-const MARKERS = [VENUE]
+const STILL_CONFIG: Globe3DConfig = { ...CONFIG, autoRotateSpeed: 0 }
+
+/** The venue, labelled on the globe. */
+const MARKERS = [{ ...VENUE, label: 'Navi Mumbai' }]
 
 /**
  * The About section's globe. Its own file so three.js loads separately, and only when
  * the section is near the screen. `active` pauses rendering while it is out of view.
+ * `still` switches off the idle spin (reduced motion); dragging still works.
  */
-export default function GlobeStage({ active }: { active: boolean }) {
-  return <Globe3D className="h-full" active={active} markers={MARKERS} arcs={ARCS} config={CONFIG} />
+export default function GlobeStage({ active, still }: { active: boolean; still: boolean }) {
+  return (
+    <Globe3D
+      className="h-full"
+      active={active}
+      markers={MARKERS}
+      arcs={ARCS}
+      config={still ? STILL_CONFIG : CONFIG}
+    />
+  )
 }

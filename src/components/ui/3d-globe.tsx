@@ -1,6 +1,6 @@
-import { Suspense, useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Line, OrbitControls, useTexture } from "@react-three/drei";
+import { Html, Line, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { cn } from "@/lib/utils";
 
@@ -59,16 +59,10 @@ export interface Globe3DConfig {
   atmosphereBlur?: number;
   /** Terrain bump scale (0 = flat, higher = more pronounced) */
   bumpScale?: number;
-  /** How fast the globe turns by itself (0 = still) */
+  /** How fast the globe turns by itself when nobody is touching it (0 = still) */
   autoRotateSpeed?: number;
-  /** Enable zoom */
-  enableZoom?: boolean;
-  /** Enable pan */
-  enablePan?: boolean;
-  /** Min zoom distance */
-  minDistance?: number;
-  /** Max zoom distance */
-  maxDistance?: number;
+  /** Let the visitor drag the globe round. Vertical swipes still scroll the page. */
+  interactive?: boolean;
   /** The place turned to face the viewer at the start */
   focus?: GlobePoint | null;
   /** Colour of the markers */
@@ -243,12 +237,23 @@ function Marker({
     );
   }, [position]);
 
-  // A ring that swells and fades, over and over.
+  const [facing, setFacing] = useState(true);
+  const worldPosition = useMemo(() => new THREE.Vector3(), []);
+  const { camera } = useThree();
+
+  // A ring that swells and fades, over and over. The label is hidden while the
+  // marker is on the far side of the globe.
   useFrame((_, delta) => {
     timeRef.current = (timeRef.current + delta) % 2.4;
     const t = timeRef.current / 2.4;
     ringRef.current?.scale.setScalar(1 + t * 3);
     if (ringMaterialRef.current) ringMaterialRef.current.opacity = 0.8 * (1 - t);
+
+    if (marker.label && ringRef.current) {
+      ringRef.current.getWorldPosition(worldPosition);
+      const visible = worldPosition.normalize().dot(camera.position.clone().normalize()) > 0.35;
+      setFacing((current) => (current === visible ? current : visible));
+    }
   });
 
   const size = radius * (marker.size ?? 0.028);
@@ -270,6 +275,27 @@ function Marker({
           depthWrite={false}
         />
       </mesh>
+
+      {marker.label && (
+        <Html zIndexRange={[10, 0]} style={{ pointerEvents: "none" }}>
+          <div
+            className="flex -translate-y-full flex-col items-start transition-opacity duration-300"
+            style={{ opacity: facing ? 1 : 0 }}
+          >
+            <span
+              className="pl-3 text-[0.7rem] font-bold tracking-[0.28em] whitespace-nowrap uppercase"
+              style={{
+                color,
+                WebkitTextStroke: "3px #0a0a0a",
+                paintOrder: "stroke fill",
+              }}
+            >
+              {marker.label}
+            </span>
+            <span className="ml-0 block h-9 w-px" style={{ background: color }} />
+          </div>
+        </Html>
+      )}
     </group>
   );
 }
@@ -344,20 +370,81 @@ function RotatingGlobe({ config, markers, arcs }: RotatingGlobeProps) {
     return [(focusLat * Math.PI) / 180 / 1.6, -Math.atan2(v.x, v.z), 0];
   }, [focusLat, focusLng]);
 
-  // With a focus the globe sways gently either side of it, so that place never turns
-  // out of sight. Without one it simply keeps turning.
-  const swayTime = useRef(0);
-  const hasFocus = focusLat !== undefined && focusLng !== undefined;
+  // Drag to spin. The globe itself turns (the camera and the lights stay put), with
+  // momentum after a flick, a slow idle spin that resumes afterwards, and the tilt
+  // easing back upright. A mostly vertical swipe is left to the page, so scrolling on a
+  // phone still works: the canvas allows vertical panning (touch-action: pan-y).
+  const { gl } = useThree();
+  const drag = useRef({ active: false, x: 0, y: 0, t: 0, vy: 0, vx: 0 });
+  const idleSpeed = config.autoRotateSpeed * 0.35; // radians per second
+
+  useEffect(() => {
+    const element = gl.domElement;
+    const state = drag.current;
+    if (!config.interactive) return;
+
+    element.style.touchAction = "pan-y";
+    element.style.cursor = "grab";
+
+    const down = (event: PointerEvent) => {
+      state.active = true;
+      state.x = event.clientX;
+      state.y = event.clientY;
+      state.t = event.timeStamp;
+      state.vy = 0;
+      state.vx = 0;
+      element.setPointerCapture(event.pointerId);
+      element.style.cursor = "grabbing";
+    };
+
+    const move = (event: PointerEvent) => {
+      const group = groupRef.current;
+      if (!state.active || !group) return;
+      const dx = event.clientX - state.x;
+      const dy = event.clientY - state.y;
+      const dt = Math.max(1, event.timeStamp - state.t) / 1000;
+      state.x = event.clientX;
+      state.y = event.clientY;
+      state.t = event.timeStamp;
+
+      const turn = 0.0065; // radians per pixel
+      group.rotation.y += dx * turn;
+      group.rotation.x = THREE.MathUtils.clamp(group.rotation.x + dy * turn, -1.1, 1.1);
+      state.vy = THREE.MathUtils.clamp((dx * turn) / dt, -9, 9);
+      state.vx = THREE.MathUtils.clamp((dy * turn) / dt, -6, 6);
+    };
+
+    const up = (event: PointerEvent) => {
+      state.active = false;
+      if (element.hasPointerCapture(event.pointerId)) element.releasePointerCapture(event.pointerId);
+      element.style.cursor = "grab";
+    };
+
+    element.addEventListener("pointerdown", down);
+    element.addEventListener("pointermove", move);
+    element.addEventListener("pointerup", up);
+    element.addEventListener("pointercancel", up);
+    return () => {
+      element.removeEventListener("pointerdown", down);
+      element.removeEventListener("pointermove", move);
+      element.removeEventListener("pointerup", up);
+      element.removeEventListener("pointercancel", up);
+    };
+  }, [gl, config.interactive]);
+
   useFrame((_, delta) => {
-    if (!groupRef.current || config.autoRotateSpeed <= 0) return;
-    if (hasFocus) {
-      swayTime.current += delta;
-      groupRef.current.rotation.y =
-        startRotation[1] +
-        Math.sin(swayTime.current * config.autoRotateSpeed * 0.3) * 0.5;
-    } else {
-      groupRef.current.rotation.y += delta * config.autoRotateSpeed * 0.12;
-    }
+    const group = groupRef.current;
+    const state = drag.current;
+    if (!group || state.active) return;
+
+    // Coast on the flick, then settle into the idle spin.
+    group.rotation.y += state.vy * delta;
+    group.rotation.x = THREE.MathUtils.clamp(group.rotation.x + state.vx * delta, -1.1, 1.1);
+    const settle = 1 - Math.exp(-1.6 * delta);
+    state.vy += (idleSpeed - state.vy) * settle;
+    state.vx *= Math.exp(-4 * delta);
+    // The tilt eases back to where it started.
+    group.rotation.x += (startRotation[0] - group.rotation.x) * (1 - Math.exp(-0.7 * delta));
   });
 
   return (
@@ -513,17 +600,6 @@ function Scene({ markers, arcs, config }: SceneProps) {
         />
       )}
 
-      {/* Controls: drag to turn. Zoom and pan are off so the page keeps scrolling. */}
-      <OrbitControls
-        makeDefault
-        enablePan={config.enablePan}
-        enableZoom={config.enableZoom}
-        minDistance={config.minDistance}
-        maxDistance={config.maxDistance}
-        rotateSpeed={0.4}
-        enableDamping
-        dampingFactor={0.1}
-      />
     </>
   );
 }
@@ -544,10 +620,7 @@ const defaultConfig: Required<Globe3DConfig> = {
   atmosphereBlur: 2,
   bumpScale: 1,
   autoRotateSpeed: 0.3,
-  enableZoom: false,
-  enablePan: false,
-  minDistance: 5,
-  maxDistance: 15,
+  interactive: true,
   focus: null,
   markerColor: "#ff7a1a",
   arcColor: "#ff7a1a",
