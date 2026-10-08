@@ -13,9 +13,10 @@ export function Footer() {
   const navigate = useAnchorNavigate()
 
   const links = [
+    // A section with a page of its own links to that page; the rest scroll to the section.
     ...nav.map((item) => ({
       label: item.label,
-      href: item.id === 'home' ? '/' : `/#${item.id}`,
+      href: item.path ?? (item.id === 'home' ? '/' : `/#${item.id}`),
     })),
     { label: sections.contact.label, href: '/contact' },
   ]

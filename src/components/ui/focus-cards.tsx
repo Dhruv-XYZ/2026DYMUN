@@ -56,6 +56,7 @@ export const Card = memo(
               style={{
                 WebkitTextStroke: "2px var(--color-gold-light)",
                 paintOrder: "stroke fill",
+                mixBlendMode: "lighten",
               }}
             >
               {card.placeholder}

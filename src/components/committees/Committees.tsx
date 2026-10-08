@@ -1,7 +1,9 @@
+import { ArrowUpRight } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
 import { Section, SectionHeading } from '@/components/Section'
 import { StickyScroll } from '@/components/ui/sticky-scroll-reveal'
 import { sections } from '@/data/site.js'
+import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { useDeviceProfile } from '@/hooks/use-device'
 import { committeeCount, groups } from '@/lib/committees'
 import { CommitteeVisual } from './CommitteeVisual'
@@ -16,6 +18,7 @@ import { CommitteeVisual } from './CommitteeVisual'
  */
 export function Committees() {
   const { compact, lowPower, reducedMotion } = useDeviceProfile()
+  const navigate = useAnchorNavigate()
   const copy = sections.committees
 
   // Phones, tablets and low-power devices get the plain stacked list with still visuals.
@@ -62,6 +65,20 @@ export function Committees() {
           />
         </div>
       ))}
+
+      <div className="px-5 pt-16 md:px-10">
+        <a
+          href="/committees"
+          onClick={navigate}
+          className="group inline-flex items-center gap-3 text-lg font-semibold text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors duration-200 hover:text-orange hover:decoration-orange"
+        >
+          {copy.allLink}
+          <ArrowUpRight
+            aria-hidden="true"
+            className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          />
+        </a>
+      </div>
     </Section>
   )
 }

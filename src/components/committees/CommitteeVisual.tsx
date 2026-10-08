@@ -67,7 +67,7 @@ export function CommitteeVisual({
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(95% 80% at 50% 62%, transparent 20%, var(--color-ink) 100%)',
+            'radial-gradient(115% 95% at 50% 60%, transparent 38%, color-mix(in srgb, var(--color-ink) 90%, transparent) 100%)',
         }}
       />
       <div className="grain-layer" />
@@ -77,10 +77,13 @@ export function CommitteeVisual({
           <span
             key={line}
             className="block leading-[0.9] font-black tracking-[-0.04em] text-amber-black uppercase"
+            // The dark fill hides the seams inside the letters. "lighten" then lets the
+            // glow behind show through that fill, so the type reads as a true outline.
             style={{
               fontSize,
               WebkitTextStroke: '3px var(--color-gold-light)',
               paintOrder: 'stroke fill',
+              mixBlendMode: 'lighten',
             }}
           >
             {line}

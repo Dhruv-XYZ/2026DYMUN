@@ -91,6 +91,7 @@ export function SectionHeading({
   lead,
   accent,
   accentClassName = 'serif-accent text-[1.08em] text-tone',
+  level = 2,
   className,
 }: {
   id: string
@@ -99,8 +100,12 @@ export function SectionHeading({
   lead: string
   accent: ReactNode
   accentClassName?: string
+  /** 1 on a page of its own, where this is the page's main heading. */
+  level?: 1 | 2
   className?: string
 }) {
+  const Heading = level === 1 ? 'h1' : 'h2'
+
   return (
     <header className={cn('px-5 pt-24 md:px-10 md:pt-36', className)}>
       <div className="flex items-end justify-between gap-8">
@@ -110,7 +115,7 @@ export function SectionHeading({
             <span aria-hidden="true" className="h-px w-8 bg-line md:hidden" />
             <span className="label text-fg-muted">{label}</span>
           </Reveal>
-          <h2 id={id} className="display-section mt-5">
+          <Heading id={id} className="display-section mt-5">
             <MaskedLines
               lines={[
                 lead,
@@ -119,7 +124,7 @@ export function SectionHeading({
                 </span>,
               ]}
             />
-          </h2>
+          </Heading>
         </div>
         <span
           aria-hidden="true"

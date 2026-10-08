@@ -116,3 +116,30 @@ export const sections = {
     pending: 'Contact details will be announced.', // TODO: replace once contact details are set
   },
 }
+
+/** Words used only on the separate pages (/committees, /gallery, /contact, not found). */
+export const pages = {
+  committees: {
+    lead: 'All',
+    accent: 'committees',
+    registerLink: 'Register for a committee',
+  },
+  gallery: {
+    link: 'Open the gallery',
+  },
+  team: {
+    link: 'Meet the team',
+  },
+  contact: {
+    email: 'Email',
+    phone: 'Phone',
+    venue: 'Venue',
+    pendingValue: 'TBA', // shown until the matching value is set in `site.contact`
+  },
+  notFound: {
+    label: 'Error 404',
+    lead: 'Page',
+    accent: 'not found',
+    back: 'Back to the home page',
+  },
+}

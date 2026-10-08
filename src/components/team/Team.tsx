@@ -19,7 +19,7 @@ function initialsOf(name: string): string {
  * The Secretariat as focus cards. A member without a photo gets a tile with their
  * initials; a placeholder entry gets its slot number instead, since it has no name yet.
  */
-export function Team() {
+export function Team({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
   const copy = sections.team
 
   const cards = team.map((member, index) => ({
@@ -35,6 +35,7 @@ export function Team() {
   return (
     <Section id="team" tone="dark" labelledBy="team-title" className="pb-24 md:pb-36">
       <SectionHeading
+        level={headingLevel}
         id="team-title"
         number="05"
         label={copy.label}

@@ -48,6 +48,13 @@ export default defineConfig({
     alias: { '@': fromRoot('./src') },
     dedupe: ['react', 'react-dom'],
   },
+  build: {
+    // The globe's chunk is three.js, about 950 kB before compression. It is loaded
+    // lazily, on capable desktops only, as the About section nears the screen, so it
+    // never delays the first paint. The limit is raised so that one known chunk does
+    // not hide a real size regression elsewhere.
+    chunkSizeWarningLimit: 1000,
+  },
   // These libraries are only imported lazily (globe, hover sparkles). Listing them here
   // makes the dev server prepare them at start-up, instead of discovering them later
   // and reloading the page in the middle of a visit.

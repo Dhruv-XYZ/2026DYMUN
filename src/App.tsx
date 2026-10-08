@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { AnimatePresence } from 'motion/react'
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
 import { Dock } from '@/components/Dock'
@@ -7,6 +7,13 @@ import { Logo } from '@/components/Logo'
 import { Preloader } from '@/components/Preloader'
 import { site } from '@/data/site.js'
 import Home from '@/pages/Home'
+
+// The other pages load only when someone opens them.
+const CommitteesPage = lazy(() => import('@/pages/CommitteesPage'))
+const TeamPage = lazy(() => import('@/pages/TeamPage'))
+const GalleryPage = lazy(() => import('@/pages/GalleryPage'))
+const ContactPage = lazy(() => import('@/pages/ContactPage'))
+const NotFound = lazy(() => import('@/pages/NotFound'))
 
 /** Set once the preloader has played, so it is skipped for the rest of the session. */
 const SESSION_KEY = 'dymun26:preloaded'
@@ -105,10 +112,16 @@ export default function App() {
       <Dock />
 
       <main id="main">
-        <Routes>
-          <Route path="/" element={<Home ready={!loading} />} />
-          <Route path="*" element={<Home ready={!loading} />} />
-        </Routes>
+        <Suspense fallback={<div data-tone="dark" className="min-h-[100svh] bg-ink" />}>
+          <Routes>
+            <Route path="/" element={<Home ready={!loading} />} />
+            <Route path="/committees" element={<CommitteesPage />} />
+            <Route path="/team" element={<TeamPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </main>
 
       <Footer />
