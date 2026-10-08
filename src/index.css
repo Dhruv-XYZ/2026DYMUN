@@ -290,8 +290,19 @@
   text-transform: none;
 }
 
-/* Gold to orange sweep. Used on one word in the hero. The faint gold stroke keeps the
-   word readable while the dark stops of the gradient pass through it. */
+/* A thin gold outline laid over the shiny word, as a second copy of the same text.
+   It keeps the word readable while the dark stops of the gradient pass through it.
+   Its ink fill hides the seams inside the letters, and "lighten" makes that fill
+   vanish against the brighter gradient underneath. */
+@utility shiny-outline {
+  color: var(--color-ink);
+  -webkit-text-stroke: 2px color-mix(in srgb, var(--color-gold) 75%, transparent);
+  paint-order: stroke fill;
+  mix-blend-mode: lighten;
+  pointer-events: none;
+}
+
+/* Gold to orange sweep. Used on one word in the hero. */
 @utility shiny {
   background-image: linear-gradient(
     90deg,
@@ -307,7 +318,6 @@
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1px color-mix(in srgb, var(--color-gold) 75%, transparent);
   animation: var(--animate-shiny);
 
   @media (hover: hover) and (min-width: 1024px) and (prefers-reduced-motion: no-preference) {

@@ -99,8 +99,9 @@ export function Hero({ ready }: { ready: boolean }) {
               show={ready}
               delay={0.2}
               lines={[
-                <span key="close" className="shiny inline-block">
-                  {hero.close}
+                <span key="close" className="relative inline-block">
+                  <span className="shiny inline-block">{hero.close}</span>
+                  <span className="shiny-outline absolute inset-0">{hero.close}</span>
                 </span>,
               ]}
             />

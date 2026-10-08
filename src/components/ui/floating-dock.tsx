@@ -130,7 +130,7 @@ const FloatingDockDesktop = ({
       }}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto hidden h-14 items-start gap-3 rounded-full bg-ink-raised pt-2 pr-6 pl-2 ring-1 ring-gold/40 md:flex",
+        "mx-auto hidden h-14 items-start gap-3 rounded-full bg-ink-raised px-2 pt-2 ring-1 ring-gold/40 md:flex lg:pr-6",
         className,
       )}
     >
@@ -144,10 +144,11 @@ const FloatingDockDesktop = ({
         />
       ))}
 
-      {/* Label slot: the item under the cursor or focus, otherwise the current section. */}
+      {/* Label slot: the item under the cursor or focus, otherwise the current section.
+          Desktop widths only; on tablets it would push the dock into the wordmark. */}
       <span
         aria-hidden="true"
-        className="relative ml-1 flex h-10 w-32 items-center overflow-hidden border-l border-gold/30 pl-4"
+        className="relative ml-1 hidden h-10 w-32 items-center overflow-hidden border-l border-gold/30 pl-4 lg:flex"
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
