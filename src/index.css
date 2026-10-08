@@ -1,111 +1,327 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * DYMUN '26 design tokens.
+ *
+ * Tailwind's default palette is switched off on purpose. Only the colours below exist,
+ * so a stray default class such as bg-neutral-900 or text-blue-500 cannot render.
+ * `npm run audit:palette` checks the source for anything outside this list.
+ */
+@theme {
+  --color-*: initial;
+
+  --color-ink: #0a0a0a; /* dark backgrounds */
+  --color-ink-raised: #141414; /* subtle layering on dark */
+  --color-cream: #f4ede0; /* light sections */
+  --color-gold: #c9a24b; /* primary accent */
+  --color-gold-light: #e6c877; /* highlights, gradient */
+  --color-gold-dark: #8a6d2b; /* accent and lines on cream */
+  --color-orange: #ff7a1a; /* energy only: primary CTA, hover, glow peaks */
+  --color-amber-deep: #4a2205; /* gradient shadows */
+  --color-amber-black: #140a02; /* gradient shadows, deepest */
+  --color-text: #ede6d6; /* text on dark */
+  --color-text-muted: #9a9486; /* secondary text on dark */
+  --color-ink-text: #141414; /* text on cream */
+  --color-ink-muted: #5e574a; /* secondary text on cream (added for contrast) */
+  --color-black: #000;
+  --color-white: #fff;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
+
+  --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-shiny: shiny 6s linear infinite;
+  --animate-glow-spin: glow-spin 36s linear infinite;
+  --animate-glow-spin-reverse: glow-spin 44s linear infinite reverse;
+
+  @keyframes shiny {
+    from {
+      background-position: 0% center;
+    }
+    to {
+      background-position: -200% center;
+    }
+  }
+
+  @keyframes glow-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@theme inline {
+  /* shadcn's names, pointed at the palette above. */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Colours that follow the section they sit in. See [data-tone] below. */
+  --color-surface: var(--tone-bg);
+  --color-fg: var(--tone-fg);
+  --color-fg-muted: var(--tone-muted);
+  --color-tone: var(--tone-accent);
+  --color-line: var(--tone-line);
+}
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --background: var(--color-ink);
+  --foreground: var(--color-text);
+  --card: var(--color-ink-raised);
+  --card-foreground: var(--color-text);
+  --popover: var(--color-ink-raised);
+  --popover-foreground: var(--color-text);
+  --primary: var(--color-orange);
+  --primary-foreground: var(--color-ink);
+  --secondary: var(--color-ink-raised);
+  --secondary-foreground: var(--color-text);
+  --muted: var(--color-ink-raised);
+  --muted-foreground: var(--color-text-muted);
+  --accent: var(--color-gold);
+  --accent-foreground: var(--color-ink);
+  --destructive: var(--color-orange);
+  --border: color-mix(in srgb, var(--color-gold) 28%, transparent);
+  --input: color-mix(in srgb, var(--color-gold) 40%, transparent);
+  --ring: var(--color-gold);
+  --radius: 0rem;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Film grain, as two tiny inline SVGs: dark specks for cream, light specks for ink. */
+  --grain-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Section tones. Everything inside a section reads these, so type and hairlines
+   switch between the dark and cream schemes without per-component colour classes. */
+:root,
+[data-tone="dark"] {
+  --tone-bg: var(--color-ink);
+  --tone-fg: var(--color-text);
+  --tone-muted: var(--color-text-muted);
+  --tone-accent: var(--color-gold);
+  --tone-line: color-mix(in srgb, var(--color-gold) 30%, transparent);
+  --grain-image: var(--grain-light);
+  --grain-opacity: 0.09;
+  --grain-blend: soft-light;
+}
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
+[data-tone="cream"] {
+  --tone-bg: var(--color-cream);
+  --tone-fg: var(--color-ink-text);
+  --tone-muted: var(--color-ink-muted);
+  --tone-accent: var(--color-gold-dark);
+  --tone-line: color-mix(in srgb, var(--color-gold-dark) 45%, transparent);
+  --grain-image: var(--grain-dark);
+  --grain-opacity: 0.16;
+  --grain-blend: multiply;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    background: var(--color-ink);
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-orange);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-orange);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+/* ---------- Type ---------- */
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+/* The biggest headline size. Fills most of the screen width. */
+@utility display {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: clamp(3.5rem, 12vw, 13rem);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+/* The hero headline: three lines that still fit one screen. */
+@utility display-hero {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: clamp(3.25rem, calc(8.4vw + 1.25rem), 10rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
 }
 
-body {
-  margin: 0;
+/* Section titles. */
+@utility display-section {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: clamp(2.75rem, 9.5vw, 10rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
+/* Names and row titles. */
+@utility display-sm {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: clamp(2rem, 5.2vw, 5rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+/* Tiny, wide-tracked labels set against the giant headlines. */
+@utility label {
+  font-size: 0.75rem;
   font-weight: 500;
-  color: var(--text-h);
+  line-height: 1.4;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+/*
+ * Outline type: a 1px accent line around letters that look empty.
+ *
+ * Inter is a variable font whose letter shapes overlap inside (the stem and bowl of a
+ * D, the strokes of an M). A plain text stroke draws those hidden seams. So the stroke
+ * is 2px, painted first, and the fill is painted over it in the section's own
+ * background colour. That covers the inner half of the stroke and every seam, leaving
+ * a clean 1px outline. Set --outline-fill where the background is not the section's.
+ */
+@utility text-outline {
+  color: var(--outline-fill, var(--tone-bg));
+  -webkit-text-stroke: 2px var(--tone-accent);
+  paint-order: stroke fill;
+}
+
+/* The one serif italic accent word in a headline. */
+@utility serif-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+
+/* Gold to orange sweep. Used on one word in the hero. The faint gold stroke keeps the
+   word readable while the dark stops of the gradient pass through it. */
+@utility shiny {
+  background-image: linear-gradient(
+    90deg,
+    #140a02 0%,
+    #4a2205 12.5%,
+    #e6c877 32.5%,
+    #ff7a1a 50%,
+    #4a2205 67.5%,
+    #140a02 87.5%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--color-gold) 75%, transparent);
+  animation: var(--animate-shiny);
+
+  @media (hover: hover) and (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    filter: url(#shiny-noise);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background-position: -70% center;
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+
+/* ---------- Texture and lines ---------- */
+
+/* Film grain over a section. Sits above the background and below the content. */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--grain-image);
+    background-size: 240px 240px;
+    opacity: var(--grain-opacity);
+    mix-blend-mode: var(--grain-blend);
   }
 }
-p {
-  margin: 0;
+
+/* Grain as its own layer, for use inside visual tiles. */
+@utility grain-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--grain-light);
+  background-size: 240px 240px;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* 1px rule in the section's line colour. */
+@utility hairline {
+  height: 1px;
+  width: 100%;
+  background: var(--tone-line);
 }
