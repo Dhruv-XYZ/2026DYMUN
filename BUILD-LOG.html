@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DYMUN '26 website: build log</title>
+<style>
+  body { font-family: Georgia, "Times New Roman", serif; color: #141414; background: #fff; max-width: 46rem; margin: 2rem auto; padding: 0 1.25rem; line-height: 1.5; font-size: 11pt; }
+  h1 { font-family: Helvetica, Arial, sans-serif; font-size: 22pt; margin: 0 0 .2rem; }
+  h2 { font-family: Helvetica, Arial, sans-serif; font-size: 13pt; margin: 1.6rem 0 .5rem; padding-bottom: .2rem; border-bottom: 1px solid #141414; }
+  p.meta { margin: 0; color: #444; }
+  table { width: 100%; border-collapse: collapse; margin: .4rem 0; }
+  th, td { text-align: left; vertical-align: top; padding: .3rem .5rem .3rem 0; border-bottom: 1px solid #ccc; }
+  th { font-family: Helvetica, Arial, sans-serif; font-size: 9pt; text-transform: uppercase; letter-spacing: .05em; }
+  td.t { white-space: nowrap; font-family: Menlo, Consolas, monospace; font-size: 9.5pt; }
+  code { font-family: Menlo, Consolas, monospace; font-size: 9.5pt; }
+  ul { margin: .3rem 0; padding-left: 1.2rem; }
+  li { margin: .15rem 0; }
+  .box { display: inline-block; width: .8em; height: .8em; border: 1px solid #141414; margin-right: .5em; vertical-align: -.05em; }
+  ul.check { list-style: none; padding-left: 0; }
+  @media print { body { margin: 0; max-width: none; } h2 { break-after: avoid; } tr, li { break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<h1>DYMUN '26 website: build log</h1>
+<p class="meta">D Y Patil International School, Navi Mumbai. Build session: 8 to 9 October 2026, 23:38 to 00:33 IST (about 55 minutes).</p>
+<p class="meta">Project folder: <code>DYMUN 2026/</code>. Git branch: <code>build</code>. Everything is committed.</p>
+
+<h2>Status</h2>
+<ul>
+  <li><strong>Built:</strong> the full home page (8 sections), 4 extra pages and a not-found page.</li>
+  <li><strong>Not deployed.</strong> There is no Vercel login on this Mac. Run <code>npx vercel login</code>, then <code>npx vercel --prod</code>.</li>
+  <li><strong>Placeholders remain:</strong> 40 items marked <code>TODO</code> (date, fees, team, photos and so on).</li>
+</ul>
+
+<h2>Timeline</h2>
+<table>
+  <tr><th>Time</th><th>What happened</th></tr>
+  <tr><td class="t">23:15</td><td>Planning. Found the empty <code>DYMUN 2026/</code> folder, the older <code>dy-mun/</code> site (left untouched), and the poster PDF. Checked all 17 Aceternity components: 16 free, <code>loader-one</code> paid.</td></tr>
+  <tr><td class="t">23:30</td><td>Your decisions: build in <code>DYMUN 2026/</code>; transcribe committees from the poster; keep "BEGIN." as written; finish in 4 hours, not 3 days; dock at the top.</td></tr>
+  <tr><td class="t">23:38</td><td>Build started. Vite + React + TypeScript scaffold.</td></tr>
+  <tr><td class="t">23:39</td><td><strong>Commit 6ac222f</strong> Scaffold Vite, React and TypeScript.</td></tr>
+  <tr><td class="t">23:43</td><td>Committees transcribed from the poster. All 16 agendas checked against the poster text: exact match. International Press has no agenda.</td></tr>
+  <tr><td class="t">23:44</td><td>Tailwind and shadcn set up. All 17 Aceternity components installed (free <code>loader</code> in place of the paid one).</td></tr>
+  <tr><td class="t">00:05</td><td><strong>Commit c267827</strong> Design system, preloader, dock, hero and Committees. Checkpoint 1.</td></tr>
+  <tr><td class="t">00:06</td><td>Two globe textures downloaded from unpkg into <code>public/textures/</code>.</td></tr>
+  <tr><td class="t">00:23</td><td><strong>Commit 29c3206</strong> About, Schedule, Gallery, Team, Register and Footer. Checkpoint 2.</td></tr>
+  <tr><td class="t">00:28</td><td><strong>Commit e0266db</strong> Extra pages, SEO files, Vercel config and README. Checkpoint 3.</td></tr>
+  <tr><td class="t">00:31</td><td><strong>Commit 711397e</strong> Fixed headline outline seams and the tablet dock overlap.</td></tr>
+  <tr><td class="t">00:33</td><td>Final checks done on the production build. Stopped at the deploy step (no Vercel login).</td></tr>
+</table>
+
+<h2>What was built</h2>
+<table>
+  <tr><th>Part</th><th>What it is</th><th>Aceternity component</th></tr>
+  <tr><td>Preloader</td><td>Shows once per browser session, under 2 seconds</td><td>loader</td></tr>
+  <tr><td>Navigation</td><td>Dock at top centre on desktop, bottom bar on phones; wordmark top left</td><td>floating-dock</td></tr>
+  <tr><td>Hero (dark)</td><td>Giant outline DYMUN that follows the cursor, flipping headline word, Register button</td><td>dotted-glow-background, text-hover-effect, container-text-flip, magnetic-button, moving-border</td></tr>
+  <tr><td>About (cream)</td><td>Gold-on-ink 3D globe, three stats counted from the data</td><td>3d-globe, canvas-text</td></tr>
+  <tr><td>Committees (dark)</td><td>All 17 in three grade groups; a tile on the right changes as you scroll</td><td>sticky-scroll-reveal</td></tr>
+  <tr><td>Schedule (cream)</td><td>Day 1 and Day 2, placeholder entries, no times</td><td>timeline</td></tr>
+  <tr><td>Gallery (dark)</td><td>Tilted wall of tiles; reads photos from <code>public/gallery/</code></td><td>3d-marquee</td></tr>
+  <tr><td>Team (dark)</td><td>Six placeholder tiles</td><td>focus-cards</td></tr>
+  <tr><td>Register (cream)</td><td>Three rows (Delegate, Delegation, Observer) and the form</td><td>stateful-button, cover</td></tr>
+  <tr><td>Cream sections</td><td>Moving warm texture</td><td>noise-background</td></tr>
+  <tr><td>Footer (dark)</td><td>Links, school, contact placeholders, giant cropped wordmark</td><td>text-hover-effect</td></tr>
+  <tr><td>Extra pages</td><td><code>/committees</code>, <code>/team</code>, <code>/gallery</code>, <code>/contact</code>, not found</td><td></td></tr>
+</table>
+
+<h2>Checks that passed</h2>
+<ul>
+  <li><code>npm run build</code> passes with no warnings.</li>
+  <li>Palette audit passes: no colour outside the brief's palette anywhere in <code>src/</code>.</li>
+  <li>17 of 17 committees on the page; agenda text identical to the data file and the poster.</li>
+  <li>Exactly one main heading on every page.</li>
+  <li>Phone (375px) and tablet (768px): no sideways scroll, still globe, stacked committees.</li>
+  <li>Reduced motion: flipping word, glow, gallery drift and globe all stop.</li>
+  <li>Form: 6 errors on an empty submit; committees filter by grade; a valid submit answers "Registration is not open yet." and sends nothing.</li>
+  <li>Lighthouse: Accessibility 100, Best Practices 100, SEO 100.</li>
+  <li>Size: first load 489 kB of JavaScript (161 kB compressed). Globe and hover sparkles load separately.</li>
+</ul>
+
+<h2>Where it differs from the brief</h2>
+<ul>
+  <li>Voices section not built: there are no real quotes. The carousel is installed but unused.</li>
+  <li><code>loader-one</code> is paid; the free <code>loader</code> gives the same component.</li>
+  <li>Dock is at the bottom on phones (top on desktop).</li>
+  <li>COPUOS used where the poster prints "COPOUS".</li>
+  <li>Globe arcs are decorative and point to no real places.</li>
+  <li>Gallery and Team are two dark sections in a row, because Voices is hidden.</li>
+</ul>
+
+<h2>Still needed from the team</h2>
+<ul class="check">
+  <li><span class="box"></span>Vercel login, then deploy</li>
+  <li><span class="box"></span>Conference date and venue confirmation</li>
+  <li><span class="box"></span>Logo file and favicon</li>
+  <li><span class="box"></span>Fees and what each covers</li>
+  <li><span class="box"></span>Photos (drop into <code>public/gallery/</code>)</li>
+  <li><span class="box"></span>Secretariat names, roles and photos</li>
+  <li><span class="box"></span>Schedule order and timings</li>
+  <li><span class="box"></span>Contact email, phone and social links</li>
+  <li><span class="box"></span>Registration form endpoint, and the school's agreement on where students' details go</li>
+  <li><span class="box"></span>Confirm the COPUOS spelling</li>
+  <li><span class="box"></span>Full committee names, if wanted</li>
+  <li><span class="box"></span>Real quotes, if a Voices section is wanted</li>
+  <li><span class="box"></span>A 1200 × 630 share image</li>
+</ul>
+
+</body>
+</html>
