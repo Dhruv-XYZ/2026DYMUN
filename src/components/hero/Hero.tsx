@@ -11,6 +11,8 @@ import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { useDeviceProfile } from '@/hooks/use-device'
 import { useEffectsReady } from '@/hooks/use-effects-ready'
 
+import { HeroLogo } from './HeroLogo'
+
 const HeroWaves = lazy(() => import('./HeroWaves'))
 
 /**
@@ -86,6 +88,8 @@ export function Hero({ ready }: { ready: boolean }) {
       <div className="relative px-4 md:px-8">
         <HeroWordmark sectionRef={sectionRef} interactive={cursorEffects} active={ready} />
       </div>
+
+      <HeroLogo />
 
       <div className="relative mt-auto grid gap-10 px-5 pt-10 pb-8 md:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-end lg:gap-16">
         {/* Screen readers get one steady sentence instead of a word that keeps changing. */}

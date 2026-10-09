@@ -9,6 +9,10 @@ export const site = {
 
   /** Logo file in /public, for example '/logo.svg'. While empty, the text wordmark shows. */
   logoSrc: '', // TODO: replace with the real logo file
+  /** The school's logo, top right of every page. A shield and the D Y Patil wordmark on a transparent background. */
+  schoolLogoSrc: '/logos/dypis.webp',
+  /** The DYMUN emblem, shown large on the right of the home screen. */
+  munLogoSrc: '/logos/dymun.webp',
 
   tagline:
     'Join us for two days of diplomacy, debate and bold ideas, where the leaders of tomorrow take on the challenges of today.',

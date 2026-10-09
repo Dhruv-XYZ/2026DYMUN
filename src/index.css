@@ -41,6 +41,18 @@
   --animate-glow-spin-reverse: glow-spin 44s linear infinite reverse;
   --animate-glow-breathe: glow-breathe 6s ease-in-out infinite;
   --animate-shimmer: shimmer 1.9s linear infinite;
+  --animate-fade-in: fade-in 0.9s ease-out both;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 
   @keyframes shimmer {
     from {

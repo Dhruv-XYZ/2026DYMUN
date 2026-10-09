@@ -91,14 +91,26 @@ function ShinyNoise() {
   )
 }
 
-/** The wordmark, top left on every page. It inverts against whatever is behind it. */
+/** The wordmark top left and the school's logo top right, on every page. */
 function Header() {
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex px-4 pt-4 lg:px-8 lg:pt-5">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex items-start justify-between px-4 pt-4 lg:px-8 lg:pt-5">
       {/* The wordmark is a solid pill (see Logo), the same at every size. */}
       <Link to="/" aria-label={`${site.name}, home`} className="pointer-events-auto">
         <Logo />
       </Link>
+      {/* The school's logo sits in the same kind of solid pill, so its gold and red read
+          on dark and cream sections alike. */}
+      <span className="inline-flex items-center rounded-full bg-ink px-3.5 py-2 ring-2 ring-orange lg:px-5 lg:py-2.5">
+        <img
+          src={site.schoolLogoSrc}
+          alt={site.school}
+          width={1000}
+          height={326}
+          decoding="async"
+          className="h-6 w-auto lg:h-10"
+        />
+      </span>
     </header>
   )
 }
