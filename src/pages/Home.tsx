@@ -1,9 +1,10 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Hero } from '@/components/hero/Hero'
 import { usePageMeta } from '@/hooks/use-page-meta'
 
-const loadSections = () => import('./HomeSections')
-const HomeSections = lazy(loadSections)
+const HomeSections = lazy(() => import('./HomeSections'))
+
+const WAKE_EVENTS = ['pointerdown', 'wheel', 'scroll', 'keydown', 'touchstart'] as const
 
 /**
  * The landing page. Sections alternate dark and cream:
@@ -12,27 +13,34 @@ const HomeSections = lazy(loadSections)
  * `ready` is false while the preloader is still on screen.
  *
  * The hero is in the first download so it paints quickly. The rest is a second chunk,
- * fetched as soon as the browser is idle after the first paint.
+ * brought in a few seconds after load, or at once if the visitor scrolls, touches or
+ * presses a key first (and a link such as /#register counts too).
  */
 export default function Home({ ready = true }: { ready?: boolean }) {
   usePageMeta('home')
+  const [more, setMore] = useState(() => window.location.hash.length > 1)
 
   useEffect(() => {
-    const start = () => void loadSections()
-    if ('requestIdleCallback' in window) {
-      const id = window.requestIdleCallback(start, { timeout: 2500 })
-      return () => window.cancelIdleCallback(id)
+    if (more) return
+    const wake = () => setMore(true)
+    const timer = window.setTimeout(wake, 3500)
+    for (const event of WAKE_EVENTS) window.addEventListener(event, wake, { passive: true, once: true })
+    return () => {
+      window.clearTimeout(timer)
+      for (const event of WAKE_EVENTS) window.removeEventListener(event, wake)
     }
-    const id = setTimeout(start, 1200)
-    return () => clearTimeout(id)
-  }, [])
+  }, [more])
 
   return (
     <>
       <Hero ready={ready} />
-      <Suspense fallback={<div aria-hidden="true" className="min-h-[100svh]" />}>
-        <HomeSections />
-      </Suspense>
+      {more ? (
+        <Suspense fallback={<div aria-hidden="true" className="min-h-[100svh]" />}>
+          <HomeSections />
+        </Suspense>
+      ) : (
+        <div aria-hidden="true" className="min-h-[100svh]" />
+      )}
     </>
   )
 }
