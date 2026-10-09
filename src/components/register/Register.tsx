@@ -1,14 +1,19 @@
 import { lazy, Suspense } from 'react'
+import { ChevronDown } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
 import { Section, SectionHeading } from '@/components/Section'
 import { enquiryForm } from '@/data/enquiry.js'
-import { registrationTiers } from '@/data/registration.js'
+import { registrationButton, registrationTiers } from '@/data/registration.js'
 import { sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { useDeviceProfile } from '@/hooks/use-device'
 import { EnquiryForm } from './EnquiryForm'
 
 const CoverWord = lazy(() => import('./CoverWord'))
+
+/** The orange pill used for the registration button inside each dropdown. */
+const registerButtonClass =
+  'inline-flex h-14 shrink-0 items-center justify-center rounded-full bg-orange px-10 text-[0.8rem] font-semibold tracking-[0.2em] text-ink uppercase transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]'
 
 /**
  * The closing call to action: the headline, three open rows for the ways to attend
@@ -40,25 +45,42 @@ export function Register() {
         }
       />
 
-      <ul className="border-b border-line">
+      {/* Two rows, Executive Board and Delegate. Each opens a dropdown with the
+          registration button, which links to `registerUrl` in src/data/registration.js. */}
+      <div className="border-b border-line">
         {registrationTiers.map((tier, index) => (
-          <li
+          <details
             key={tier.id}
-            tabIndex={0}
-            className={`group px-5 py-7 md:px-10 md:py-9 ${index > 0 ? 'border-t border-line' : ''}`}
+            className={`group ${index > 0 ? 'border-t border-line' : ''}`}
           >
-            <div className="flex items-baseline justify-between gap-6">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-6 px-5 py-7 marker:hidden md:px-10 md:py-9 [&::-webkit-details-marker]:hidden">
               <span className="display-row">{tier.name}</span>
-              <span className="display-row text-outline">{tier.fee}</span>
+              <span className="flex items-center gap-4 md:gap-8">
+                <span className="display-row text-outline">{tier.fee}</span>
+                <ChevronDown
+                  aria-hidden="true"
+                  className="h-8 w-8 shrink-0 text-tone transition-transform duration-300 group-open:rotate-180 md:h-12 md:w-12"
+                  strokeWidth={2.5}
+                />
+              </span>
+            </summary>
+
+            <div className="animate-in fade-in slide-in-from-top-2 flex flex-col items-start gap-6 px-5 pb-9 duration-300 md:flex-row md:items-center md:justify-between md:px-10 md:pb-12">
+              <p className="max-w-[44ch] text-lg text-fg-muted">{tier.details}</p>
+
+              {tier.registerUrl ? (
+                <a href={tier.registerUrl} target="_blank" rel="noopener noreferrer" className={registerButtonClass}>
+                  {registrationButton}
+                </a>
+              ) : (
+                <button type="button" aria-disabled="true" className={registerButtonClass}>
+                  {registrationButton}
+                </button>
+              )}
             </div>
-            <div className="reveal-row">
-              <p className="overflow-hidden text-fg-muted">
-                <span className="block pt-3">{tier.details}</span>
-              </p>
-            </div>
-          </li>
+          </details>
         ))}
-      </ul>
+      </div>
 
       <div className="grid gap-10 px-5 pt-20 md:px-10 md:pt-28 lg:grid-cols-[minmax(0,0.5fr)_minmax(0,1fr)]">
         <Reveal>

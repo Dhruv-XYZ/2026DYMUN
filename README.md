@@ -28,7 +28,7 @@ component to change wording.
 | Committees and agendas | `src/data/committees.js` |
 | Schedule | `src/data/schedule.js` |
 | Secretariat | `src/data/team.js` |
-| Registration rows (Delegate, Delegation, Observer) and fees | `src/data/registration.js` |
+| Registration rows (Executive Board, Delegate), fees, and the registration button links | `src/data/registration.js` |
 | Enquiry form: Web3Forms key, wording, spam limits | `src/data/enquiry.js` |
 | Participating schools (not shown while empty) | `src/data/schools.js` |
 
@@ -66,7 +66,7 @@ and optional phone numbers and schools, so agree with the school where that data
 - [ ] Conference date (`site.date`)
 - [ ] Venue confirmation (`site.venue`)
 - [ ] Logo file (`site.logoSrc`) and favicon
-- [ ] Fees and what each covers (`registrationTiers`)
+- [ ] Fees and what each covers, and the Executive Board and Delegate registration links (`registrationTiers` in `src/data/registration.js`)
 - [ ] Photos (`public/gallery/`)
 - [ ] Secretariat names, roles and photos (`team.js`)
 - [ ] Schedule: order of events and timings (`schedule.js`)

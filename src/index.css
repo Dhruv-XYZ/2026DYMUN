@@ -236,28 +236,6 @@
   text-transform: uppercase;
 }
 
-/* A line that opens under a row on hover or keyboard focus. Where there is no hover
-   (touch screens) it is simply always open. */
-@layer components {
-  .reveal-row {
-    display: grid;
-    grid-template-rows: 1fr;
-    transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  @media (hover: hover) {
-    .reveal-row {
-      grid-template-rows: 0fr;
-    }
-
-    .group:hover > .reveal-row,
-    .group:focus-visible > .reveal-row,
-    .group:focus-within > .reveal-row {
-      grid-template-rows: 1fr;
-    }
-  }
-}
-
 /* Tiny, wide-tracked labels set against the giant headlines. */
 @utility label {
   font-size: 0.75rem;
