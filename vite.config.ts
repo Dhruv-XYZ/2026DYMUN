@@ -34,11 +34,24 @@ function startAfterFirstPaint(): Plugin {
     apply: 'build',
     enforce: 'post',
     transformIndexHtml(html) {
-      return html.replace(
-        /<script type="module"([^>]*) src="([^"]+)"([^>]*)><\/script>/,
-        (_match, _before, src) =>
-          `<link rel="modulepreload" crossorigin href="${src}"><script>requestAnimationFrame(function(){setTimeout(function(){var s=document.createElement('script');s.type='module';s.crossOrigin='';s.src='${src}';document.head.appendChild(s)},0)})</script>`,
+      // The page's own stylesheet no longer blocks the first paint (the shell is styled
+      // inline); the app script waits for both that stylesheet and the first paint.
+      let out = html.replace(
+        /<link rel="stylesheet"([^>]*?) href="([^"]+\.css)"([^>]*)>/,
+        (_m, before, href, after) =>
+          `<link rel="stylesheet" id="app-css"${before} href="${href}"${after} media="print" onload="this.media='all'">` +
+          `<noscript><link rel="stylesheet" href="${href}"></noscript>`,
       )
+      out = out.replace(
+        /<script type="module"([^>]*) src="([^"]+)"([^>]*)><\/script>/,
+        (_m, _before, src) =>
+          `<link rel="modulepreload" crossorigin href="${src}"><script>(function(){` +
+          `var go=function(){var s=document.createElement('script');s.type='module';s.crossOrigin='';s.src='${src}';document.head.appendChild(s)};` +
+          `var css=document.getElementById('app-css');` +
+          `var ready=function(){if(css&&!css.sheet){css.addEventListener('load',function(){css.media='all';go()})}else{go()}};` +
+          `requestAnimationFrame(function(){setTimeout(ready,0)})})()</script>`,
+      )
+      return out
     },
   }
 }
