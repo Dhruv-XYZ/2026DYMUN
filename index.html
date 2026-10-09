@@ -49,10 +49,22 @@
       html {
         background: #0a0a0a;
       }
+      /* Painted straight from the HTML, so something is on screen before the script runs.
+         React replaces it as soon as the page mounts. */
+      #shell {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font: 800 clamp(2.5rem, 12vw, 6rem) / 1 system-ui, sans-serif;
+        letter-spacing: -0.03em;
+        color: #e6c877;
+      }
     </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div id="shell">DYMUN '26</div></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

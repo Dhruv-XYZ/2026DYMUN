@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { MaskedLines } from '@/components/Reveal'
+import { OnScreen } from '@/components/OnScreen'
 import { WavyBackground } from '@/components/ui/wavy-background'
 import { sections } from '@/data/site.js'
 import { useDeviceProfile } from '@/hooks/use-device'
@@ -50,9 +51,11 @@ export function Interlude() {
 
         <div className="mt-10">
           {sparkles && (
-            <Suspense fallback={<div className="h-24" />}>
-              <SparkleStrip />
-            </Suspense>
+            <OnScreen className="block h-24" fallback={null}>
+              <Suspense fallback={<div className="h-24" />}>
+                <SparkleStrip />
+              </Suspense>
+            </OnScreen>
           )}
         </div>
       </WavyBackground>

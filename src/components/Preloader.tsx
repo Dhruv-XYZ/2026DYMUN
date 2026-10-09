@@ -5,9 +5,9 @@ import { LoaderOne } from '@/components/ui/loader'
 import { site } from '@/data/site.js'
 
 /** Shortest time on screen, so it never just flashes. */
-const MIN_MS = 800
+const MIN_MS = 500
 /** Longest time on screen, whether or not the fonts have arrived. */
-const MAX_MS = 1400
+const MAX_MS = 900
 
 /**
  * Full-screen loader shown before the hero. It leaves once the fonts are ready,

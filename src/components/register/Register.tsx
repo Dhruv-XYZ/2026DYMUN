@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { ChevronDown } from 'lucide-react'
+import { OnScreen } from '@/components/OnScreen'
 import { Reveal } from '@/components/Reveal'
 import { Section, SectionHeading } from '@/components/Section'
 import { enquiryForm } from '@/data/enquiry.js'
@@ -36,9 +37,11 @@ export function Register() {
         lead={copy.lead}
         accent={
           warp ? (
-            <Suspense fallback={copy.accent}>
-              <CoverWord>{copy.accent}</CoverWord>
-            </Suspense>
+            <OnScreen fallback={copy.accent}>
+              <Suspense fallback={copy.accent}>
+                <CoverWord>{copy.accent}</CoverWord>
+              </Suspense>
+            </OnScreen>
           ) : (
             copy.accent
           )
