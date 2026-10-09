@@ -29,7 +29,7 @@ interface TextHoverEffectProps {
 /**
  * Aceternity "Text Hover Effect": outlined text whose stroke lights up under the cursor.
  * Changes for DYMUN: gold outline that is always visible, a gold-light to orange
- * highlight, Inter 900, a 1px stroke at any size, a viewBox measured to the text so it
+ * highlight, display font 900, a 1px stroke at any size, a viewBox measured to the text so it
  * spans its container, and unique SVG ids so it can appear more than once on a page.
  */
 export const TextHoverEffect = ({
@@ -81,7 +81,7 @@ export const TextHoverEffect = ({
     });
   }, [cursor]);
 
-  // Inter's letter shapes overlap inside, and a plain stroke would draw those seams.
+  // The display font's letter shapes overlap inside, and a plain stroke would draw those seams.
   // So the stroke is doubled and painted first, then the fill covers its inner half
   // and the seams, which leaves a clean outline of the stated width.
   const textProps = {
@@ -90,7 +90,7 @@ export const TextHoverEffect = ({
     textAnchor: "middle" as const,
     strokeWidth: 2,
     vectorEffect: "non-scaling-stroke" as const,
-    className: "font-sans font-black",
+    className: "font-display font-black",
   };
   const textStyle = {
     fontSize: FONT_SIZE,

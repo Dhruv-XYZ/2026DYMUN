@@ -30,8 +30,9 @@
   --color-black: #000;
   --color-white: #fff;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Bricolage Grotesque", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
 
   --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -211,7 +212,7 @@
 
 /* The biggest headline size. Fills most of the screen width. */
 @utility display {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-weight: 900;
   font-size: clamp(3.5rem, 12vw, 13rem);
   line-height: 0.86;
@@ -221,7 +222,7 @@
 
 /* The hero headline: three lines that still fit one screen. */
 @utility display-hero {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-weight: 900;
   font-size: clamp(3.25rem, calc(8.4vw + 1.25rem), 10rem);
   line-height: 0.88;
@@ -231,7 +232,7 @@
 
 /* Section titles. */
 @utility display-section {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-weight: 900;
   font-size: clamp(2.75rem, 9.5vw, 10rem);
   line-height: 0.88;
@@ -241,7 +242,7 @@
 
 /* Names and row titles. */
 @utility display-sm {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-weight: 800;
   font-size: clamp(2rem, 5.2vw, 5rem);
   line-height: 0.92;
@@ -251,7 +252,7 @@
 
 /* The registration rows: a name and a fee, each as large as it will go. */
 @utility display-row {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-weight: 900;
   font-size: clamp(2.25rem, 8.5vw, 9rem);
   line-height: 0.9;
@@ -271,7 +272,7 @@
 /*
  * Outline type: a 1px accent line around letters that look empty.
  *
- * Inter is a variable font whose letter shapes overlap inside (the stem and bowl of a
+ * The display font is a variable font whose letter shapes overlap inside (the stem and bowl of a
  * D, the strokes of an M). A plain text stroke draws those hidden seams. So the stroke
  * is 2px, painted first, and the fill is painted over it in the section's own
  * background colour. That covers the inner half of the stroke and every seam, leaving
