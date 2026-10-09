@@ -1,10 +1,131 @@
 import { existsSync, readdirSync } from 'node:fs'
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, pathToFileURL, URL } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig, type Plugin } from 'vite'
 
 const fromRoot = (path: string) => fileURLToPath(new URL(path, import.meta.url))
+
+const escapeHtml = (text: string) =>
+  text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+/**
+ * Search engine files, all generated from src/data/site.js so nothing is typed twice.
+ *
+ * - Always: fills the title and description placeholders in index.html from `seo.home`.
+ * - When the site's address is known: adds the canonical link, og:url, the share image,
+ *   the JSON-LD structured data and a Google Search Console verification tag, and writes
+ *   sitemap.xml and robots.txt (with its Sitemap line) into the build.
+ *
+ * The address is read from SITE_URL, or from VERCEL_PROJECT_PRODUCTION_URL, which Vercel
+ * sets during a production build. Without either, no sitemap is written, because a sitemap
+ * with the wrong address would do harm, and robots.txt simply allows everything.
+ * GOOGLE_SITE_VERIFICATION holds the token Search Console gives you.
+ */
+async function seoFiles(): Promise<Plugin> {
+  const { seo, nav, site } = (await import(pathToFileURL(fromRoot('./src/data/site.js')).href)) as {
+    seo: Record<string, { path: string; title: string; description: string }>
+    nav: { id: string; path?: string }[]
+    site: { name: string; school: string; city: string }
+  }
+
+  const raw =
+    process.env.SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '')
+  // Always https, never a trailing slash.
+  const origin = raw
+    ? raw.replace(/^http:\/\//, 'https://').replace(/^(?!https:\/\/)/, 'https://').replace(/\/+$/, '')
+    : ''
+  const verification = process.env.GOOGLE_SITE_VERIFICATION ?? ''
+
+  // Pages that belong in the sitemap: the home page, every nav page, and /contact.
+  const paths = ['/', ...nav.flatMap((item) => (item.path ? [item.path] : [])), seo.contact.path]
+  const pages = [...new Set(paths)]
+
+  const structuredData = origin
+    ? JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebSite',
+            '@id': `${origin}/#website`,
+            url: `${origin}/`,
+            name: site.name,
+            description: seo.home.description,
+            inLanguage: 'en',
+          },
+          {
+            '@type': 'Organization',
+            '@id': `${origin}/#organization`,
+            name: site.name,
+            url: `${origin}/`,
+            image: `${origin}/og.png`,
+            parentOrganization: {
+              '@type': 'EducationalOrganization',
+              name: site.school,
+              address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: 'IN' },
+            },
+          },
+        ],
+      })
+    : ''
+
+  const robots = `User-agent: *\nAllow: /\n${origin ? `\nSitemap: ${origin}/sitemap.xml\n` : ''}`
+
+  return {
+    name: 'seo-files',
+    // In `npm run dev` there is no build, so answer /robots.txt directly. Without this the
+    // dev server would hand back the app's HTML page for it.
+    configureServer(server) {
+      server.middlewares.use('/robots.txt', (_request, response) => {
+        response.setHeader('Content-Type', 'text/plain; charset=utf-8')
+        response.end(robots)
+      })
+    },
+    transformIndexHtml(html) {
+      const filled = html
+        .replaceAll('%SEO_TITLE%', escapeHtml(seo.home.title))
+        .replaceAll('%SEO_DESCRIPTION%', escapeHtml(seo.home.description))
+
+      const tags: { tag: string; attrs?: Record<string, string>; children?: string; injectTo: 'head' }[] = []
+      if (verification) {
+        tags.push({ tag: 'meta', attrs: { name: 'google-site-verification', content: verification }, injectTo: 'head' })
+      }
+      if (origin) {
+        tags.push(
+          { tag: 'link', attrs: { rel: 'canonical', href: `${origin}/` }, injectTo: 'head' },
+          { tag: 'meta', attrs: { property: 'og:url', content: `${origin}/` }, injectTo: 'head' },
+          { tag: 'meta', attrs: { property: 'og:image', content: `${origin}/og.png` }, injectTo: 'head' },
+          { tag: 'meta', attrs: { name: 'twitter:image', content: `${origin}/og.png` }, injectTo: 'head' },
+          { tag: 'script', attrs: { type: 'application/ld+json' }, children: structuredData, injectTo: 'head' },
+        )
+      }
+      return { html: filled, tags }
+    },
+    generateBundle() {
+      const today = new Date().toISOString().slice(0, 10)
+      if (origin) {
+        const urls = pages
+          .map((path) => `  <url>\n    <loc>${origin}${path}</loc>\n    <lastmod>${today}</lastmod>\n  </url>`)
+          .join('\n')
+        this.emitFile({
+          type: 'asset',
+          fileName: 'sitemap.xml',
+          source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
+        })
+      } else {
+        this.warn(
+          'SEO: no SITE_URL or VERCEL_PROJECT_PRODUCTION_URL, so no sitemap.xml, canonical, og:image or structured data were written.',
+        )
+      }
+      this.emitFile({
+        type: 'asset',
+        fileName: 'robots.txt',
+        source: robots,
+      })
+    },
+  }
+}
 
 /**
  * Exposes the images in public/gallery as `virtual:gallery`, so adding photos to the
@@ -42,8 +163,8 @@ function galleryManifest(): Plugin {
 }
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss(), galleryManifest()],
+export default defineConfig(async () => ({
+  plugins: [react(), tailwindcss(), galleryManifest(), await seoFiles()],
   resolve: {
     alias: { '@': fromRoot('./src') },
     dedupe: ['react', 'react-dom'],
@@ -68,4 +189,4 @@ export default defineConfig({
       '@tsparticles/engine',
     ],
   },
-})
+}))

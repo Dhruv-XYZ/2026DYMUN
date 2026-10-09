@@ -2,13 +2,13 @@ import { ArrowUpRight } from 'lucide-react'
 import { Section, SectionHeading } from '@/components/Section'
 import { pages } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
-import { usePageTitle } from '@/hooks/use-page-title'
+import { usePageMeta } from '@/hooks/use-page-meta'
 
 /** Shown for any address that is not a page of the site. */
 export default function NotFound() {
   const copy = pages.notFound
   const navigate = useAnchorNavigate()
-  usePageTitle(`${copy.lead} ${copy.accent}`)
+  usePageMeta('notFound', { noindex: true })
 
   return (
     <Section tone="dark" labelledBy="not-found-title" className="min-h-[100svh] pb-24 md:pb-36">

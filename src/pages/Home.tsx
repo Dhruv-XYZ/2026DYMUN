@@ -6,6 +6,7 @@ import { Interlude } from '@/components/interlude/Interlude'
 import { Register } from '@/components/register/Register'
 import { Schedule } from '@/components/schedule/Schedule'
 import { Team } from '@/components/team/Team'
+import { usePageMeta } from '@/hooks/use-page-meta'
 
 /**
  * The landing page. Sections alternate dark and cream:
@@ -14,6 +15,8 @@ import { Team } from '@/components/team/Team'
  * `ready` is false while the preloader is still on screen.
  */
 export default function Home({ ready = true }: { ready?: boolean }) {
+  usePageMeta('home')
+
   return (
     <>
       <Hero ready={ready} />

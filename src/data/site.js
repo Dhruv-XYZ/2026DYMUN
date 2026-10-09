@@ -33,6 +33,50 @@ export const site = {
   },
 }
 
+/**
+ * What search engines and link previews show for each page.
+ * Titles aim for 50 to 60 characters, descriptions for 120 to 160. `path` is the page's
+ * address; the site's own domain is added automatically. Every page has its own title
+ * and description so no two pages look like duplicates.
+ */
+export const seo = {
+  home: {
+    path: '/',
+    title: "DYMUN '26 | D Y Patil International School, Navi Mumbai",
+    description:
+      'DYMUN 2026 is a two-day Model UN conference at D Y Patil International School, Navi Mumbai, for Grades 3 to 12: 17 committees, from Primary to High School.',
+  },
+  committees: {
+    path: '/committees',
+    title: "All 17 Committees and Agendas | DYMUN '26 Model UN",
+    description:
+      'Every DYMUN 2026 committee and its agenda: Primary (Grades 3-5), Middle School (Grades 6-8) and High School (Grades 9-12), at D Y Patil International School.',
+  },
+  team: {
+    path: '/team',
+    title: "The Secretariat | DYMUN '26 Model UN, Navi Mumbai",
+    description:
+      'Meet the secretariat behind DYMUN 2026, the two-day Model UN conference at D Y Patil International School, Navi Mumbai, for students in Grades 3 to 12.',
+  },
+  gallery: {
+    path: '/gallery',
+    title: "Gallery | DYMUN '26 Model UN Conference, Navi Mumbai",
+    description:
+      'Photos from DYMUN, the Model UN conference at D Y Patil International School, Navi Mumbai: delegates, committees and ceremonies.',
+  },
+  contact: {
+    path: '/contact',
+    title: "Contact the DYMUN '26 Team | Model UN, Navi Mumbai",
+    description:
+      'How to reach the DYMUN 2026 team at D Y Patil International School, Navi Mumbai, for questions about committees, registration and the conference.',
+  },
+  notFound: {
+    path: '/404',
+    title: "Page not found | DYMUN '26",
+    description: 'This page does not exist. Go back to the DYMUN 2026 home page.',
+  },
+}
+
 /** Small words in the footer. The "pending" lines show until contact details are filled in above. */
 export const footer = {
   menu: 'Explore',

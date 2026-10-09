@@ -5,28 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0A0A0A" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>DYMUN '26 | D Y Patil International School, Navi Mumbai</title>
-    <meta
-      name="description"
-      content="Join us for two days of diplomacy, debate and bold ideas, where the leaders of tomorrow take on the challenges of today."
-    />
+
+    <!-- The title, description and share text come from `seo.home` in src/data/site.js.
+         The build fills these placeholders in, and also adds the canonical address, the
+         share image, the structured data and the sitemap once the site's domain is known
+         (see seoFiles in vite.config.ts). -->
+    <title>%SEO_TITLE%</title>
+    <meta name="description" content="%SEO_DESCRIPTION%" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="DYMUN '26" />
-    <meta property="og:title" content="DYMUN '26 | D Y Patil International School, Navi Mumbai" />
-    <meta
-      property="og:description"
-      content="Join us for two days of diplomacy, debate and bold ideas, where the leaders of tomorrow take on the challenges of today."
-    />
-    <meta name="twitter:card" content="summary" />
-    <!-- TODO: replace. Add a 1200x630 share image at /public/og.png, then add
-         <meta property="og:image" content="/og.png" /> here. -->
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:title" content="%SEO_TITLE%" />
+    <meta property="og:description" content="%SEO_DESCRIPTION%" />
+    <meta property="og:image:alt" content="DYMUN '26, D Y Patil International School, Navi Mumbai" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="%SEO_TITLE%" />
+    <meta name="twitter:description" content="%SEO_DESCRIPTION%" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fonts load without blocking the first paint: preload, then switch the stylesheet on. -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&family=Instrument+Serif:ital@0;1&display=swap"
+    />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&family=Instrument+Serif:ital@0;1&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&family=Instrument+Serif:ital@0;1&display=swap"
+      />
+    </noscript>
     <!-- Keeps the first paint dark while the stylesheet and script load. -->
     <style>
       html {

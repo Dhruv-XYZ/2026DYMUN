@@ -1,12 +1,12 @@
 import { Section, SectionHeading } from '@/components/Section'
 import { sections } from '@/data/site.js'
-import { usePageTitle } from '@/hooks/use-page-title'
+import { usePageMeta } from '@/hooks/use-page-meta'
 import { galleryAlt, galleryTiles } from '@/lib/gallery'
 
 /** /gallery: every photo, flat and still, in columns. */
 export default function GalleryPage() {
   const copy = sections.gallery
-  usePageTitle(copy.label)
+  usePageMeta('gallery')
 
   return (
     <Section tone="dark" labelledBy="gallery-page-title" className="pb-24 md:pb-36">

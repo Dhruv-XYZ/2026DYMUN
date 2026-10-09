@@ -1,6 +1,6 @@
 import { Section, SectionHeading } from '@/components/Section'
 import { pages, sections, site } from '@/data/site.js'
-import { usePageTitle } from '@/hooks/use-page-title'
+import { usePageMeta } from '@/hooks/use-page-meta'
 
 const valueClass = 'display-sm break-words text-right'
 
@@ -11,7 +11,7 @@ const valueClass = 'display-sm break-words text-right'
 export default function ContactPage() {
   const copy = sections.contact
   const words = pages.contact
-  usePageTitle(copy.label)
+  usePageMeta('contact')
 
   const rows = [
     {

@@ -4,6 +4,7 @@ import { Section, SectionHeading } from '@/components/Section'
 import { enquiryForm } from '@/data/enquiry.js'
 import { registrationTiers } from '@/data/registration.js'
 import { sections } from '@/data/site.js'
+import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { useDeviceProfile } from '@/hooks/use-device'
 import { EnquiryForm } from './EnquiryForm'
 
@@ -15,6 +16,7 @@ const CoverWord = lazy(() => import('./CoverWord'))
  */
 export function Register() {
   const { touch, reducedMotion, lowPower } = useDeviceProfile()
+  const navigate = useAnchorNavigate()
   const copy = sections.register
 
   // The warp-speed word needs a cursor to hover with, and is skipped where it would lag.
@@ -62,6 +64,21 @@ export function Register() {
         <Reveal>
           <p className="text-2xl font-extrabold tracking-[-0.02em] uppercase">{enquiryForm.title}</p>
           <p className="mt-4 max-w-[28ch] text-fg-muted">{enquiryForm.intro}</p>
+          <a
+            href="/committees"
+            onClick={navigate}
+            className="mt-6 inline-block text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors hover:text-orange hover:decoration-orange"
+          >
+            Read every committee agenda
+          </a>
+          <br />
+          <a
+            href="/contact"
+            onClick={navigate}
+            className="mt-3 inline-block text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors hover:text-orange hover:decoration-orange"
+          >
+            Contact details
+          </a>
         </Reveal>
         <EnquiryForm />
       </div>

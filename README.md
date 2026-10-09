@@ -75,7 +75,8 @@ and optional phone numbers and schools, so agree with the school where that data
 - [ ] Confirm the spelling COPUOS (the poster prints "COPOUS")
 - [ ] Full committee names, if you want them shown beside the abbreviations
 - [ ] Real quotes from past delegates or chairs, if you want a Voices section
-- [ ] A 1200 x 630 share image (`public/og.png`, then add the tag noted in `index.html`)
+- [ ] A better share image if wanted (a generated one is at `public/og.png`)
+- [ ] Domain name, and the Google Search Console token (see SEO below)
 
 ## How it is put together
 
@@ -104,6 +105,52 @@ in the section's background colour, which leaves a clean outline.
 low-power devices and the reduced-motion setting. On those the 3D globe becomes a still
 SVG, the lined "DYMUN" word becomes plain outline type, cursor effects are off, the
 committees are a simple stacked list and looping animation stops.
+
+## SEO
+
+What is in place, and what only you can do.
+
+**Done in code** (all generated from `seo` in `src/data/site.js`, so wording lives in one place):
+
+- A unique title (50 to 55 characters) and description (about 150) for every page, a single
+  `h1` per page with no skipped heading levels, and a canonical address on each page.
+- Share tags and a 1200 x 630 share image (`public/og.png`), `twitter:card` set to large image.
+- `sitemap.xml` and `robots.txt` written at build time, plus JSON-LD structured data
+  (`WebSite` and `Organization`). The address used is `SITE_URL`, or on Vercel the production
+  address Vercel provides automatically. With neither, no sitemap or canonical is written
+  rather than a wrong one, and the build prints a warning.
+- No page is `noindex`, except the not-found page, which should be. Unknown addresses return
+  the app with a 200 status on a single-page site, so that tag keeps them out of search.
+- HTTPS enforced with an HSTS header, plus basic security headers (`vercel.json`). Vercel also
+  redirects http to https by itself.
+- Every image has `alt` text (decorative placeholders have an empty one on purpose), the
+  globe has a spoken label, and links between pages use descriptive text.
+- Internal links: Home to Committees, Gallery and Team pages; Register to Committees and
+  Contact; the footer links to every page.
+
+**Still to do once the site is live**
+
+1. **Set the domain.** On Vercel, add the custom domain; the sitemap and canonical use it
+   automatically on the next build. Elsewhere, build with `SITE_URL=https://your-domain`.
+2. **Verify Google Search Console.** Add the site at search.google.com/search-console, choose
+   the "HTML tag" method, copy the token from the tag it shows, and set it as the
+   `GOOGLE_SITE_VERIFICATION` environment variable. Redeploy, press Verify, then submit
+   `https://your-domain/sitemap.xml`. Do the same in Bing Webmaster Tools if you like.
+3. **Event structured data.** Once the dates are confirmed, add an `Event` block (name, start
+   and end date, venue, organiser) in `seoFiles` in `vite.config.ts`. It is left out now because
+   Google needs a real start date and none is known yet.
+
+**Backlink strategy.** For a school conference the best links come from people who already
+know it exists, so ask for them directly and keep each one specific:
+
+- The school's own website: a link to the DYMUN site from the main page and the news page.
+- Participating schools: link from their newsletters and event pages when they register.
+- MUN directories and calendars: submit the conference to the Model UN listings used in India.
+- Local press and school-news pages: send the post-event photos and results with the link.
+- Student and alumni social profiles: the Instagram and LinkedIn links in `site.js` should point
+  back to the site, and the site should link out to them once they exist.
+
+Avoid bought or swapped links. They do harm.
 
 ## Aceternity components
 

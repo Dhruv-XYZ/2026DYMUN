@@ -3,7 +3,7 @@ import { Reveal } from '@/components/Reveal'
 import { Section, SectionHeading } from '@/components/Section'
 import { pages, sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
-import { usePageTitle } from '@/hooks/use-page-title'
+import { usePageMeta } from '@/hooks/use-page-meta'
 import { committeeCount, groups } from '@/lib/committees'
 
 /**
@@ -13,7 +13,7 @@ import { committeeCount, groups } from '@/lib/committees'
 export default function CommitteesPage() {
   const copy = sections.committees
   const navigate = useAnchorNavigate()
-  usePageTitle(copy.label)
+  usePageMeta('committees')
 
   return (
     <Section tone="dark" labelledBy="committees-page-title" className="pb-24 md:pb-36">

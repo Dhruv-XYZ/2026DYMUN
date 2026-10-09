@@ -96,6 +96,8 @@ interface Globe3DProps {
   className?: string;
   /** false pauses rendering */
   active?: boolean;
+  /** What the globe is, for screen readers (and search engines reading the page). */
+  ariaLabel?: string;
 }
 
 // ============================================================================
@@ -639,6 +641,7 @@ export function Globe3D({
   config,
   className,
   active = true,
+  ariaLabel = "Interactive globe",
 }: Globe3DProps) {
   const mergedConfig = useMemo(
     () => ({ ...defaultConfig, ...config }),
@@ -646,7 +649,11 @@ export function Globe3D({
   );
 
   return (
-    <div className={cn("relative h-[500px] w-full", className)}>
+    <div
+      role="img"
+      aria-label={ariaLabel}
+      className={cn("relative h-[500px] w-full", className)}
+    >
       <Canvas
         frameloop={active ? "always" : "never"}
         gl={{

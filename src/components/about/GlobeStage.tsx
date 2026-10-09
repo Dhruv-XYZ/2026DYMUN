@@ -67,6 +67,7 @@ export default function GlobeStage({ active, still }: { active: boolean; still: 
   return (
     <Globe3D
       className="h-full"
+      ariaLabel="Interactive globe centred on Navi Mumbai, India, where DYMUN is held. Drag to spin it."
       active={active}
       markers={MARKERS}
       arcs={ARCS}
