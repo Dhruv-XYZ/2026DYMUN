@@ -39,6 +39,16 @@
   --animate-glow-spin: glow-spin 36s linear infinite;
   --animate-glow-spin-reverse: glow-spin 44s linear infinite reverse;
   --animate-glow-breathe: glow-breathe 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.9s linear infinite;
+
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
 
   @keyframes glow-breathe {
     0%,

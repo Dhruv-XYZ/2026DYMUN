@@ -3,9 +3,11 @@ import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 /**
- * Aceternity "3D Marquee": a tilted wall of image tiles whose columns drift up and down.
- * Changed for DYMUN: gold hairlines and rings, square corners, no rounded frame, and
- * `paused` / `speed` so it can stand still or slow down.
+ * Aceternity "3D Marquee": a tilted wall of image tiles whose columns keep moving.
+ * Changed for DYMUN: gold hairlines and rings, square corners, no rounded frame,
+ * `paused` / `speed` so it can stand still or change pace, and a continuous loop with
+ * neighbouring columns running in opposite directions (the original only crept back
+ * and forth over 200 px).
  */
 export const ThreeDMarquee = ({
   images,
@@ -44,22 +46,32 @@ export const ThreeDMarquee = ({
             }}
             className="relative top-96 right-[50%] grid size-full origin-top-left grid-cols-4 gap-8 transform-3d"
           >
-            {chunks.map((subarray, colIndex) => (
+            {chunks.map((subarray, colIndex) => {
+              // Neighbouring columns run in opposite directions, forever. Each column
+              // shows its images twice, one after the other, and slides exactly one copy's
+              // height, so the loop has no visible jump.
+              const up = colIndex % 2 === 0;
+              const seconds = Math.max(10, subarray.length * 2.8) / Math.max(speed, 0.1);
+              return (
               <motion.div
+                initial={{ y: up ? "0%" : "-50%" }}
                 animate={
-                  paused ? undefined : { y: colIndex % 2 === 0 ? 100 : -100 }
+                  paused ? undefined : { y: up ? ["0%", "-50%"] : ["-50%", "0%"] }
                 }
-                transition={{
-                  duration: (colIndex % 2 === 0 ? 10 : 15) / Math.max(speed, 0.1),
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                }}
+                transition={{ duration: seconds, repeat: Infinity, ease: "linear" }}
                 key={colIndex + "marquee"}
-                className="flex flex-col items-start gap-8"
+                className="flex flex-col items-start gap-8 pb-8"
               >
                 <GridLineVertical className="-left-4" offset="80px" />
-                {subarray.map((image, imageIndex) => (
-                  <div className="relative" key={imageIndex + image}>
+                {[...subarray, ...subarray].map((image, position) => {
+                  const imageIndex = position % subarray.length;
+                  const isCopy = position >= subarray.length;
+                  return (
+                  <div
+                    className="relative"
+                    key={position + image}
+                    aria-hidden={isCopy || undefined}
+                  >
                     <GridLineHorizontal className="-top-4" offset="20px" />
                     <motion.img
                       whileHover={{
@@ -71,7 +83,7 @@ export const ThreeDMarquee = ({
                       }}
                       key={imageIndex + image}
                       src={image}
-                      alt={getAlt ? getAlt(colIndex * chunkSize + imageIndex) : ""}
+                      alt={getAlt && !isCopy ? getAlt(colIndex * chunkSize + imageIndex) : ""}
                       loading="lazy"
                       decoding="async"
                       className="aspect-[970/700] object-cover ring ring-gold/30"
@@ -79,9 +91,11 @@ export const ThreeDMarquee = ({
                       height={700}
                     />
                   </div>
-                ))}
+                  );
+                })}
               </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

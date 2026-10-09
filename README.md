@@ -27,7 +27,7 @@ component to change wording.
 | Navigation, hero words, section headings and short copy | `src/data/site.js` (`nav`, `hero`, `sections`, `pages`, `footer`) |
 | Committees and agendas | `src/data/committees.js` |
 | Schedule | `src/data/schedule.js` |
-| Secretariat | `src/data/team.js` |
+| Secretariat (name, role, photo, bio; shown in the hover card, with a skeleton for anything missing) | `src/data/team.js` |
 | Registration rows (Executive Board, Delegate), fees, and the registration button links | `src/data/registration.js` |
 | Enquiry form: Web3Forms key, wording, spam limits | `src/data/enquiry.js` |
 | Participating schools (not shown while empty) | `src/data/schools.js` |
@@ -169,8 +169,8 @@ those changes.
 | 3d-globe, canvas-text | About |
 | sticky-scroll-reveal | Committees |
 | timeline | Schedule |
-| 3d-marquee | Gallery |
-| focus-cards | Team |
+| 3d-marquee | Gallery (columns loop endlessly, neighbours in opposite directions) |
+| focus-cards, tooltip-card | Team (the hover card follows the cursor) |
 | stateful-button, cover | Register |
 | noise-background | Texture of the cream sections |
 | vortex | A very faint field of orange and gold streaks fixed behind the whole page (`components/PageVortex.tsx`) |

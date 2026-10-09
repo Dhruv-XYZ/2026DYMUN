@@ -1,10 +1,23 @@
 import { memo, useState } from "react";
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
+import { Tooltip } from "@/components/ui/tooltip-card";
 import { cn } from "@/lib/utils";
+
+/** Wraps a card in the hover tooltip when it has `info`; otherwise leaves it as it is. */
+function MaybeTooltip({ info, children }: { info?: ReactNode; children: ReactNode }) {
+  if (!info) return <>{children}</>;
+  return (
+    <Tooltip containerClassName="block w-full" focusable content={info}>
+      {children}
+    </Tooltip>
+  );
+}
 
 export type FocusCard = {
   title: string;
   subtitle?: string;
+  /** Shown in a card that follows the cursor while the tile is hovered or focused. */
+  info?: ReactNode;
   /** Photo. Without one, the tile shows `placeholder` on a dark gold gradient. */
   src?: string;
   /** Short text for a tile with no photo, for example initials. */
@@ -37,6 +50,7 @@ export const Card = memo(
         hovered !== null && hovered !== index && "scale-[0.98] blur-sm",
       )}
     >
+      <MaybeTooltip info={card.info}>
       <div className="relative h-60 w-full overflow-hidden bg-ink-raised md:h-96">
         {card.src ? (
           <img
@@ -78,6 +92,7 @@ export const Card = memo(
       {card.subtitle && (
         <p className="label mt-1.5 text-fg-muted">{card.subtitle}</p>
       )}
+      </MaybeTooltip>
     </div>
   ),
 );

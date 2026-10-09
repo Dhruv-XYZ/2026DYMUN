@@ -4,6 +4,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { pages, sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { team } from '@/data/team.js'
+import { TeamInfo } from './TeamInfo'
 
 /** The name every placeholder entry in src/data/team.js carries. */
 const PLACEHOLDER_NAME = 'Name TBA'
@@ -28,6 +29,8 @@ export function Team({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
   const cards = team.map((member, index) => ({
     title: member.name,
     subtitle: member.role,
+    // The card that follows the cursor on hover. Missing details show as a skeleton.
+    info: <TeamInfo member={member} />,
     src: member.photo || undefined,
     placeholder:
       member.name && member.name !== PLACEHOLDER_NAME
