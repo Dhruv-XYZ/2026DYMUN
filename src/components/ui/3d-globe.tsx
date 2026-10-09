@@ -31,6 +31,8 @@ export interface GlobeMarker extends GlobePoint {
   label?: string;
   /** Radius of the dot, as a fraction of the globe radius. */
   size?: number;
+  /** Called when the dot or its label is clicked (a drag does not count). */
+  onSelect?: () => void;
 }
 
 export interface GlobeArc {
@@ -240,6 +242,7 @@ function Marker({
   }, [position]);
 
   const [facing, setFacing] = useState(true);
+  const [hot, setHot] = useState(false);
   const worldPosition = useMemo(() => new THREE.Vector3(), []);
   const { camera } = useThree();
 
@@ -266,6 +269,26 @@ function Marker({
         <circleGeometry args={[size, 32]} />
         <meshBasicMaterial color={color} side={THREE.DoubleSide} />
       </mesh>
+      {marker.onSelect && (
+        // A larger invisible target, so the dot is easy to hit.
+        <mesh
+          onClick={(event) => {
+            event.stopPropagation();
+            if (facing) marker.onSelect?.();
+          }}
+          onPointerOver={() => {
+            setHot(true);
+            document.body.style.cursor = "pointer";
+          }}
+          onPointerOut={() => {
+            setHot(false);
+            document.body.style.cursor = "";
+          }}
+        >
+          <circleGeometry args={[size * 3, 24]} />
+          <meshBasicMaterial transparent opacity={0} depthWrite={false} side={THREE.DoubleSide} />
+        </mesh>
+      )}
       <mesh ref={ringRef}>
         <ringGeometry args={[size * 1.1, size * 1.4, 48]} />
         <meshBasicMaterial
@@ -285,8 +308,10 @@ function Marker({
             style={{ opacity: facing ? 1 : 0 }}
           >
             <span
-              className="pl-3 text-[0.7rem] font-bold tracking-[0.28em] whitespace-nowrap uppercase"
+              className="pl-3 text-[0.7rem] font-bold tracking-[0.28em] whitespace-nowrap uppercase transition-transform duration-200"
               style={{
+                transform: hot ? "scale(1.12)" : undefined,
+                transformOrigin: "left bottom",
                 color,
                 WebkitTextStroke: "3px #0a0a0a",
                 paintOrder: "stroke fill",

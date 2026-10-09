@@ -126,8 +126,12 @@ export const sections = {
     globe: {
       country: 'India',
       caption: 'Delegates, chairs and ideas from every corner. Drag the globe to look around.',
-      hint: 'Drag to spin',
+      hint: 'Drag to spin, click DYPIS to zoom',
       enable: 'Spin the globe',
+      /** The name on the globe's marker. Click it to play the zoom. */
+      marker: 'DYPIS',
+      /** The video that plays when the marker is clicked: public/globe-zoom.mp4. */
+      zoom: { video: '/globe-zoom.mp4', close: 'Close', label: 'Zooming in on DYPIS' },
     },
   },
   committees: {

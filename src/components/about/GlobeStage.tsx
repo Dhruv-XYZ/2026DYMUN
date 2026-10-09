@@ -1,5 +1,8 @@
+import { useMemo, useState } from 'react'
 import { Globe3D } from '@/components/ui/3d-globe'
 import type { Globe3DConfig, GlobeArc, GlobePoint } from '@/components/ui/3d-globe'
+import { sections } from '@/data/site.js'
+import GlobeZoom from './GlobeZoom'
 
 /** Navi Mumbai, where the conference is held. */
 const VENUE: GlobePoint = { lat: 19.03, lng: 73.03 }
@@ -55,8 +58,6 @@ const CONFIG: Globe3DConfig = {
 
 const STILL_CONFIG: Globe3DConfig = { ...CONFIG, autoRotateSpeed: 0 }
 
-/** The venue, labelled on the globe. */
-const MARKERS = [{ ...VENUE, label: 'Navi Mumbai' }]
 
 /**
  * The About section's globe. Its own file so three.js loads separately, and only when
@@ -64,14 +65,24 @@ const MARKERS = [{ ...VENUE, label: 'Navi Mumbai' }]
  * `still` switches off the idle spin (reduced motion); dragging still works.
  */
 export default function GlobeStage({ active, still }: { active: boolean; still: boolean }) {
+  const [zooming, setZooming] = useState(false)
+  // The venue, labelled DYPIS on the globe. Clicking it plays the zoom.
+  const markers = useMemo(
+    () => [{ ...VENUE, label: sections.about.globe.marker, onSelect: () => setZooming(true) }],
+    [],
+  )
+
   return (
-    <Globe3D
-      className="h-full"
-      ariaLabel="Interactive globe centred on Navi Mumbai, India, where DYMUN is held. Drag to spin it."
-      active={active}
-      markers={MARKERS}
-      arcs={ARCS}
-      config={still ? STILL_CONFIG : CONFIG}
-    />
+    <>
+      <Globe3D
+        className="h-full"
+        ariaLabel="Interactive globe centred on DYPIS in Navi Mumbai, India, where DYMUN is held. Drag to spin it; click DYPIS to zoom in."
+        active={active}
+        markers={markers}
+        arcs={ARCS}
+        config={still ? STILL_CONFIG : CONFIG}
+      />
+      {zooming && <GlobeZoom onClose={() => setZooming(false)} />}
+    </>
   )
 }
