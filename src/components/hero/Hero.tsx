@@ -11,6 +11,7 @@ import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { useDeviceProfile } from '@/hooks/use-device'
 
 const HeroBackdrop = lazy(() => import('./HeroBackdrop'))
+const HeroWaves = lazy(() => import('./HeroWaves'))
 
 /**
  * The giant outline wordmark. It follows the cursor anywhere in the hero, not only
@@ -54,7 +55,7 @@ function HeroWordmark({
 
 /** `ready` turns true when the preloader has left; the entrance waits for it. */
 export function Hero({ ready }: { ready: boolean }) {
-  const { reducedMotion, touch, lite } = useDeviceProfile()
+  const { reducedMotion, touch, lite, lowPower, small } = useDeviceProfile()
   const sectionRef = useRef<HTMLElement>(null)
   const navigate = useAnchorNavigate()
 
@@ -74,6 +75,11 @@ export function Hero({ ready }: { ready: boolean }) {
       data-tone="dark"
       className="grain relative flex min-h-[100svh] flex-col overflow-x-clip bg-ink pt-24 pb-20 text-text md:pt-28 md:pb-0"
     >
+      {/* Orange and gold waves at the very back. */}
+      <Suspense fallback={null}>
+        <HeroWaves still={reducedMotion || lowPower} small={small} />
+      </Suspense>
+
       <div className="relative px-4 md:px-8">
         <HeroWordmark sectionRef={sectionRef} interactive={cursorEffects} active={ready} />
       </div>
