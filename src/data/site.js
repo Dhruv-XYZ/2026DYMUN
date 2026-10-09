@@ -82,6 +82,7 @@ export const footer = {
   menu: 'Explore',
   emailPending: 'Email TBA', // TODO: replace by setting site.contact.email
   phonePending: 'Phone TBA', // TODO: replace by setting site.contact.phone
+  credit: 'Made with love, from Om',
 }
 
 /** Navigation. `id` is the section on the home page, `path` its own page if it has one. */

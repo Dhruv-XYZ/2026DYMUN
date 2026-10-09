@@ -38,6 +38,19 @@
   --animate-shiny: shiny 6s linear infinite;
   --animate-glow-spin: glow-spin 36s linear infinite;
   --animate-glow-spin-reverse: glow-spin 44s linear infinite reverse;
+  --animate-glow-breathe: glow-breathe 6s ease-in-out infinite;
+
+  @keyframes glow-breathe {
+    0%,
+    100% {
+      opacity: 0.12;
+      transform: translateY(-50%) scale(0.94);
+    }
+    50% {
+      opacity: 0.3;
+      transform: translateY(-50%) scale(1.04);
+    }
+  }
 
   @keyframes shiny {
     from {
