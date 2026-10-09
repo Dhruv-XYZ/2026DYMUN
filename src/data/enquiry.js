@@ -24,6 +24,11 @@ export const LIMITS = {
   school: { max: 120 }, // optional
   message: { min: 10, max: 1000 },
   minFillSeconds: 3,
+  /** Give up on a send that takes longer than this, so the form never hangs. */
+  requestTimeoutSeconds: 12,
+  /** Rate limit per visitor (per browser session): a pause between sends, and a cap. */
+  cooldownSeconds: 30,
+  maxPerSession: 3,
 }
 
 export const enquiryForm = {
@@ -46,7 +51,12 @@ export const enquiryForm = {
     school: `Keep the school name under ${LIMITS.school.max} characters.`,
     message: `Write your enquiry (${LIMITS.message.min} to ${LIMITS.message.max} characters).`,
     tooFast: 'That was very quick. Please check your details and send again.',
+    wait: `Please wait ${LIMITS.cooldownSeconds} seconds between enquiries.`,
+    tooMany: 'You have sent several enquiries already. We will reply to them soon.',
+    duplicate: 'That enquiry has already been sent.',
   },
+  timeout: 'The enquiry took too long to send. Check your connection and try again.',
+  offline: 'You appear to be offline. Check your connection and try again.',
   notConnected: 'Enquiries are not open yet.',
   success: 'Thank you. Your enquiry has been sent.',
   failure: 'Something went wrong. Please try again.',

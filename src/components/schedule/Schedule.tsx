@@ -27,7 +27,7 @@ export function Schedule() {
             title: day.day,
             content: (
               <div>
-                <p className="label text-fg-muted">{day.date}</p>
+                <p className="text-lg font-semibold text-fg-muted">{day.date}</p>
                 <ol className="mt-4 border-t border-line">
                   {day.items.map((item, index) => (
                     <li

@@ -60,7 +60,7 @@ export function Register() {
 
       <div className="grid gap-10 px-5 pt-20 md:px-10 md:pt-28 lg:grid-cols-[minmax(0,0.5fr)_minmax(0,1fr)]">
         <Reveal>
-          <p className="label text-fg-muted">{enquiryForm.title}</p>
+          <p className="text-2xl font-extrabold tracking-[-0.02em] uppercase">{enquiryForm.title}</p>
           <p className="mt-4 max-w-[28ch] text-fg-muted">{enquiryForm.intro}</p>
         </Reveal>
         <EnquiryForm />

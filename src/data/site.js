@@ -79,7 +79,6 @@ export const sections = {
     stats: { days: 'Days', committees: 'Committees', grades: 'Grades' },
     /** The text beside the globe. */
     globe: {
-      venueLabel: 'Held in',
       country: 'India',
       caption: 'Delegates, chairs and ideas from every corner. Drag the globe to look around.',
       hint: 'Drag to spin',

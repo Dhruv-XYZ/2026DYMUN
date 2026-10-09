@@ -1,12 +1,26 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { AnimatePresence } from 'motion/react'
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
+import { AppErrorBoundary } from '@/components/AppErrorBoundary'
 import { Dock } from '@/components/Dock'
 import { Footer } from '@/components/Footer'
 import { Logo } from '@/components/Logo'
 import { Preloader } from '@/components/Preloader'
 import { site } from '@/data/site.js'
+import { useDeviceProfile } from '@/hooks/use-device'
 import Home from '@/pages/Home'
+
+const PageVortex = lazy(() => import('@/components/PageVortex'))
+
+/** The very faint vortex over the whole page. Still for reduced motion and weak devices. */
+function PageBackdrop() {
+  const { reducedMotion, lowPower, small } = useDeviceProfile()
+  return (
+    <Suspense fallback={null}>
+      <PageVortex still={reducedMotion || lowPower} small={small} />
+    </Suspense>
+  )
+}
 
 // The other pages load only when someone opens them.
 const CommitteesPage = lazy(() => import('@/pages/CommitteesPage'))
@@ -77,15 +91,9 @@ function ShinyNoise() {
 /** The wordmark, top left on every page. It inverts against whatever is behind it. */
 function Header() {
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex px-4 pt-4 lg:px-8 lg:pt-6 lg:mix-blend-difference">
-      {/* On phones and tablets the wordmark sits on a solid ink chip, so it stays fully
-          opaque and readable over any section. On desktop it inverts against whatever
-          is behind it instead. */}
-      <Link
-        to="/"
-        aria-label={`${site.name}, home`}
-        className="pointer-events-auto bg-ink px-3 py-2 text-text ring-1 ring-gold/50 max-lg:rounded-full lg:bg-transparent lg:p-0 lg:ring-0"
-      >
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex px-4 pt-4 lg:px-8 lg:pt-5">
+      {/* The wordmark is a solid pill (see Logo), the same at every size. */}
+      <Link to="/" aria-label={`${site.name}, home`} className="pointer-events-auto">
         <Logo />
       </Link>
     </header>
@@ -101,37 +109,40 @@ export default function App() {
   }, [])
 
   return (
-    <BrowserRouter>
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:bg-orange focus:px-4 focus:py-2 focus:text-ink"
-      >
-        Skip to content
-      </a>
+    <AppErrorBoundary>
+      <BrowserRouter>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:bg-orange focus:px-4 focus:py-2 focus:text-ink"
+        >
+          Skip to content
+        </a>
 
-      <ShinyNoise />
-      <AnimatePresence>
-        {loading && <Preloader key="preloader" onDone={finishLoading} />}
-      </AnimatePresence>
+        <ShinyNoise />
+        <AnimatePresence>
+          {loading && <Preloader key="preloader" onDone={finishLoading} />}
+        </AnimatePresence>
 
-      <ScrollManager />
-      <Header />
-      <Dock />
+        <ScrollManager />
+        {!loading && <PageBackdrop />}
+        <Header />
+        <Dock />
 
-      <main id="main">
-        <Suspense fallback={<div data-tone="dark" className="min-h-[100svh] bg-ink" />}>
-          <Routes>
-            <Route path="/" element={<Home ready={!loading} />} />
-            <Route path="/committees" element={<CommitteesPage />} />
-            <Route path="/team" element={<TeamPage />} />
-            <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </main>
+        <main id="main">
+          <Suspense fallback={<div data-tone="dark" className="min-h-[100svh] bg-ink" />}>
+            <Routes>
+              <Route path="/" element={<Home ready={!loading} />} />
+              <Route path="/committees" element={<CommitteesPage />} />
+              <Route path="/team" element={<TeamPage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </main>
 
-      <Footer />
-    </BrowserRouter>
+        <Footer />
+      </BrowserRouter>
+    </AppErrorBoundary>
   )
 }

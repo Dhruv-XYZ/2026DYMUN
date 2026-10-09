@@ -5,7 +5,7 @@ import { StickyScroll } from '@/components/ui/sticky-scroll-reveal'
 import { sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { useDeviceProfile } from '@/hooks/use-device'
-import { committeeCount, groups } from '@/lib/committees'
+import { groups } from '@/lib/committees'
 import { CommitteeVisual } from './CommitteeVisual'
 
 /**
@@ -38,14 +38,10 @@ export function Committees() {
       {groups.map((group) => (
         <div key={group.id} className="px-5 pt-20 md:px-10 md:pt-32">
           <Reveal>
-            <p className="label flex items-center gap-4 text-fg-muted">
-              <span>{group.name}</span>
-              <span aria-hidden="true" className="h-px w-10 bg-line" />
-              <span>
-                {group.committees.length} {copy.label}
-              </span>
+            <h3 className="display text-outline">{group.grades}</h3>
+            <p className="mt-4 text-xl font-extrabold tracking-[-0.02em] uppercase md:text-3xl">
+              {group.name}, {group.committees.length} {copy.label.toLowerCase()}
             </p>
-            <h3 className="display text-outline mt-4">{group.grades}</h3>
           </Reveal>
 
           <StickyScroll
@@ -59,7 +55,7 @@ export function Committees() {
               title: committee.name,
               description: committee.agenda ?? copy.agendaPending,
               visual: (
-                <CommitteeVisual committee={committee} total={committeeCount} animated={animated} />
+                <CommitteeVisual committee={committee} animated={animated} />
               ),
             }))}
           />

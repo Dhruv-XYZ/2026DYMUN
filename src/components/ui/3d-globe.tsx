@@ -102,8 +102,8 @@ interface Globe3DProps {
 // Constants - self-hosted textures
 // ============================================================================
 
-const DEFAULT_MASK_TEXTURE = "/textures/earth-water.png";
-const DEFAULT_BUMP_TEXTURE = "/textures/earth-topology.png";
+const DEFAULT_MASK_TEXTURE = "/textures/earth-water.jpg";
+const DEFAULT_BUMP_TEXTURE = "/textures/earth-topology.jpg";
 
 // ============================================================================
 // Utility Functions

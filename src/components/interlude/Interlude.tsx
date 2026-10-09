@@ -36,9 +36,7 @@ export function Interlude() {
         containerClassName="min-h-[78svh] w-full py-28 md:py-40"
         className="w-full px-5 md:px-10"
       >
-        <p className="label text-center text-text-muted">{copy.label}</p>
-
-        <p className="display-section mt-6 text-center">
+        <p className="display-section text-center">
           <MaskedLines
             lines={[
               copy.lines[0],

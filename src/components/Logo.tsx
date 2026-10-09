@@ -12,10 +12,12 @@ export function Logo({ className }: { className?: string }) {
     return <img src={site.logoSrc} alt={site.name} className={cn('h-8 w-auto', className)} />
   }
 
+  // A solid ink pill with an orange ring, at every screen size, so the wordmark is
+  // always opaque and readable whatever it sits over.
   return (
     <span
       className={cn(
-        'text-xl leading-none font-black tracking-[-0.04em] whitespace-nowrap uppercase',
+        'inline-flex items-center rounded-full bg-ink px-4 py-2.5 text-xl leading-none font-black tracking-[-0.04em] whitespace-nowrap text-text uppercase ring-2 ring-orange',
         className,
       )}
     >

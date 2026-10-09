@@ -14,7 +14,33 @@ import { cn } from '@/lib/utils'
 type FieldName = 'name' | 'email' | 'phone' | 'school' | 'message'
 type Values = Record<FieldName, string>
 type Errors = Partial<Record<FieldName | 'form', string>>
-type Status = 'idle' | 'loading' | 'success' | 'error' | 'closed'
+type Status = 'idle' | 'loading' | 'success' | 'error' | 'timeout' | 'offline' | 'closed'
+
+const SENT_KEY = 'dymun26:enquiries'
+
+interface SentRecord {
+  count: number
+  last: number
+  lastMessage: string
+}
+
+function readSent(): SentRecord {
+  try {
+    const raw = sessionStorage.getItem(SENT_KEY)
+    if (raw) return JSON.parse(raw) as SentRecord
+  } catch {
+    // storage blocked or unreadable: treat as nothing sent
+  }
+  return { count: 0, last: 0, lastMessage: '' }
+}
+
+function writeSent(record: SentRecord) {
+  try {
+    sessionStorage.setItem(SENT_KEY, JSON.stringify(record))
+  } catch {
+    // storage blocked: the limit simply does not persist
+  }
+}
 
 const EMPTY: Values = { name: '', email: '', phone: '', school: '', message: '' }
 const FIELD_ORDER: FieldName[] = ['name', 'email', 'phone', 'school', 'message']
@@ -153,10 +179,34 @@ export function EnquiryForm() {
       return
     }
 
+    // Rate limit and duplicate guard, per browser session.
+    const sent = readSent()
+    const cleaned = values.message.trim()
+    if (sent.count >= LIMITS.maxPerSession) {
+      setErrors({ form: copy.errors.tooMany })
+      return
+    }
+    if (sent.last && Date.now() - sent.last < LIMITS.cooldownSeconds * 1000) {
+      setErrors({ form: sent.lastMessage === cleaned ? copy.errors.duplicate : copy.errors.wait })
+      return
+    }
+    if (sent.lastMessage === cleaned) {
+      setErrors({ form: copy.errors.duplicate })
+      return
+    }
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      setStatus('offline')
+      return
+    }
+
     setStatus('loading')
+    // Never hang: abort a send that takes too long.
+    const controller = new AbortController()
+    const timer = window.setTimeout(() => controller.abort(), LIMITS.requestTimeoutSeconds * 1000)
     try {
       const response = await fetch(WEB3FORMS_ENDPOINT, {
         method: 'POST',
+        signal: controller.signal,
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
@@ -172,11 +222,14 @@ export function EnquiryForm() {
       })
       const result = (await response.json().catch(() => null)) as { success?: boolean } | null
       if (!response.ok || !result?.success) throw new Error('Web3Forms did not accept the enquiry')
+      writeSent({ count: sent.count + 1, last: Date.now(), lastMessage: cleaned })
       setStatus('success')
       setValues(EMPTY)
       openedAt.current = Date.now()
-    } catch {
-      setStatus('error')
+    } catch (error) {
+      setStatus(error instanceof DOMException && error.name === 'AbortError' ? 'timeout' : 'error')
+    } finally {
+      window.clearTimeout(timer)
     }
   }
 
@@ -186,9 +239,13 @@ export function EnquiryForm() {
       ? copy.notConnected
       : status === 'success'
         ? copy.success
-        : status === 'error'
-          ? copy.failure
-          : '')
+        : status === 'timeout'
+          ? copy.timeout
+          : status === 'offline'
+            ? copy.offline
+            : status === 'error'
+              ? copy.failure
+              : '')
 
   return (
     <form ref={formRef} noValidate onSubmit={handleSubmit}>

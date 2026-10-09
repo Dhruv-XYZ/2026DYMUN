@@ -116,7 +116,6 @@ those changes.
 | --- | --- |
 | loader (Loader One) | Preloader |
 | floating-dock | Navigation |
-| dotted-glow-background | Hero backdrop |
 | text-hover-effect | Hero and footer wordmarks |
 | container-text-flip | Hero headline |
 | magnetic-button, moving-border | Register button in the hero |
@@ -127,6 +126,7 @@ those changes.
 | focus-cards | Team |
 | stateful-button, cover | Register |
 | noise-background | Texture of the cream sections |
+| vortex | A very faint field of orange and gold streaks fixed behind the whole page (`components/PageVortex.tsx`) |
 | wavy-background, sparkles | The orange and gold statement between Team and Register (`components/interlude/`; its words are `sections.interlude` in `site.js`) |
 | carousel | Installed and recoloured, not shown (it is for the Voices section) |
 

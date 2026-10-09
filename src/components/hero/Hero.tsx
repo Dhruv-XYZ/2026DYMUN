@@ -10,7 +10,6 @@ import { hero, site } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { useDeviceProfile } from '@/hooks/use-device'
 
-const HeroBackdrop = lazy(() => import('./HeroBackdrop'))
 const HeroWaves = lazy(() => import('./HeroWaves'))
 
 /**
@@ -55,7 +54,7 @@ function HeroWordmark({
 
 /** `ready` turns true when the preloader has left; the entrance waits for it. */
 export function Hero({ ready }: { ready: boolean }) {
-  const { reducedMotion, touch, lite, lowPower, small } = useDeviceProfile()
+  const { reducedMotion, touch, lowPower, small } = useDeviceProfile()
   const sectionRef = useRef<HTMLElement>(null)
   const navigate = useAnchorNavigate()
 
@@ -83,11 +82,6 @@ export function Hero({ ready }: { ready: boolean }) {
       <div className="relative px-4 md:px-8">
         <HeroWordmark sectionRef={sectionRef} interactive={cursorEffects} active={ready} />
       </div>
-
-      {/* After the wordmark on purpose: the dots then show through the letters too. */}
-      <Suspense fallback={null}>
-        <HeroBackdrop animated={!lite} />
-      </Suspense>
 
       <div className="relative mt-auto grid gap-10 px-5 pt-10 pb-8 md:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-end lg:gap-16">
         {/* Screen readers get one steady sentence instead of a word that keeps changing. */}
@@ -154,10 +148,9 @@ export function Hero({ ready }: { ready: boolean }) {
         </div>
       </div>
 
-      <dl className="relative flex items-center gap-x-3 border-t border-line px-5 py-5 md:gap-x-6 md:px-10">
-        {facts.map((fact, index) => (
-          <div key={fact.term} className="flex items-center gap-3 md:gap-6">
-            {index > 0 && <span aria-hidden="true" className="h-3 w-px bg-line" />}
+      <dl className="relative flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-line px-5 py-5 md:gap-x-14 md:px-10">
+        {facts.map((fact) => (
+          <div key={fact.term}>
             <dt className="sr-only">{fact.term}</dt>
             <dd className="label whitespace-nowrap text-text max-md:text-[0.6rem] max-md:tracking-[0.14em]">
               {fact.value}

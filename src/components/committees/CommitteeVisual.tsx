@@ -24,12 +24,10 @@ function linesFor(name: string): string[] {
  */
 export function CommitteeVisual({
   committee,
-  total,
   animated,
   className,
 }: {
   committee: Committee
-  total: number
   animated: boolean
   className?: string
 }) {
@@ -95,9 +93,6 @@ export function CommitteeVisual({
         ))}
       </div>
 
-      <span className="label absolute top-5 left-5 text-text">
-        {String(i + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
-      </span>
     </div>
   )
 }

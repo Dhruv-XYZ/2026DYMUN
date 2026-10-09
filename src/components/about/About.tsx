@@ -180,8 +180,7 @@ export function About() {
           {/* Free text beside the globe: where it points, and how to move it. */}
           <div className="mt-2 flex items-start justify-between gap-6 border-t border-line pt-5">
             <div>
-              <p className="label text-tone">{copy.globe.venueLabel}</p>
-              <p className="mt-1 text-xl font-extrabold tracking-[-0.02em] uppercase">
+              <p className="text-xl font-extrabold tracking-[-0.02em] uppercase">
                 {site.city}, {copy.globe.country}
               </p>
               <p className="mt-1 max-w-[30ch] text-sm text-fg-muted">{copy.globe.caption}</p>

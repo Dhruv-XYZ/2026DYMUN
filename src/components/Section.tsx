@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import type { ReactNode } from 'react'
 import { useInView, useReducedMotion } from 'motion/react'
-import { MaskedLines, Reveal } from '@/components/Reveal'
+import { MaskedLines } from '@/components/Reveal'
 import { NoiseBackground } from '@/components/ui/noise-background'
 import { cn } from '@/lib/utils'
 
@@ -81,13 +81,13 @@ export function Section({
 }
 
 /**
- * Section title: a tiny tracked label, a giant headline whose last line is the accent
- * (serif italic by default), and the section number in outline type.
+ * Section title: a giant headline whose last line is the accent (serif italic by
+ * default), and the section number in outline type. There is no small label above the
+ * headline; the headline is the first thing in the section.
  */
 export function SectionHeading({
   id,
   number,
-  label,
   lead,
   accent,
   accentClassName = 'serif-accent text-[1.08em] text-tone',
@@ -96,7 +96,8 @@ export function SectionHeading({
 }: {
   id: string
   number: string
-  label: string
+  /** Not shown. Kept so callers can still say what a section is called. */
+  label?: string
   lead: string
   accent: ReactNode
   accentClassName?: string
@@ -110,12 +111,7 @@ export function SectionHeading({
     <header className={cn('px-5 pt-24 md:px-10 md:pt-36', className)}>
       <div className="flex items-end justify-between gap-8">
         <div className="min-w-0">
-          <Reveal className="flex items-center gap-4">
-            <span className="label text-tone md:hidden">{number}</span>
-            <span aria-hidden="true" className="h-px w-8 bg-line md:hidden" />
-            <span className="label text-fg-muted">{label}</span>
-          </Reveal>
-          <Heading id={id} className="display-section mt-5">
+          <Heading id={id} className="display-section">
             <MaskedLines
               lines={[
                 lead,

@@ -148,7 +148,7 @@ const FloatingDockDesktop = ({
           Desktop widths only; on tablets it would push the dock into the wordmark. */}
       <span
         aria-hidden="true"
-        className="relative ml-1 hidden h-10 w-32 items-center overflow-hidden border-l border-gold/30 pl-4 lg:flex"
+        className="relative ml-1 hidden h-10 w-32 items-center overflow-hidden pl-3 lg:flex"
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.span

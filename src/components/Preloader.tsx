@@ -65,9 +65,8 @@ export function Preloader({ onDone }: { onDone: () => void }) {
 
       <LoaderOne className="relative" />
 
-      <p aria-hidden="true" className="label relative flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-center text-text-muted">
+      <p aria-hidden="true" className="label relative flex flex-wrap items-center justify-center gap-x-8 gap-y-1 text-center text-text-muted">
         <span>{site.school}</span>
-        <span className="h-3 w-px bg-line" />
         <span>{site.city}</span>
       </p>
     </motion.div>
