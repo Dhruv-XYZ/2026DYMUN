@@ -3,7 +3,6 @@ import { AnimatePresence } from 'motion/react'
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
 import { AppErrorBoundary } from '@/components/AppErrorBoundary'
 import { Dock } from '@/components/Dock'
-import { Footer } from '@/components/Footer'
 import { Logo } from '@/components/Logo'
 import { Preloader } from '@/components/Preloader'
 import { site } from '@/data/site.js'
@@ -11,6 +10,7 @@ import { useDeviceProfile } from '@/hooks/use-device'
 import { useEffectsReady } from '@/hooks/use-effects-ready'
 import Home from '@/pages/Home'
 
+const Footer = lazy(() => import('@/components/Footer').then((m) => ({ default: m.Footer })))
 const PageVortex = lazy(() => import('@/components/PageVortex'))
 
 /** The very faint vortex over the whole page. Still for reduced motion and weak devices. */
@@ -144,7 +144,9 @@ export default function App() {
           </Suspense>
         </main>
 
-        <Footer />
+        <Suspense fallback={<div aria-hidden="true" className="min-h-[60svh]" />}>
+          <Footer />
+        </Suspense>
       </BrowserRouter>
     </AppErrorBoundary>
   )
