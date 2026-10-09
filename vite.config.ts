@@ -22,6 +22,27 @@ const escapeHtml = (text: string) =>
  * with the wrong address would do harm, and robots.txt simply allows everything.
  * GOOGLE_SITE_VERIFICATION holds the token Search Console gives you.
  */
+/**
+ * In the production build, start the app script after the page's first paint instead of
+ * during it. The HTML already holds a painted shell (see index.html), so the visitor sees
+ * the page at once; the script is still downloaded in parallel (its modulepreload tag
+ * stays), it just runs one frame later.
+ */
+function startAfterFirstPaint(): Plugin {
+  return {
+    name: 'dymun-start-after-first-paint',
+    apply: 'build',
+    enforce: 'post',
+    transformIndexHtml(html) {
+      return html.replace(
+        /<script type="module"([^>]*) src="([^"]+)"([^>]*)><\/script>/,
+        (_match, _before, src) =>
+          `<link rel="modulepreload" crossorigin href="${src}"><script>requestAnimationFrame(function(){setTimeout(function(){var s=document.createElement('script');s.type='module';s.crossOrigin='';s.src='${src}';document.head.appendChild(s)},0)})</script>`,
+      )
+    },
+  }
+}
+
 async function seoFiles(): Promise<Plugin> {
   const { seo, nav, site } = (await import(pathToFileURL(fromRoot('./src/data/site.js')).href)) as {
     seo: Record<string, { path: string; title: string; description: string }>
@@ -164,7 +185,7 @@ function galleryManifest(): Plugin {
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
-  plugins: [react(), tailwindcss(), galleryManifest(), await seoFiles()],
+  plugins: [react(), tailwindcss(), galleryManifest(), await seoFiles(), startAfterFirstPaint()],
   resolve: {
     alias: { '@': fromRoot('./src') },
     dedupe: ['react', 'react-dom'],
