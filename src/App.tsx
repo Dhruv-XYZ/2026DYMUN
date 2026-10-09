@@ -8,6 +8,7 @@ import { Logo } from '@/components/Logo'
 import { Preloader } from '@/components/Preloader'
 import { site } from '@/data/site.js'
 import { useDeviceProfile } from '@/hooks/use-device'
+import { useEffectsReady } from '@/hooks/use-effects-ready'
 import Home from '@/pages/Home'
 
 const PageVortex = lazy(() => import('@/components/PageVortex'))
@@ -15,6 +16,8 @@ const PageVortex = lazy(() => import('@/components/PageVortex'))
 /** The very faint vortex over the whole page. Still for reduced motion and weak devices. */
 function PageBackdrop() {
   const { reducedMotion, lowPower, small } = useDeviceProfile()
+  const effectsReady = useEffectsReady()
+  if (!effectsReady) return null
   return (
     <Suspense fallback={null}>
       <PageVortex still={reducedMotion || lowPower} small={small} />

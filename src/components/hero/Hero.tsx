@@ -9,6 +9,7 @@ import { TextHoverEffect } from '@/components/ui/text-hover-effect'
 import { hero, site } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { useDeviceProfile } from '@/hooks/use-device'
+import { useEffectsReady } from '@/hooks/use-effects-ready'
 
 const HeroWaves = lazy(() => import('./HeroWaves'))
 
@@ -55,6 +56,7 @@ function HeroWordmark({
 /** `ready` turns true when the preloader has left; the entrance waits for it. */
 export function Hero({ ready }: { ready: boolean }) {
   const { reducedMotion, touch, lowPower, small } = useDeviceProfile()
+  const effectsReady = useEffectsReady()
   const sectionRef = useRef<HTMLElement>(null)
   const navigate = useAnchorNavigate()
 
@@ -75,9 +77,11 @@ export function Hero({ ready }: { ready: boolean }) {
       className="grain relative flex min-h-[100svh] flex-col overflow-x-clip bg-ink pt-24 pb-20 text-text md:pt-28 md:pb-0"
     >
       {/* Orange and gold waves at the very back. */}
-      <Suspense fallback={null}>
-        <HeroWaves still={reducedMotion || lowPower} small={small} />
-      </Suspense>
+      {effectsReady && (
+        <Suspense fallback={null}>
+          <HeroWaves still={reducedMotion || lowPower} small={small} />
+        </Suspense>
+      )}
 
       <div className="relative px-4 md:px-8">
         <HeroWordmark sectionRef={sectionRef} interactive={cursorEffects} active={ready} />
