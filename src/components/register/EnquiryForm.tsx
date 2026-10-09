@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import type { ChangeEvent, FormEvent, ReactNode } from 'react'
 import { StatefulButton } from '@/components/ui/stateful-button'
 import {
@@ -97,7 +97,11 @@ function Field({
 export function EnquiryForm() {
   const base = useId()
   const formRef = useRef<HTMLFormElement>(null)
-  const openedAt = useRef(Date.now())
+  const openedAt = useRef(0)
+  // The moment the form appeared, for the minimum fill time. Set after mount.
+  useEffect(() => {
+    openedAt.current = Date.now()
+  }, [])
   const [values, setValues] = useState<Values>(EMPTY)
   const [errors, setErrors] = useState<Errors>({})
   const [status, setStatus] = useState<Status>('idle')

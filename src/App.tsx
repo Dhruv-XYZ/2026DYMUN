@@ -77,8 +77,15 @@ function ShinyNoise() {
 /** The wordmark, top left on every page. It inverts against whatever is behind it. */
 function Header() {
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex px-5 pt-6 mix-blend-difference md:px-8">
-      <Link to="/" aria-label={`${site.name}, home`} className="pointer-events-auto text-text">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex px-4 pt-4 lg:px-8 lg:pt-6 lg:mix-blend-difference">
+      {/* On phones and tablets the wordmark sits on a solid ink chip, so it stays fully
+          opaque and readable over any section. On desktop it inverts against whatever
+          is behind it instead. */}
+      <Link
+        to="/"
+        aria-label={`${site.name}, home`}
+        className="pointer-events-auto bg-ink px-3 py-2 text-text ring-1 ring-gold/50 max-lg:rounded-full lg:bg-transparent lg:p-0 lg:ring-0"
+      >
         <Logo />
       </Link>
     </header>

@@ -109,6 +109,11 @@ export const sections = {
     lead: 'The',
     accent: 'secretariat',
   },
+  /** The statement over the waves, from the tagline. `lines[1]` is the serif accent. */
+  interlude: {
+    label: "DYMUN '26",
+    lines: ['The leaders of', 'tomorrow', 'take on the challenges of today.'],
+  },
   register: {
     label: 'Register',
     lead: 'Take your',

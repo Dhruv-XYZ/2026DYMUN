@@ -127,6 +127,7 @@ those changes.
 | focus-cards | Team |
 | stateful-button, cover | Register |
 | noise-background | Texture of the cream sections |
+| wavy-background, sparkles | The orange and gold statement between Team and Register (`components/interlude/`; its words are `sections.interlude` in `site.js`) |
 | carousel | Installed and recoloured, not shown (it is for the Voices section) |
 
 `loader-one` itself is a paid Aceternity component. The free `@aceternity/loader` entry

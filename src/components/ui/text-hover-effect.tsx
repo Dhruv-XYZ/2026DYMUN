@@ -156,7 +156,11 @@ export const TextHoverEffect = ({
       <text
         ref={measureRef}
         {...textProps}
-        style={{ ...textStyle, stroke: "var(--color-gold)", opacity: 0.3 }}
+        style={{
+          ...textStyle,
+          stroke: "var(--color-gold)",
+          opacity: interactive ? 0.3 : 0.6,
+        }}
       >
         {text}
       </text>
@@ -164,7 +168,13 @@ export const TextHoverEffect = ({
       {/* The outline drawing itself on. */}
       <motion.text
         {...textProps}
-        style={{ ...textStyle, stroke: "var(--color-gold)", opacity: 0.85 }}
+        // Phones, tablets and other devices without a cursor get the outline fully
+        // opaque and in the brighter gold, so the wordmark is clearly visible.
+        style={{
+          ...textStyle,
+          stroke: interactive ? "var(--color-gold)" : "var(--color-gold-light)",
+          opacity: interactive ? 0.85 : 1,
+        }}
         initial={
           interactive
             ? { strokeDashoffset: DASH, strokeDasharray: DASH }
