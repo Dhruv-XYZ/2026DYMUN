@@ -24,9 +24,9 @@
   --color-amber-deep: #4a2205; /* gradient shadows */
   --color-amber-black: #140a02; /* gradient shadows, deepest */
   --color-text: #ede6d6; /* text on dark */
-  --color-text-muted: #9a9486; /* secondary text on dark */
+  --color-text-muted: #b3ada0; /* secondary text on dark, 30% more solid than the brief's original grey */
   --color-ink-text: #141414; /* text on cream */
-  --color-ink-muted: #5e574a; /* secondary text on cream (added for contrast) */
+  --color-ink-muted: #484339; /* secondary text on cream (added for contrast, 30% more solid) */
   --color-black: #000;
   --color-white: #fff;
 
@@ -116,9 +116,10 @@
 [data-tone="dark"] {
   --tone-bg: var(--color-ink);
   --tone-fg: var(--color-text);
+  /* Hairlines are about 30% more solid; the muted text colour itself was made more solid above. */
   --tone-muted: var(--color-text-muted);
   --tone-accent: var(--color-gold);
-  --tone-line: color-mix(in srgb, var(--color-gold) 30%, transparent);
+  --tone-line: color-mix(in srgb, var(--color-gold) 39%, transparent);
   --grain-image: var(--grain-light);
   --grain-opacity: 0.09;
   --grain-blend: soft-light;
@@ -129,7 +130,7 @@
   --tone-fg: var(--color-ink-text);
   --tone-muted: var(--color-ink-muted);
   --tone-accent: var(--color-gold-dark);
-  --tone-line: color-mix(in srgb, var(--color-gold-dark) 45%, transparent);
+  --tone-line: color-mix(in srgb, var(--color-gold-dark) 58%, transparent);
   --grain-image: var(--grain-dark);
   --grain-opacity: 0.16;
   --grain-blend: multiply;

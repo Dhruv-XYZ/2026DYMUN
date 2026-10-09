@@ -159,7 +159,7 @@ export const TextHoverEffect = ({
         style={{
           ...textStyle,
           stroke: "var(--color-gold)",
-          opacity: interactive ? 0.3 : 0.6,
+          opacity: interactive ? 0.4 : 0.8,
         }}
       >
         {text}
@@ -173,7 +173,7 @@ export const TextHoverEffect = ({
         style={{
           ...textStyle,
           stroke: interactive ? "var(--color-gold)" : "var(--color-gold-light)",
-          opacity: interactive ? 0.85 : 1,
+          opacity: 1,
         }}
         initial={
           interactive

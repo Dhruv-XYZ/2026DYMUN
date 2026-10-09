@@ -120,7 +120,7 @@ export const StickyScroll = ({
             <MotionTitle
               initial={false}
               animate={{
-                opacity: activeCard === index ? 1 : 0.35,
+                opacity: activeCard === index ? 1 : 0.46,
               }}
               className={titleClassName}
             >
@@ -129,7 +129,7 @@ export const StickyScroll = ({
             <motion.p
               initial={false}
               animate={{
-                opacity: activeCard === index ? 1 : 0.35,
+                opacity: activeCard === index ? 1 : 0.46,
               }}
               className={descriptionClassName}
             >
