@@ -19,6 +19,8 @@ interface VortexProps {
   backgroundColor?: string;
   /** Fraction of the container's size the canvas is drawn at (it is scaled up by CSS). */
   resolution?: number;
+  /** The two blurred glow passes. They are costly, and Safari draws them as nothing. */
+  glow?: boolean;
   /** Draw one still frame instead of animating (reduced motion, low power). */
   paused?: boolean;
 }
@@ -71,6 +73,7 @@ export const Vortex = ({
   rangeRadius = 2,
   backgroundColor,
   resolution = 0.75,
+  glow = true,
   paused = false,
 }: VortexProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -186,7 +189,7 @@ export const Vortex = ({
       for (let i = 0; i < particleProps.length; i += PROPS_PER_PARTICLE) {
         updateParticle(i, drawIt);
       }
-      if (drawIt) renderGlow();
+      if (drawIt && glow) renderGlow();
     };
 
     // A still frame: let the field run for a while, then draw once.
@@ -205,9 +208,12 @@ export const Vortex = ({
       if (paused) still();
     };
 
-    const loop = () => {
+    // At most 30 frames a second: the field is slow, and half the frames is half the work.
+    let lastDraw = 0;
+    const loop = (now: number) => {
       frame = requestAnimationFrame(loop);
-      if (!visible || document.hidden) return;
+      if (!visible || document.hidden || now - lastDraw < 32) return;
+      lastDraw = now;
       step(true);
     };
 
@@ -235,7 +241,7 @@ export const Vortex = ({
       resizeObserver.disconnect();
       intersection.disconnect();
     };
-  }, [particleCount, rangeY, baseSpeed, rangeSpeed, baseRadius, rangeRadius, backgroundColor, resolution, paused]);
+  }, [particleCount, rangeY, baseSpeed, rangeSpeed, baseRadius, rangeRadius, backgroundColor, resolution, glow, paused]);
 
   return (
     <div ref={containerRef} className={cn("relative h-full w-full", containerClassName)}>

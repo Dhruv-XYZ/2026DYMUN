@@ -21,6 +21,7 @@ const PALETTE = [
   '#ede6d6', // text
   '#b3ada0', // text-muted (brief value #9a9486, made 30% more solid)
   '#484339', // ink-muted (added: muted text on cream, 30% more solid)
+  '#1aa6a6', // teal (added: the third colour in the waves, in place of amber-deep)
 ]
 
 // Pure black and white are allowed for SVG masks and shadows only.

@@ -69,28 +69,6 @@ function ScrollManager() {
   return null
 }
 
-/** The grain used by the `shiny` headline word. Referenced from index.css. */
-function ShinyNoise() {
-  return (
-    <svg aria-hidden="true" width="0" height="0" className="absolute">
-      <filter id="shiny-noise" x="-5%" y="-5%" width="110%" height="110%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="noise" />
-        <feColorMatrix
-          in="noise"
-          type="matrix"
-          values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0"
-          result="specks"
-        />
-        <feComposite in="specks" in2="SourceGraphic" operator="in" result="clipped" />
-        <feMerge>
-          <feMergeNode in="SourceGraphic" />
-          <feMergeNode in="clipped" />
-        </feMerge>
-      </filter>
-    </svg>
-  )
-}
-
 /** The wordmark top left and the school's logo top right, on every page. */
 function Header() {
   return (
@@ -133,7 +111,6 @@ export default function App() {
           Skip to content
         </a>
 
-        <ShinyNoise />
         <AnimatePresence>
           {loading && <Preloader key="preloader" onDone={finishLoading} />}
         </AnimatePresence>

@@ -51,6 +51,18 @@
       }
       /* Painted straight from the HTML, so something is on screen before the script runs.
          React replaces it as soon as the page mounts. */
+      #boot-error {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 1.25rem;
+        font: 500 0.9rem / 1.5 system-ui, sans-serif;
+        text-align: center;
+        color: #ede6d6;
+        background: #141414;
+      }
       #shell {
         position: fixed;
         inset: 0;
@@ -62,6 +74,33 @@
         color: #1d1809;
       }
     </style>
+    <script>
+      // If the page cannot start (an old browser, a blocked file), say so on screen
+      // instead of leaving a dark page. React replaces the shell once it starts.
+      (function () {
+        function show(message) {
+          var shell = document.getElementById('shell')
+          if (!shell) return
+          var note = document.getElementById('boot-error')
+          if (!note) {
+            note = document.createElement('p')
+            note.id = 'boot-error'
+            shell.parentNode.appendChild(note)
+          }
+          note.textContent = message
+        }
+        window.addEventListener('error', function (event) {
+          show('This page could not start in this browser. Please update the browser or try Chrome. Details: ' + (event.message || 'script error'))
+        })
+        window.addEventListener('unhandledrejection', function (event) {
+          var reason = event.reason
+          show('This page could not start in this browser. Please update the browser or try Chrome. Details: ' + String((reason && reason.message) || reason))
+        })
+        window.setTimeout(function () {
+          show('This page is taking a long time to start. Please check the connection and reload.')
+        }, 12000)
+      })()
+    </script>
   </head>
   <body>
     <div id="root"><div id="shell">DYMUN</div></div>

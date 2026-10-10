@@ -335,10 +335,6 @@
   -webkit-text-fill-color: transparent;
   animation: var(--animate-shiny);
 
-  @media (hover: hover) and (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
-    filter: url(#shiny-noise);
-  }
-
   @media (prefers-reduced-motion: reduce) {
     animation: none;
     background-position: -70% center;

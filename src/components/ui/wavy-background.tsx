@@ -3,10 +3,19 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { createNoise3D } from "simplex-noise";
 import { cn } from "@/lib/utils";
 
-// The DYMUN palette: orange and golds. Kept outside the component so the default
-// array is the same on every render.
-// Orange and amber only. Gold and dark gold looked olive green once blurred and faded.
-const DEFAULT_COLORS = ["#ff7a1a", "#ff7a1a", "#4a2205", "#ff7a1a", "#e6c877"];
+// Orange and gold with a teal wave between them. Kept outside the component so the
+// default array is the same on every render. (Dark gold and brown turned muddy olive
+// once blurred and faded, so neither is used.)
+const DEFAULT_COLORS = ["#ff7a1a", "#e6c877", "#1aa6a6", "#ff7a1a", "#e6c877"];
+
+/**
+ * The waves are drawn small and sharp, then softened by the browser's CSS blur. That
+ * is what keeps it light: the blur runs on the graphics card, where the old canvas
+ * blur ran on the processor for every stroke of every frame, and it works in Safari,
+ * which has no canvas blur at all. The canvas is a little bigger than its box so the
+ * blur has no soft edge showing.
+ */
+const SCALE = 0.3;
 
 interface WavyBackgroundProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
@@ -36,6 +45,7 @@ interface WavyBackgroundProps extends HTMLAttributes<HTMLDivElement> {
  *   window and took over `window.onresize`.
  * - The canvas is resized with a ResizeObserver, and the animation stops while the
  *   section is off screen or the tab is hidden.
+ * - The blur is a CSS filter on a small canvas, not a canvas filter (see SCALE).
  * - The noise field is created once (it was rebuilt on every render), and the
  *   animation is cleaned up properly.
  * - `paused` draws a single still frame.
@@ -56,6 +66,8 @@ export const WavyBackground = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const colorKey = colors.join("|");
+  // Room for the blur to spread past the box, so its edges stay hard.
+  const pad = Math.ceil(blur * 2);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -66,8 +78,6 @@ export const WavyBackground = ({
     const noise = createNoise3D();
     const waveColors = colorKey.split("|");
     const step = speed === "fast" ? 0.002 : 0.001;
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-
     let width = 0;
     let height = 0;
     let time = 0;
@@ -94,12 +104,11 @@ export const WavyBackground = ({
 
     const resize = () => {
       const rect = container.getBoundingClientRect();
-      width = Math.max(1, Math.floor(rect.width));
-      height = Math.max(1, Math.floor(rect.height));
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.filter = `blur(${blur}px)`;
+      width = Math.max(1, Math.floor(rect.width)) + pad * 2;
+      height = Math.max(1, Math.floor(rect.height)) + pad * 2;
+      canvas.width = Math.max(1, Math.floor(width * SCALE));
+      canvas.height = Math.max(1, Math.floor(height * SCALE));
+      ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0);
       if (paused) draw();
     };
 
@@ -134,17 +143,28 @@ export const WavyBackground = ({
       resizeObserver.disconnect();
       intersection.disconnect();
     };
-  }, [blur, backgroundFill, colorKey, speed, waveOpacity, waveWidth, paused]);
+  }, [pad, backgroundFill, colorKey, speed, waveOpacity, waveWidth, paused]);
 
   return (
     <div
       ref={containerRef}
-      className={cn("relative flex flex-col items-center justify-center", containerClassName)}
+      className={cn(
+        "relative flex flex-col items-center justify-center overflow-hidden",
+        containerClassName,
+      )}
     >
       <canvas
         ref={canvasRef}
         aria-hidden="true"
-        className="absolute inset-0 z-0 h-full w-full"
+        className="absolute z-0"
+        style={{
+          top: -pad,
+          left: -pad,
+          width: `calc(100% + ${pad * 2}px)`,
+          height: `calc(100% + ${pad * 2}px)`,
+          filter: `blur(${blur}px)`,
+          WebkitFilter: `blur(${blur}px)`,
+        }}
       />
       <div className={cn("relative z-10", className)} {...props}>
         {children}
