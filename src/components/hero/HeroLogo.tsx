@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { site } from '@/data/site.js'
 import { useMediaQuery } from '@/hooks/use-device'
+import { cn } from '@/lib/utils'
 
 /**
  * The DYMUN emblem, large on the right of the home screen. Below 1024px it sits under the
@@ -32,7 +33,7 @@ export function HeroLogo({ placement }: { placement: 'below' | 'side' }) {
       aria-hidden={show ? undefined : true}
       className={
         placement === 'side'
-          ? 'pointer-events-none absolute top-28 right-[3vw] aspect-[1000/786] w-[min(30vw,52vh)]'
+          ? 'pointer-events-none relative w-[23.8%] shrink-0 self-stretch'
           : 'pointer-events-none relative mx-auto mt-8 aspect-[1000/786] w-[60vw] max-w-sm'
       }
     >
@@ -43,7 +44,12 @@ export function HeroLogo({ placement }: { placement: 'below' | 'side' }) {
           width={1000}
           height={786}
           decoding="async"
-          className="h-full w-full animate-fade-in object-contain motion-reduce:animate-none"
+          className={cn(
+            'animate-fade-in object-contain motion-reduce:animate-none',
+            // Beside the wordmark, line up with the letters themselves, which sit a little
+            // lower than the top of the wordmark box.
+            placement === 'side' ? 'absolute inset-x-0 top-[11.4%] h-[87.4%] w-full' : 'h-full w-full',
+          )}
         />
       )}
     </div>

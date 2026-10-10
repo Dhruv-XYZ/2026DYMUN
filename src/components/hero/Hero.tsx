@@ -85,12 +85,17 @@ export function Hero({ ready }: { ready: boolean }) {
         </Suspense>
       )}
 
-      <div className="relative px-4 md:px-8 lg:w-[60%]">
-        <HeroWordmark sectionRef={sectionRef} interactive={cursorEffects} active={ready} />
+      {/* From 1024px the emblem stands beside the wordmark and is exactly as tall as it:
+          the wordmark takes 76.2% of the row and the emblem the rest, which makes both
+          the same height. Below 1024px the emblem sits under the wordmark instead. */}
+      <div className="relative px-4 md:px-8 lg:flex lg:items-stretch">
+        <div className="min-w-0 lg:w-[76.2%]">
+          <HeroWordmark sectionRef={sectionRef} interactive={cursorEffects} active={ready} />
+        </div>
+        <HeroLogo placement="side" />
       </div>
 
       <HeroLogo placement="below" />
-      <HeroLogo placement="side" />
 
       <div className="relative mt-auto grid gap-10 px-5 pt-10 pb-8 md:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-end lg:gap-16">
         {/* Screen readers get one steady sentence instead of a word that keeps changing. */}
