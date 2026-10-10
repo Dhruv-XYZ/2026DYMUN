@@ -46,10 +46,13 @@ function startAfterFirstPaint(): Plugin {
         /<script type="module"([^>]*) src="([^"]+)"([^>]*)><\/script>/,
         (_m, _before, src) =>
           `<link rel="modulepreload" crossorigin href="${src}"><script>(function(){` +
-          `var go=function(){var s=document.createElement('script');s.type='module';s.crossOrigin='';s.src='${src}';document.head.appendChild(s)};` +
+          `var started=false;` +
+          `var go=function(){if(started)return;started=true;var s=document.createElement('script');s.type='module';s.crossOrigin='';s.src='${src}';document.head.appendChild(s)};` +
           `var css=document.getElementById('app-css');` +
-          `var ready=function(){if(css&&!css.sheet){css.addEventListener('load',function(){css.media='all';go()})}else{go()}};` +
-          `requestAnimationFrame(function(){setTimeout(ready,0)})})()</script>`,
+          `var ready=function(){if(started)return;if(css&&!css.sheet){css.addEventListener('load',function(){css.media='all';go()});window.setTimeout(function(){css.media='all';go()},3000)}else{go()}};` +
+          // Normally one frame after the first paint. A tab in the background never gets a
+          // frame, so a timer starts the app anyway.
+          `requestAnimationFrame(function(){setTimeout(ready,0)});window.setTimeout(ready,500)})()</script>`,
       )
       return out
     },
