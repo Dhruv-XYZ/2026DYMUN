@@ -44,11 +44,6 @@ function StaticGlobe() {
         ))}
       </g>
       <circle cx="200" cy="200" r={r} className="fill-none stroke-gold" strokeWidth="1.5" />
-      <g className="fill-none stroke-orange" strokeWidth="1.5" strokeLinecap="round">
-        <path d="M232 168 Q 150 56 92 150" />
-        <path d="M232 168 Q 300 86 326 190" />
-        <path d="M232 168 Q 214 292 126 284" />
-      </g>
       <circle cx="232" cy="168" r="5" className="fill-orange" />
     </svg>
   )

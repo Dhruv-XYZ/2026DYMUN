@@ -75,7 +75,9 @@ function readSlow(): boolean {
     return false
   }
 }
-let slow = typeof window !== 'undefined' && readSlow()
+// ?full keeps every effect on, whatever the page measures.
+const forceFull = typeof window !== 'undefined' && window.location.search.includes('full')
+let slow = typeof window !== 'undefined' && !forceFull && readSlow()
 const slowListeners = new Set<() => void>()
 
 function markSlow() {
@@ -95,38 +97,46 @@ function markSlow() {
  * cannot keep up, and the light version takes over.
  */
 let watching = false
-export function watchFrameRate() {
-  if (watching || slow || typeof window === 'undefined') return
-  watching = true
-  let slowWindows = 0
-  let windows = 0
+/** The latest measurement, for the ?debug readout. */
+export const frameStats = { fps: 0, windows: 0, slowWindows: 0 }
 
+export function watchFrameRate() {
+  if (watching || slow || forceFull || typeof window === 'undefined') return
+  watching = true
+
+  // Three-second windows, judged by the MEDIAN frame time so a few long frames while the
+  // page is still loading cannot count against it. Two slow windows out of four flip
+  // the switch; the first window starts a few seconds after the effects do.
   const runWindow = () => {
-    let frames = 0
+    const gaps: number[] = []
+    let last = 0
     let start = 0
     const tick = (now: number) => {
       if (document.hidden) {
-        requestAnimationFrame(tick)
+        gaps.length = 0
+        last = 0
         start = 0
-        frames = 0
+        requestAnimationFrame(tick)
         return
       }
       if (!start) start = now
-      frames++
-      const elapsed = now - start
-      if (elapsed < 2000) {
+      if (last) gaps.push(now - last)
+      last = now
+      if (now - start < 3000) {
         requestAnimationFrame(tick)
         return
       }
-      windows++
-      if (elapsed / frames > 33) slowWindows++
-      if (slowWindows >= 2) markSlow()
-      else if (windows < 3) window.setTimeout(runWindow, 400)
+      gaps.sort((a, b) => a - b)
+      const median = gaps[Math.floor(gaps.length / 2)] ?? 16
+      frameStats.fps = Math.round(1000 / Math.max(1, median))
+      frameStats.windows++
+      if (median > 40) frameStats.slowWindows++
+      if (frameStats.slowWindows >= 2) markSlow()
+      else if (frameStats.windows < 4) window.setTimeout(runWindow, 500)
     }
     requestAnimationFrame(tick)
   }
-  // Let the first bursts of loading and starting up pass before measuring.
-  window.setTimeout(runWindow, 1200)
+  window.setTimeout(runWindow, 4000)
 }
 
 function subscribeSlow(notify: () => void) {
@@ -154,7 +164,7 @@ export function useDeviceProfile(): DeviceProfile {
   const small = useMediaQuery('(max-width: 767px)')
   const compact = useMediaQuery('(max-width: 1023px)')
   const tooSlow = useSyncExternalStore(subscribeSlow, () => slow, () => false)
-  const lowPower = lowPowerHardware || softwareRendering || tooSlow
+  const lowPower = !forceFull && (lowPowerHardware || softwareRendering || tooSlow)
 
   return {
     reducedMotion,
@@ -165,3 +175,11 @@ export function useDeviceProfile(): DeviceProfile {
     lite: reducedMotion || small || lowPower,
   }
 }
+
+/** Why the page is (or is not) in its light version. Shown by ?debug. */
+export const deviceReasons = () => ({
+  weakHardware: lowPowerHardware,
+  softwareRendering,
+  measuredSlow: slow,
+  forcedFull: forceFull,
+})

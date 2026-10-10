@@ -350,7 +350,7 @@ function Marker({
                 <span
                   role="img"
                   aria-label={marker.name ?? marker.label ?? "Landmark"}
-                  className="absolute -top-4 -left-4 block h-8 w-8 cursor-pointer rounded-full"
+                  className="absolute -top-5 -left-5 block h-10 w-10 cursor-pointer rounded-full"
                   style={{ pointerEvents: facing ? "auto" : "none" }}
                   onMouseEnter={() => onHoverChange(true)}
                   onMouseLeave={() => onHoverChange(false)}
@@ -508,6 +508,13 @@ function RotatingGlobe({ config, markers, arcs }: RotatingGlobeProps) {
     const state = drag.current;
     if (!group || state.active) return;
 
+    // A landmark card is open: hold perfectly still until the pointer leaves.
+    if (reading.current > 0) {
+      state.vy = 0;
+      state.vx = 0;
+      return;
+    }
+
     // A long frame (a busy tab, a slow device) must not become a lurch.
     const delta = Math.min(rawDelta, 1 / 20);
 
@@ -515,7 +522,7 @@ function RotatingGlobe({ config, markers, arcs }: RotatingGlobeProps) {
     group.rotation.y += state.vy * delta;
     group.rotation.x = THREE.MathUtils.clamp(group.rotation.x + state.vx * delta, -1.1, 1.1);
     const settle = 1 - Math.exp(-1.6 * delta);
-    state.vy += ((reading.current > 0 ? 0 : idleSpeed) - state.vy) * settle;
+    state.vy += (idleSpeed - state.vy) * settle;
     state.vx *= Math.exp(-4 * delta);
     // The tilt eases back to where it started.
     group.rotation.x += (startRotation[0] - group.rotation.x) * (1 - Math.exp(-0.7 * delta));

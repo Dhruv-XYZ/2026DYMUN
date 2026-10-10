@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 import type { ReactNode } from 'react'
-import { useInView, useReducedMotion } from 'motion/react'
 import { MaskedLines } from '@/components/Reveal'
 import { NoiseBackground } from '@/components/ui/noise-background'
 import { cn } from '@/lib/utils'
@@ -9,7 +8,8 @@ export type Tone = 'dark' | 'cream'
 
 /**
  * The texture of a cream section: Aceternity's noise background, with its warm glow
- * drifting slowly under film grain. It only moves while it is on screen.
+ * under film grain. It is held still: animating a glow across a whole section meant
+ * repainting the section every frame, which Safari could not keep up with.
  *
  * It is laid over the section's content and multiplied in, like a tint on a print.
  * That way it colours the filled-in letters of outline type exactly as it colours the
@@ -17,8 +17,6 @@ export type Tone = 'dark' | 'cream'
  */
 function NoiseLayer() {
   const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { margin: '200px 0px' })
-  const reduced = useReducedMotion()
 
   return (
     <div
@@ -28,7 +26,7 @@ function NoiseLayer() {
     >
       <NoiseBackground
         containerClassName="absolute inset-0"
-        animating={inView && !reduced}
+        animating={false}
         strength={0.45}
         speed={0.06}
       />

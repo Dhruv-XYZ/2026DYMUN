@@ -30,7 +30,7 @@ export function Gallery() {
       <div ref={stageRef} className="h-[70vh] min-h-[26rem] md:h-[88vh]">
         {near && (
           <Suspense fallback={null}>
-            <MarqueeStage paused={reducedMotion} speed={small || lowPower ? 0.5 : 1} />
+            <MarqueeStage paused={reducedMotion || lowPower} speed={small ? 0.5 : 1} />
           </Suspense>
         )}
       </div>

@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { AnimatePresence } from 'motion/react'
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
 import { AppErrorBoundary } from '@/components/AppErrorBoundary'
+import { DebugBadge } from '@/components/DebugBadge'
 import { Dock } from '@/components/Dock'
 import { Logo } from '@/components/Logo'
 import { Preloader } from '@/components/Preloader'
@@ -106,6 +107,7 @@ export default function App() {
           {loading && <Preloader key="preloader" onDone={finishLoading} />}
         </AnimatePresence>
 
+        {window.location.search.includes('debug') && <DebugBadge />}
         <ScrollManager />
         {!loading && <PageBackdrop />}
         <Header />
