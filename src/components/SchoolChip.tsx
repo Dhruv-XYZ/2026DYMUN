@@ -59,7 +59,7 @@ export function SchoolChip() {
         aria-controls={panelId}
         aria-label={`${site.school}: about the school`}
         onClick={() => setOpen((value) => !value)}
-        className="inline-flex items-center bg-cream px-2.5 py-1.5 ring-1 ring-gold transition-colors duration-200 hover:bg-cream/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange lg:px-3.5 lg:py-2"
+        className="inline-flex items-center rounded-full bg-cream px-4 py-1.5 ring-1 ring-gold transition-colors duration-200 hover:bg-cream/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange lg:px-5 lg:py-2"
       >
         <img
           src={site.schoolLogoSrc}

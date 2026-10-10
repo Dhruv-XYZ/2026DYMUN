@@ -23,6 +23,11 @@ interface TextHoverEffectProps {
   active?: boolean;
   /** Colour inside the letters. Use the colour of whatever is behind the text. */
   fill?: string;
+  /**
+   * Start the letters at the left edge of the box (their own built-in side gap trimmed)
+   * instead of centring them, so the word lines up with the text beside it.
+   */
+  alignStart?: boolean;
   className?: string;
 }
 
@@ -39,6 +44,7 @@ export const TextHoverEffect = ({
   interactive = true,
   active = true,
   fill = "var(--tone-bg)",
+  alignStart = false,
   className,
 }: TextHoverEffectProps) => {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
@@ -49,6 +55,8 @@ export const TextHoverEffect = ({
   const svgRef = useRef<SVGSVGElement>(null);
   const measureRef = useRef<SVGTextElement>(null);
   const [boxWidth, setBoxWidth] = useState(text.length * 112);
+  // How far the first letter's ink sits in from where the text starts, in SVG units.
+  const [bearing, setBearing] = useState(0);
   const [local, setLocal] = useState<{ x: number; y: number } | null>(null);
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
@@ -63,13 +71,21 @@ export const TextHoverEffect = ({
       if (cancelled || !measureRef.current) return;
       const length = measureRef.current.getComputedTextLength();
       if (length > 0) setBoxWidth(Math.ceil(length) + 8);
+      if (alignStart) {
+        const context = document.createElement("canvas").getContext("2d");
+        if (context) {
+          context.font = `900 ${FONT_SIZE}px "Bricolage Grotesque", sans-serif`;
+          const metrics = context.measureText(text);
+          setBearing(Math.max(0, -metrics.actualBoundingBoxLeft));
+        }
+      }
     };
     measure();
     document.fonts?.ready.then(measure).catch(() => {});
     return () => {
       cancelled = true;
     };
-  }, [text]);
+  }, [text, alignStart]);
 
   useEffect(() => {
     if (!svgRef.current || !cursor) return;
@@ -85,9 +101,9 @@ export const TextHoverEffect = ({
   // So the stroke is doubled and painted first, then the fill covers its inner half
   // and the seams, which leaves a clean outline of the stated width.
   const textProps = {
-    x: "50%",
+    x: alignStart ? 1 - bearing : "50%",
     y: BASELINE,
-    textAnchor: "middle" as const,
+    textAnchor: alignStart ? ("start" as const) : ("middle" as const),
     strokeWidth: 2,
     vectorEffect: "non-scaling-stroke" as const,
     className: "font-display font-black",

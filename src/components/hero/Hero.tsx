@@ -50,6 +50,7 @@ function HeroWordmark({
       pointer={interactive ? pointer : null}
       interactive={interactive}
       active={active}
+      alignStart
       duration={0.12}
     />
   )
