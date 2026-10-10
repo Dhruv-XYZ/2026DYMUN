@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { MoveHorizontal } from 'lucide-react'
 import { useInView } from 'motion/react'
 import { Reveal } from '@/components/Reveal'
+import { Highlight } from '@/components/ui/hero-highlight'
 import { Section, SectionHeading } from '@/components/Section'
 import { sections, site } from '@/data/site.js'
 import { useDeviceProfile } from '@/hooks/use-device'
@@ -118,16 +119,18 @@ export function About() {
           lite ? (
             plainWord
           ) : (
-            <Suspense fallback={plainWord}>
-              <CanvasText
-                text={word}
-                backgroundClassName="bg-ink-text"
-                lineGap={8}
-                lineWidth={2}
-                curveIntensity={36}
-                animationDuration={10}
-              />
-            </Suspense>
+            <Highlight className="align-bottom">
+              <Suspense fallback={plainWord}>
+                <CanvasText
+                  text={word}
+                  backgroundClassName="bg-ink-text"
+                  lineGap={8}
+                  lineWidth={2}
+                  curveIntensity={36}
+                  animationDuration={10}
+                />
+              </Suspense>
+            </Highlight>
           )
         }
       />
