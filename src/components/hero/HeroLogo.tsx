@@ -26,7 +26,7 @@ export function HeroLogo() {
   return (
     <div
       aria-hidden={show ? undefined : true}
-      className="pointer-events-none relative mx-auto mt-4 aspect-[1000/786] w-[78vw] max-w-md lg:absolute lg:top-[11vh] lg:right-[1vw] lg:mt-0 lg:w-[min(50vw,78vh)] lg:max-w-none"
+      className="pointer-events-none relative mx-auto mt-8 aspect-[1000/786] w-[60vw] max-w-sm lg:absolute lg:top-[22vh] lg:right-[3vw] lg:mt-0 lg:w-[min(38vw,60vh)] lg:max-w-none"
     >
       {show && (
         <img
