@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react'
+import { watchFrameRate } from '@/hooks/use-device'
 
 /**
  * Decorative canvas effects (the page vortex, the hero waves) are heavy: they redraw
@@ -17,6 +18,7 @@ let armed = false
 function start() {
   if (ready) return
   ready = true
+  watchFrameRate()
   for (const event of EVENTS) window.removeEventListener(event, start)
   listeners.forEach((notify) => notify())
 }
