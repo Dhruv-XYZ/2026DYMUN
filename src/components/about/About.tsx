@@ -10,11 +10,8 @@ import { useDeviceProfile } from '@/hooks/use-device'
 import { committeeCount, gradeMax, gradeMin, gradeRange } from '@/lib/committees'
 import { cn } from '@/lib/utils'
 
-// Both are heavy for what the first screen needs, so each loads on its own.
+// Heavy for what the first screen needs, so it loads on its own.
 const GlobeStage = lazy(() => import('./GlobeStage'))
-const CanvasText = lazy(() =>
-  import('@/components/ui/canvas-text').then((module) => ({ default: module.CanvasText })),
-)
 
 /**
  * A still globe drawn in SVG. Shown on phones, low-power devices and when reduced
@@ -82,7 +79,7 @@ function fill(text: string): string {
 }
 
 export function About() {
-  const { lite, reducedMotion, lowPower } = useDeviceProfile()
+  const { reducedMotion, lowPower } = useDeviceProfile()
   const copy = sections.about
 
   // The real globe runs on phones too (swipe sideways to spin; vertical swipes still
@@ -98,7 +95,6 @@ export function About() {
   const visible = useInView(stageRef, { margin: '100px 0px' })
 
   const word = copy.accent.toUpperCase()
-  const plainWord = <span className="text-outline">{word}</span>
 
   const [first, ...rest] = copy.body.map(fill)
   const stats = [
@@ -116,22 +112,9 @@ export function About() {
         lead={copy.lead}
         accentClassName="inline-block"
         accent={
-          lite ? (
-            plainWord
-          ) : (
-            <Highlight className="align-bottom">
-              <Suspense fallback={plainWord}>
-                <CanvasText
-                  text={word}
-                  backgroundClassName="bg-ink-text"
-                  lineGap={8}
-                  lineWidth={2}
-                  curveIntensity={36}
-                  animationDuration={10}
-                />
-              </Suspense>
-            </Highlight>
-          )
+          <Highlight className="align-bottom">
+            <span className="text-ink-text">{word}</span>
+          </Highlight>
         }
       />
 
