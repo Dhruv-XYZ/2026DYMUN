@@ -5,6 +5,8 @@ export interface Committee {
   name: string
   /** `null` until the agenda is announced. */
   agenda: string | null
+  /** False for a committee that has no agenda at all (International Press). */
+  hasAgenda: boolean
   groupId: string
   /** Position across all committees, starting at 0. Drives each committee's visual. */
   index: number
@@ -34,6 +36,7 @@ export const groups: CommitteeGroup[] = committeeGroups.map((group) => {
       id: committee.id,
       name: committee.name,
       agenda: committee.agenda ?? null,
+      hasAgenda: !committee.noAgenda,
       groupId: group.id,
       index: position++,
     })),

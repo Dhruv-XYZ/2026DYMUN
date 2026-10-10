@@ -7,8 +7,10 @@
  * `agenda: null` means the agenda has not been announced yet. The site then shows
  * "Agenda to be announced".
  *
- * TODO: confirm. The poster prints the last Middle School committee as "COPOUS".
- * The site uses COPUOS, the usual abbreviation. Change `name` below if that is wrong.
+ * The last Middle School committee is spelled COPOUS, exactly as on the poster.
+ *
+ * `noAgenda: true` marks a committee that has no agenda at all (International Press).
+ * The site then shows no agenda text for it, instead of "Agenda to be announced".
  */
 export const committeeGroups = [
   {
@@ -83,8 +85,8 @@ export const committeeGroups = [
           'Deliberating the role of the FIFA presidency and hosting countries in the politicisation and privatisation of the FIFA world cup, and its impact on international football',
       },
       {
-        id: 'copuos',
-        name: 'COPUOS',
+        id: 'copous',
+        name: 'COPOUS',
         agenda:
           'Establishing an International Legal Framework for the Extraction and Utilization of Lunar Resources by States and Private Entities.',
       },
@@ -128,6 +130,7 @@ export const committeeGroups = [
         id: 'international-press',
         name: 'International Press',
         agenda: null,
+        noAgenda: true,
       },
     ],
   },

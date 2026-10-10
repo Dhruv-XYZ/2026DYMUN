@@ -53,11 +53,11 @@ export function Committees() {
             // the top edge to the bottom, and out to the right edge of the page.
             panelClassName="top-0 h-[100svh] md:-mr-10"
             titleClassName="display-sm text-fg"
-            descriptionClassName="mt-5 max-w-[46ch] text-base leading-relaxed text-fg-muted md:text-lg"
+            descriptionClassName="mt-5 max-w-[46ch] text-lg leading-relaxed font-bold text-fg md:text-xl"
             content={group.committees.map((committee) => ({
               id: committee.id,
               title: committee.name,
-              description: committee.agenda ?? copy.agendaPending,
+              description: committee.hasAgenda ? (committee.agenda ?? copy.agendaPending) : null,
               footer: (
                 <Link
                   to={`/committees/${committee.id}`}

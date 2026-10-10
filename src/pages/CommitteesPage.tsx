@@ -52,9 +52,11 @@ export default function CommitteesPage() {
                   </Link>
                 </h3>
                 <div>
-                  <p className="max-w-[60ch] text-base leading-relaxed text-fg-muted md:text-lg">
-                    {committee.agenda ?? copy.agendaPending}
-                  </p>
+                  {committee.hasAgenda && (
+                    <p className="max-w-[60ch] text-base leading-relaxed font-bold text-fg md:text-lg">
+                      {committee.agenda ?? copy.agendaPending}
+                    </p>
+                  )}
                   <Link
                     to={`/committees/${committee.id}`}
                     aria-label={`${committeePage.view}: ${committee.name}`}

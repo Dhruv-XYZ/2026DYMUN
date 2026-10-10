@@ -35,8 +35,8 @@ export default function CommitteePage() {
       ? {
           path: `/committees/${committee.id}`,
           title: `${committee.name} Committee | DYMUN '26 Model UN`,
-          description: `${committee.name} at DYMUN 2026, ${group?.grades}: ${
-            committee.agenda ?? sections.committees.agendaPending
+          description: `${committee.name} at DYMUN 2026, ${group?.grades}${
+            committee.hasAgenda ? `: ${committee.agenda ?? sections.committees.agendaPending}` : '.'
           }`.slice(0, 160),
         }
       : undefined,
@@ -71,11 +71,17 @@ export default function CommitteePage() {
 
       <div className="hairline mx-5 mt-14 w-auto md:mx-10 md:mt-20" />
 
-      <div className="grid gap-x-16 gap-y-14 px-5 pt-14 md:px-10 md:pt-20 lg:grid-cols-2">
-        <Reveal>
-          <h2 className="text-4xl font-black tracking-[-0.03em] uppercase md:text-6xl">{copy.agenda}</h2>
-          <p className="mt-6 max-w-[48ch] text-lg leading-relaxed text-fg md:text-xl">{agenda}</p>
-        </Reveal>
+      <div
+        className={`grid gap-x-16 gap-y-14 px-5 pt-14 md:px-10 md:pt-20 ${
+          committee.hasAgenda ? 'lg:grid-cols-2' : ''
+        }`}
+      >
+        {committee.hasAgenda && (
+          <Reveal>
+            <h2 className="text-4xl font-black tracking-[-0.03em] uppercase md:text-6xl">{copy.agenda}</h2>
+            <p className="mt-6 max-w-[48ch] text-lg leading-relaxed font-bold text-fg md:text-xl">{agenda}</p>
+          </Reveal>
+        )}
         <Reveal delay={0.08}>
           <h2 className="text-4xl font-black tracking-[-0.03em] uppercase md:text-6xl">{copy.about}</h2>
           <p

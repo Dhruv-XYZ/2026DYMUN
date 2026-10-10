@@ -75,7 +75,6 @@ and optional phone numbers and schools, so agree with the school where that data
 - [ ] Schedule: order of events and timings (`schedule.js`)
 - [ ] Contact email and phone, social links (`site.contact`, `site.socials`)
 - [ ] Web3Forms access key (`WEB3FORMS_ACCESS_KEY` in `src/data/enquiry.js`), and where enquiries should be emailed
-- [ ] Confirm the spelling COPUOS (the poster prints "COPOUS")
 - [ ] Full committee names, if you want them shown beside the abbreviations
 - [ ] Real quotes from past delegates or chairs, if you want a Voices section
 - [ ] A better share image if wanted (a generated one is at `public/og.png`)
