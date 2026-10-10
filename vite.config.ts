@@ -77,7 +77,12 @@ async function seoFiles(): Promise<Plugin> {
 
   // Pages that belong in the sitemap: the home page, every nav page, and /contact.
   const paths = ['/', ...nav.flatMap((item) => (item.path ? [item.path] : [])), seo.contact.path]
-  const pages = [...new Set(paths)]
+  // Every committee has its own page.
+  const { committeeGroups } = (await import(pathToFileURL(fromRoot('./src/data/committees.js')).href)) as {
+    committeeGroups: { committees: { id: string }[] }[]
+  }
+  const committeePaths = committeeGroups.flatMap((group) => group.committees.map((c) => `/committees/${c.id}`))
+  const pages = [...new Set([...paths, ...committeePaths])]
 
   const structuredData = origin
     ? JSON.stringify({

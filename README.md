@@ -30,6 +30,8 @@ component to change wording.
 | Secretariat (name, role, photo, bio; shown in the hover card, with a skeleton for anything missing) | `src/data/team.js` |
 | Registration rows (Executive Board, Delegate), fees, and the registration button links | `src/data/registration.js` |
 | Enquiry form: Web3Forms key, wording, spam limits | `src/data/enquiry.js` |
+| Each committee's own page (/committees/uncsa, ...): description and its two chairs (name, photo, bio, message) | `src/data/committeeDetails.js` (wording in `committeePage`, `src/data/site.js`) |
+| School logo dropdown (address, website link) | `schoolUrl`, `schoolAddress` in `src/data/site.js`, wording in `schoolCard` |
 | United Nations landmarks on the About globe (place, text, photo in `public/landmarks`, photo credit) | `src/data/landmarks.js` |
 | Participating schools (not shown while empty) | `src/data/schools.js` |
 

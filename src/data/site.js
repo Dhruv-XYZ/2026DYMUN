@@ -19,6 +19,10 @@ export const site = {
 
   school: 'D Y Patil International School',
   schoolShort: 'DYPIS',
+  /** The school's own website (checked: https://dypisnerul.in/ is the D Y Patil International School site). */
+  schoolUrl: 'https://dypisnerul.in/',
+  /** As printed on the school's website. */
+  schoolAddress: 'D Y Patil Vidhyanagar, Sector 7, Nerul, Navi Mumbai 400706',
   city: 'Navi Mumbai',
   venue: 'D Y Patil International School, Navi Mumbai', // TODO: replace once the venue is confirmed
 
@@ -177,6 +181,34 @@ export const sections = {
     accent: 'touch',
     pending: 'Contact details will be announced.', // TODO: replace once contact details are set
   },
+}
+
+/** The dropdown that opens when the school's logo (top right) is hovered or tapped. */
+export const schoolCard = {
+  intro: "The school hosting DYMUN '26.",
+  button: 'School website',
+}
+
+/**
+ * Words on each committee's own page (/committees/uncsa and so on). The committee's
+ * name and agenda come from committees.js; chairs and descriptions come from
+ * committeeDetails.js, and show the "pending" wording below until they are filled in.
+ */
+export const committeePage = {
+  back: 'All committees',
+  agenda: 'Agenda',
+  about: 'About the committee',
+  aboutPending: 'A short description of this committee will be added here.',
+  chairs: 'Chairs',
+  chairRole: 'Chair',
+  chairNamePending: 'Chair to be announced',
+  chairBioPending: 'Information about this chair will be added here.',
+  messageTitle: 'Message from the chair',
+  messagePending: 'A message from the chair will be added here.',
+  previous: 'Previous committee',
+  next: 'Next committee',
+  register: 'Register for this committee',
+  view: 'View committee',
 }
 
 /** Words used only on the separate pages (/committees, /gallery, /contact, not found). */

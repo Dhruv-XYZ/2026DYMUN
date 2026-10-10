@@ -5,6 +5,7 @@ import { AppErrorBoundary } from '@/components/AppErrorBoundary'
 import { Dock } from '@/components/Dock'
 import { Logo } from '@/components/Logo'
 import { Preloader } from '@/components/Preloader'
+import { SchoolChip } from '@/components/SchoolChip'
 import { site } from '@/data/site.js'
 import { useDeviceProfile } from '@/hooks/use-device'
 import { useEffectsReady } from '@/hooks/use-effects-ready'
@@ -30,6 +31,7 @@ const CommitteesPage = lazy(() => import('@/pages/CommitteesPage'))
 const TeamPage = lazy(() => import('@/pages/TeamPage'))
 const GalleryPage = lazy(() => import('@/pages/GalleryPage'))
 const ContactPage = lazy(() => import('@/pages/ContactPage'))
+const CommitteePage = lazy(() => import('@/pages/CommitteePage'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 
 /** Set once the preloader has played, so it is skipped for the rest of the session. */
@@ -77,18 +79,7 @@ function Header() {
       <Link to="/" aria-label={`${site.name}, home`} className="pointer-events-auto">
         <Logo />
       </Link>
-      {/* The school's logo sits in the same kind of solid pill, so its gold and red read
-          on dark and cream sections alike. */}
-      <span className="inline-flex items-center rounded-full bg-ink px-3.5 py-2 ring-2 ring-orange lg:px-5 lg:py-2.5">
-        <img
-          src={site.schoolLogoSrc}
-          alt={site.school}
-          width={1000}
-          height={326}
-          decoding="async"
-          className="h-6 w-auto lg:h-10"
-        />
-      </span>
+      <SchoolChip />
     </header>
   )
 }
@@ -125,6 +116,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home ready={!loading} />} />
               <Route path="/committees" element={<CommitteesPage />} />
+              <Route path="/committees/:id" element={<CommitteePage />} />
               <Route path="/team" element={<TeamPage />} />
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/contact" element={<ContactPage />} />

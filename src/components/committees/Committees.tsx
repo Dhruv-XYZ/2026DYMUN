@@ -1,8 +1,9 @@
 import { ArrowUpRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { Reveal } from '@/components/Reveal'
 import { Section, SectionHeading } from '@/components/Section'
 import { StickyScroll } from '@/components/ui/sticky-scroll-reveal'
-import { sections } from '@/data/site.js'
+import { committeePage, sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { useDeviceProfile } from '@/hooks/use-device'
 import { groups } from '@/lib/committees'
@@ -48,12 +49,25 @@ export function Committees() {
             stacked={stacked}
             titleAs="h4"
             className="mt-12 lg:mt-0"
+            // The picture of the active committee runs the full height of the screen, from
+            // the top edge to the bottom, and out to the right edge of the page.
+            panelClassName="top-0 h-[100svh] md:-mr-10"
             titleClassName="display-sm text-fg"
             descriptionClassName="mt-5 max-w-[46ch] text-base leading-relaxed text-fg-muted md:text-lg"
             content={group.committees.map((committee) => ({
               id: committee.id,
               title: committee.name,
               description: committee.agenda ?? copy.agendaPending,
+              footer: (
+                <Link
+                  to={`/committees/${committee.id}`}
+                  aria-label={`${committeePage.view}: ${committee.name}`}
+                  className="mt-8 inline-flex h-12 w-fit items-center justify-center gap-2 rounded-full bg-orange px-7 text-[0.75rem] font-semibold tracking-[0.18em] text-ink uppercase transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]"
+                >
+                  {committeePage.view}
+                  <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+                </Link>
+              ),
               visual: (
                 <CommitteeVisual committee={committee} animated={animated} />
               ),

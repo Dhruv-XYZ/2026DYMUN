@@ -1,7 +1,8 @@
 import { ArrowUpRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { Reveal } from '@/components/Reveal'
 import { Section, SectionHeading } from '@/components/Section'
-import { pages, sections } from '@/data/site.js'
+import { committeePage, pages, sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { usePageMeta } from '@/hooks/use-page-meta'
 import { committeeCount, groups } from '@/lib/committees'
@@ -42,10 +43,30 @@ export default function CommitteesPage() {
                 <span className="label text-tone md:pt-3">
                   {String(committee.index + 1).padStart(2, '0')}
                 </span>
-                <h3 className="display-sm">{committee.name}</h3>
-                <p className="max-w-[60ch] text-base leading-relaxed text-fg-muted md:text-lg">
-                  {committee.agenda ?? copy.agendaPending}
-                </p>
+                <h3 className="display-sm">
+                  <Link
+                    to={`/committees/${committee.id}`}
+                    className="transition-colors duration-200 hover:text-orange"
+                  >
+                    {committee.name}
+                  </Link>
+                </h3>
+                <div>
+                  <p className="max-w-[60ch] text-base leading-relaxed text-fg-muted md:text-lg">
+                    {committee.agenda ?? copy.agendaPending}
+                  </p>
+                  <Link
+                    to={`/committees/${committee.id}`}
+                    aria-label={`${committeePage.view}: ${committee.name}`}
+                    className="group mt-5 inline-flex items-center gap-2 text-base font-semibold text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors duration-200 hover:text-orange hover:decoration-orange"
+                  >
+                    {committeePage.view}
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    />
+                  </Link>
+                </div>
               </li>
             ))}
           </ol>

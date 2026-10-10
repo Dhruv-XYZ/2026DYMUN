@@ -34,11 +34,15 @@ const meta = (attr: 'name' | 'property', key: string) => () => {
  * The canonical address is built from the address the visitor is actually on, so it is
  * always the site's real domain and never a placeholder.
  */
-export function usePageMeta(page: PageKey, options: { noindex?: boolean } = {}) {
-  const { noindex = false } = options
+export function usePageMeta(
+  page: PageKey,
+  options: { noindex?: boolean; override?: { path: string; title: string; description: string } } = {},
+) {
+  const { noindex = false, override } = options
+  const overrideKey = override ? `${override.path}|${override.title}|${override.description}` : ''
 
   useEffect(() => {
-    const content = seo[page]
+    const content = override ?? seo[page]
     const url = `${window.location.origin}${page === 'notFound' ? window.location.pathname : content.path}`
     const previousTitle = document.title
     document.title = content.title
@@ -67,5 +71,6 @@ export function usePageMeta(page: PageKey, options: { noindex?: boolean } = {}) 
       document.title = previousTitle
       for (const restore of undo) restore()
     }
-  }, [page, noindex])
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `override` is tracked by overrideKey
+  }, [page, noindex, overrideKey])
 }

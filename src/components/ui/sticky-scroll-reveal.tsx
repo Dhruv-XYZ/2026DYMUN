@@ -7,6 +7,8 @@ export interface StickyScrollItem {
   id: string;
   title: ReactNode;
   description: ReactNode;
+  /** Under the description, for example a button to the item's own page. */
+  footer?: ReactNode;
   /** Shown in the sticky panel while this item is the active one. */
   visual: ReactNode;
 }
@@ -89,6 +91,7 @@ export const StickyScroll = ({
             </div>
             <PlainTitle className={titleClassName}>{item.title}</PlainTitle>
             <p className={descriptionClassName}>{item.description}</p>
+            {item.footer}
           </div>
         ))}
       </div>
@@ -135,6 +138,7 @@ export const StickyScroll = ({
             >
               {item.description}
             </motion.p>
+            {item.footer}
           </div>
         ))}
       </div>
