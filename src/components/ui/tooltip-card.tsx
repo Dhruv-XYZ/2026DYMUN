@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { MouseEvent, ReactNode, TouchEvent } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -18,24 +19,31 @@ const GAP = 14;
  * - The wrapper can be a full-width block (`containerClassName`), and the card is
  *   tied to it for screen readers with aria-describedby.
  * - Positioned against the viewport so it flips away from any edge.
+ * - `portal` draws the card on the page itself instead of inside the wrapper, for places
+ *   such as the 3D globe, whose container would otherwise cut the card off.
  */
 export const Tooltip = ({
   content,
   children,
   containerClassName,
   focusable = false,
+  portal = false,
 }: {
   content: ReactNode;
   children: ReactNode;
   containerClassName?: string;
   /** Let keyboard users reach and open the card. */
   focusable?: boolean;
+  /** Draw the card on the page (fixed to the viewport) so no parent can clip it. */
+  portal?: boolean;
 }) => {
   const id = useId();
   const [isVisible, setIsVisible] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [height, setHeight] = useState(0);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  // Where the wrapper sat when the card was placed; a portal card is positioned from it.
+  const [origin, setOrigin] = useState({ x: 0, y: 0 });
   const contentRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const hideTimer = useRef<number | undefined>(undefined);
@@ -64,6 +72,8 @@ export const Tooltip = ({
 
   const place = useCallback(
     (x: number, y: number) => {
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (rect) setOrigin({ x: rect.left, y: rect.top });
       setMouse({ x, y });
       setPosition(calculatePosition(x, y));
     },
@@ -124,6 +134,34 @@ export const Tooltip = ({
     place(rect.width * 0.6, rect.height * 0.35);
   };
 
+  const card = (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          id={id}
+          role="tooltip"
+          initial={{ height: 0, opacity: 1 }}
+          animate={{ height, opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          className={cn(
+            "pointer-events-none w-64 overflow-hidden bg-ink-raised text-text shadow-[0_18px_50px_rgba(0,0,0,0.55)] ring-1 ring-gold/50",
+            portal ? "fixed z-[120]" : "absolute z-50",
+          )}
+          style={
+            portal
+              ? { top: origin.y + position.y, left: origin.x + position.x }
+              : { top: position.y, left: position.x }
+          }
+        >
+          <div ref={contentRef} className="p-4 text-sm">
+            {content}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
   return (
     <div
       ref={containerRef}
@@ -142,24 +180,7 @@ export const Tooltip = ({
       }}
     >
       {children}
-      <AnimatePresence>
-        {isVisible && (
-          <motion.div
-            id={id}
-            role="tooltip"
-            initial={{ height: 0, opacity: 1 }}
-            animate={{ height, opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="pointer-events-none absolute z-50 w-64 overflow-hidden bg-ink-raised text-text shadow-[0_18px_50px_rgba(0,0,0,0.55)] ring-1 ring-gold/50"
-            style={{ top: position.y, left: position.x }}
-          >
-            <div ref={contentRef} className="p-4 text-sm">
-              {content}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {portal ? createPortal(card, document.body) : card}
     </div>
   );
 };

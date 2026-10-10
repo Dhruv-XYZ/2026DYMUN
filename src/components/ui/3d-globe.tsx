@@ -1,6 +1,8 @@
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, Line, useTexture } from "@react-three/drei";
+import type { ReactNode } from "react";
+import { Tooltip } from "@/components/ui/tooltip-card";
 import * as THREE from "three";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +35,12 @@ export interface GlobeMarker extends GlobePoint {
   size?: number;
   /** Called when the dot or its label is clicked (a drag does not count). */
   onSelect?: () => void;
+  /** Colour of this dot, in place of the globe's marker colour. */
+  color?: string;
+  /** A card shown while the dot is hovered or focused. Also what screen readers announce the dot as. */
+  info?: ReactNode;
+  /** Name for the dot when it has `info` but no visible label. */
+  name?: string;
 }
 
 export interface GlobeArc {
@@ -219,12 +227,16 @@ function arcPoints(
 function Marker({
   marker,
   radius,
-  color,
+  color: defaultColor,
+  onHoverChange,
 }: {
   marker: GlobeMarker;
   radius: number;
   color: string;
+  /** Tells the globe a card is open, so it can stop turning while it is read. */
+  onHoverChange: (hovered: boolean) => void;
 }) {
+  const color = marker.color ?? defaultColor;
   const ringRef = useRef<THREE.Mesh>(null);
   const ringMaterialRef = useRef<THREE.MeshBasicMaterial>(null);
   const timeRef = useRef(0);
@@ -244,6 +256,7 @@ function Marker({
   const [facing, setFacing] = useState(true);
   const [hot, setHot] = useState(false);
   const worldPosition = useMemo(() => new THREE.Vector3(), []);
+  const cameraDirection = useMemo(() => new THREE.Vector3(), []);
   const { camera } = useThree();
 
   // A ring that swells and fades, over and over. The label is hidden while the
@@ -254,9 +267,10 @@ function Marker({
     ringRef.current?.scale.setScalar(1 + t * 3);
     if (ringMaterialRef.current) ringMaterialRef.current.opacity = 0.8 * (1 - t);
 
-    if (marker.label && ringRef.current) {
+    if ((marker.label || marker.info) && ringRef.current) {
       ringRef.current.getWorldPosition(worldPosition);
-      const visible = worldPosition.normalize().dot(camera.position.clone().normalize()) > 0.35;
+      cameraDirection.copy(camera.position).normalize();
+      const visible = worldPosition.normalize().dot(cameraDirection) > 0.35;
       setFacing((current) => (current === visible ? current : visible));
     }
   });
@@ -301,25 +315,50 @@ function Marker({
         />
       </mesh>
 
-      {marker.label && (
+      {(marker.label || marker.info) && (
         <Html zIndexRange={[10, 0]} style={{ pointerEvents: "none" }}>
           <div
-            className="flex -translate-y-full flex-col items-start transition-opacity duration-300"
+            className="relative transition-opacity duration-300"
             style={{ opacity: facing ? 1 : 0 }}
           >
-            <span
-              className="pl-3 text-[0.7rem] font-bold tracking-[0.28em] whitespace-nowrap uppercase transition-transform duration-200"
-              style={{
-                transform: hot ? "scale(1.12)" : undefined,
-                transformOrigin: "left bottom",
-                color,
-                WebkitTextStroke: "3px #0a0a0a",
-                paintOrder: "stroke fill",
-              }}
-            >
-              {marker.label}
-            </span>
-            <span className="ml-0 block h-9 w-px" style={{ background: color }} />
+            {marker.label && (
+              <div className="flex -translate-y-full flex-col items-start">
+                <span
+                  className="pl-3 text-[0.7rem] font-bold tracking-[0.28em] whitespace-nowrap uppercase transition-transform duration-200"
+                  style={{
+                    transform: hot ? "scale(1.12)" : undefined,
+                    transformOrigin: "left bottom",
+                    color,
+                    WebkitTextStroke: "3px #0a0a0a",
+                    paintOrder: "stroke fill",
+                  }}
+                >
+                  {marker.label}
+                </span>
+                <span className="ml-0 block h-9 w-px" style={{ background: color }} />
+              </div>
+            )}
+
+            {marker.info && (
+              // A round target on the dot. Hover or focus opens the card.
+              <Tooltip
+                focusable={facing}
+                portal
+                content={marker.info}
+                containerClassName="absolute top-0 left-0 block h-0 w-0"
+              >
+                <span
+                  role="img"
+                  aria-label={marker.name ?? marker.label ?? "Landmark"}
+                  className="absolute -top-4 -left-4 block h-8 w-8 cursor-pointer rounded-full"
+                  style={{ pointerEvents: facing ? "auto" : "none" }}
+                  onMouseEnter={() => onHoverChange(true)}
+                  onMouseLeave={() => onHoverChange(false)}
+                  onFocus={() => onHoverChange(true)}
+                  onBlur={() => onHoverChange(false)}
+                />
+              </Tooltip>
+            )}
           </div>
         </Html>
       )}
@@ -403,6 +442,11 @@ function RotatingGlobe({ config, markers, arcs }: RotatingGlobeProps) {
   // phone still works: the canvas allows vertical panning (touch-action: pan-y).
   const { gl } = useThree();
   const drag = useRef({ active: false, x: 0, y: 0, t: 0, vy: 0, vx: 0 });
+  // How many landmark cards are open. While one is, the idle spin eases to a stop.
+  const reading = useRef(0);
+  const onHoverChange = useCallback((hovered: boolean) => {
+    reading.current = Math.max(0, reading.current + (hovered ? 1 : -1));
+  }, []);
   const idleSpeed = config.autoRotateSpeed * 0.35; // radians per second
 
   useEffect(() => {
@@ -459,16 +503,19 @@ function RotatingGlobe({ config, markers, arcs }: RotatingGlobeProps) {
     };
   }, [gl, config.interactive]);
 
-  useFrame((_, delta) => {
+  useFrame((_, rawDelta) => {
     const group = groupRef.current;
     const state = drag.current;
     if (!group || state.active) return;
 
-    // Coast on the flick, then settle into the idle spin.
+    // A long frame (a busy tab, a slow device) must not become a lurch.
+    const delta = Math.min(rawDelta, 1 / 20);
+
+    // Coast on the flick, then settle into the idle spin (or stillness while a card is open).
     group.rotation.y += state.vy * delta;
     group.rotation.x = THREE.MathUtils.clamp(group.rotation.x + state.vx * delta, -1.1, 1.1);
     const settle = 1 - Math.exp(-1.6 * delta);
-    state.vy += (idleSpeed - state.vy) * settle;
+    state.vy += ((reading.current > 0 ? 0 : idleSpeed) - state.vy) * settle;
     state.vx *= Math.exp(-4 * delta);
     // The tilt eases back to where it started.
     group.rotation.x += (startRotation[0] - group.rotation.x) * (1 - Math.exp(-0.7 * delta));
@@ -518,6 +565,7 @@ function RotatingGlobe({ config, markers, arcs }: RotatingGlobeProps) {
           marker={marker}
           radius={config.radius}
           color={config.markerColor}
+          onHoverChange={onHoverChange}
         />
       ))}
     </group>
@@ -686,7 +734,7 @@ export function Globe3D({
           alpha: true,
           powerPreference: "high-performance",
         }}
-        dpr={[1, 1.75]}
+        dpr={[1, 1.5]}
         camera={{
           fov: 45,
           near: 0.1,

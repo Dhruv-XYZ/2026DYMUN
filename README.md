@@ -30,6 +30,7 @@ component to change wording.
 | Secretariat (name, role, photo, bio; shown in the hover card, with a skeleton for anything missing) | `src/data/team.js` |
 | Registration rows (Executive Board, Delegate), fees, and the registration button links | `src/data/registration.js` |
 | Enquiry form: Web3Forms key, wording, spam limits | `src/data/enquiry.js` |
+| United Nations landmarks on the About globe (place, text, photo in `public/landmarks`, photo credit) | `src/data/landmarks.js` |
 | Participating schools (not shown while empty) | `src/data/schools.js` |
 
 Anything still unknown is marked `// TODO: replace` in those files. Search for `TODO` to
