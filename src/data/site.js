@@ -134,8 +134,7 @@ export const sections = {
     globe: {
       country: 'India',
       caption: 'Delegates, chairs and ideas from every corner. Drag the globe to look around.',
-      hint: 'Drag to spin, click DYPIS to zoom, hover the gold dots',
-      enable: 'Spin the globe',
+      hint: 'Drag to spin. Select DYPIS to zoom, or a gold dot for a landmark',
       /** The name on the globe's marker. Click it to play the zoom. */
       marker: 'DYPIS',
       /** The video that plays when the marker is clicked: public/globe-zoom.mp4. */

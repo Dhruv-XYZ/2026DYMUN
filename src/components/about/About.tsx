@@ -1,4 +1,4 @@
-import { Component, lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { Component, lazy, Suspense, useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
 import { MoveHorizontal } from 'lucide-react'
 import { useInView } from 'motion/react'
@@ -6,7 +6,6 @@ import { Reveal } from '@/components/Reveal'
 import { Highlight } from '@/components/ui/hero-highlight'
 import { Section, SectionHeading } from '@/components/Section'
 import { sections, site } from '@/data/site.js'
-import { useDeviceProfile } from '@/hooks/use-device'
 import { committeeCount, gradeMax, gradeMin, gradeRange } from '@/lib/committees'
 import { cn } from '@/lib/utils'
 
@@ -93,20 +92,13 @@ function fill(text: string): string {
 }
 
 export function About() {
-  const { reducedMotion, lowPower } = useDeviceProfile()
   const copy = sections.about
 
-  // The real globe runs on phones too (swipe sideways to spin; vertical swipes still
-  // scroll the page). It is replaced by the still picture only for visitors who asked
-  // for less motion or whose device reports very little power, and even they can
-  // switch the real globe on with a button.
-  const [forced, setForced] = useState(false)
-  const stillOnly = (reducedMotion || lowPower) && !forced
-
-  // Fetch the 3D globe and its two map images a couple of seconds after this section
-  // arrives, so by the time it scrolls into view it can start turning at once.
+  // The 3D globe always runs, on every device: textured, with its landmarks, drag to spin
+  // and the idle turn. On phones a sideways swipe spins it; vertical swipes still scroll.
+  // Fetch it and its two map images a couple of seconds after this section arrives, so by
+  // the time it scrolls into view it can start turning at once.
   useEffect(() => {
-    if (stillOnly) return
     const timer = window.setTimeout(() => {
       void loadGlobe()
       for (const url of ['/textures/earth-water.jpg', '/textures/earth-topology.jpg']) {
@@ -114,7 +106,7 @@ export function About() {
       }
     }, 2000)
     return () => window.clearTimeout(timer)
-  }, [stillOnly])
+  }, [])
 
   const stageRef = useRef<HTMLDivElement>(null)
   // Start loading the globe a little before it scrolls in; render it only while visible.
@@ -164,7 +156,7 @@ export function About() {
                 key={stat.label}
                 className={cn('flex flex-col-reverse pt-6', index > 0 && 'border-l border-line pl-4 md:pl-6')}
               >
-                <dt className="label mt-3 text-fg-muted max-md:text-[0.56rem] max-md:tracking-[0.1em]">
+                <dt className="label mt-3 text-fg-muted max-md:text-[0.68rem] max-md:tracking-[0.08em]">
                   {stat.label}
                 </dt>
                 <dd className="text-[clamp(2.25rem,4.6vw,5rem)] leading-none font-black tracking-[-0.05em] whitespace-nowrap">
@@ -177,41 +169,27 @@ export function About() {
 
         <div className="mx-auto w-full max-w-[52rem]">
           <div ref={stageRef} className="relative aspect-square w-full">
-            {stillOnly ? (
-              <StaticGlobe spin={!reducedMotion} />
-            ) : (
-              near && (
-                <GlobeBoundary fallback={<StaticGlobe spin={!reducedMotion} />}>
-                  <Suspense fallback={<StaticGlobe spin={!reducedMotion} />}>
-                    <GlobeStage active={visible} still={reducedMotion} />
-                  </Suspense>
-                </GlobeBoundary>
-              )
+            {near && (
+              <GlobeBoundary fallback={<StaticGlobe spin />}>
+                <Suspense fallback={<StaticGlobe spin />}>
+                  <GlobeStage active={visible} still={false} />
+                </Suspense>
+              </GlobeBoundary>
             )}
           </div>
 
           {/* Free text beside the globe: where it points, and how to move it. */}
-          <div className="mt-2 flex items-start justify-between gap-6 border-t border-line pt-5">
+          <div className="mt-2 flex flex-col items-start justify-between gap-4 border-t border-line pt-5 sm:flex-row sm:gap-6">
             <div>
               <p className="text-xl font-extrabold tracking-[-0.02em] uppercase">
                 {site.city}, {copy.globe.country}
               </p>
               <p className="mt-1 max-w-[30ch] text-sm text-fg-muted">{copy.globe.caption}</p>
             </div>
-            {stillOnly ? (
-              <button
-                type="button"
-                onClick={() => setForced(true)}
-                className="label shrink-0 text-right underline decoration-tone decoration-1 underline-offset-8 transition-colors hover:text-orange hover:decoration-orange"
-              >
-                {copy.globe.enable}
-              </button>
-            ) : (
-              <p className="label flex shrink-0 items-center gap-2 text-fg-muted">
-                <MoveHorizontal aria-hidden="true" className="h-4 w-4 text-tone" />
-                {copy.globe.hint}
-              </p>
-            )}
+            <p className="label flex items-start gap-2 text-fg-muted sm:max-w-[22ch] sm:shrink-0 sm:justify-end sm:text-right">
+              <MoveHorizontal aria-hidden="true" className="h-4 w-4 text-tone" />
+              {copy.globe.hint}
+            </p>
           </div>
         </div>
       </div>

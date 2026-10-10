@@ -163,11 +163,11 @@ export function Hero({ ready }: { ready: boolean }) {
         </div>
       </div>
 
-      <dl className="relative flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-line px-5 py-5 md:gap-x-14 md:px-10">
+      <dl className="relative flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line px-5 py-5 md:gap-x-14 md:px-10">
         {facts.map((fact) => (
           <div key={fact.term}>
             <dt className="sr-only">{fact.term}</dt>
-            <dd className="label whitespace-nowrap text-text max-md:text-[0.6rem] max-md:tracking-[0.14em]">
+            <dd className="label whitespace-nowrap text-text max-md:text-[0.7rem] max-md:tracking-[0.1em]">
               {fact.value}
             </dd>
           </div>

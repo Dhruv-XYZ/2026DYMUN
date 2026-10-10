@@ -9,7 +9,8 @@ import { cn } from '@/lib/utils'
 const sectionIds = nav.map((item) => item.id)
 
 /**
- * The site's navigation: a pill-shaped bar fixed to the top of every page. On the left
+ * The site's navigation: a rectangular bar fixed to the top of every page. Only the
+ * link buttons inside it (the current section and Register) are pill-shaped. On the left
  * the DYMUN emblem, a divider, then the school's logo (which opens its own dropdown).
  * On the right the section links, with the current one marked; below 1024px they sit
  * behind a menu button instead.
@@ -45,8 +46,8 @@ export function Navbar() {
   }, [open])
 
   return (
-    <header className="fixed inset-x-3 top-3 z-50 text-text lg:inset-x-8 lg:top-4">
-      <div className="flex h-16 items-center justify-between gap-4 rounded-full bg-ink px-4 shadow-[0_12px_36px_rgba(0,0,0,0.5)] ring-1 ring-gold/50 lg:h-[4.5rem] lg:pr-5 lg:pl-5">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-gold/40 bg-ink text-text">
+      <div className="flex h-16 items-center justify-between gap-4 px-4 lg:h-[4.5rem] lg:px-8">
         {/* Brand: DYMUN emblem | school logo */}
         <div className="flex min-w-0 items-center gap-3 lg:gap-5">
           <Link to="/" aria-label={`${site.name}, home`} className="shrink-0">
@@ -92,7 +93,7 @@ export function Navbar() {
           aria-controls="mobile-menu"
           aria-label={open ? 'Close menu' : 'Open menu'}
           onClick={() => setOpen((value) => !value)}
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold/50 text-text transition-colors duration-200 hover:border-orange hover:text-orange lg:hidden"
+          className="flex h-11 w-11 shrink-0 items-center justify-center border border-gold/50 text-text transition-colors duration-200 hover:border-orange hover:text-orange lg:hidden"
         >
           {open ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}
         </button>
@@ -102,7 +103,7 @@ export function Navbar() {
         <nav
           id="mobile-menu"
           aria-label="Main"
-          className="mt-2 rounded-3xl bg-ink px-5 pb-4 shadow-[0_12px_36px_rgba(0,0,0,0.5)] ring-1 ring-gold/50 lg:hidden"
+          className="border-t border-gold/40 bg-ink px-4 pb-6 lg:hidden"
         >
           <ul>
             {items.map((item) => (

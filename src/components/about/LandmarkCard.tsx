@@ -21,7 +21,7 @@ export function LandmarkCard({ landmark }: { landmark: Landmark }) {
         <p className="label mt-1 text-gold-light">{landmark.place}</p>
       </div>
       <p className="text-[0.8rem] leading-relaxed text-text-muted">{landmark.text}</p>
-      <p className="text-[0.65rem] text-text-muted/80">Photo: {landmark.credit}</p>
+      <p className="text-[0.7rem] text-text-muted/80">Photo: {landmark.credit}</p>
     </div>
   )
 }
