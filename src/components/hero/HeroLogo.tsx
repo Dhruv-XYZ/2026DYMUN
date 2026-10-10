@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { site } from '@/data/site.js'
+import { useMediaQuery } from '@/hooks/use-device'
 
 /**
- * The DYMUN emblem, huge on the right of the home screen. On a phone it sits under the
- * wordmark at the width of the screen; from 1024px up it fills the right side behind the
- * headline. It appears just after the page has loaded, so the large image never competes
- * with the first paint.
+ * The DYMUN emblem, large on the right of the home screen. Below 1024px it sits under the
+ * wordmark ("below"). From 1024px up it sits on the right ("side"), in the space the wordmark leaves free
+ * (see Hero: the wordmark is narrower there), so it never touches the outlined wordmark. It appears
+ * just after the page has loaded, so the large image never competes with the first paint.
  */
-export function HeroLogo() {
+export function HeroLogo({ placement }: { placement: 'below' | 'side' }) {
+  const wide = useMediaQuery('(min-width: 1024px)')
   const [show, setShow] = useState(false)
 
   useEffect(() => {
@@ -23,10 +25,16 @@ export function HeroLogo() {
     }
   }, [])
 
+  if ((placement === 'side') !== wide) return null
+
   return (
     <div
       aria-hidden={show ? undefined : true}
-      className="pointer-events-none relative mx-auto mt-8 aspect-[1000/786] w-[60vw] max-w-sm lg:absolute lg:top-[22vh] lg:right-[3vw] lg:mt-0 lg:w-[min(38vw,60vh)] lg:max-w-none"
+      className={
+        placement === 'side'
+          ? 'pointer-events-none absolute top-28 right-[3vw] aspect-[1000/786] w-[min(30vw,52vh)]'
+          : 'pointer-events-none relative mx-auto mt-8 aspect-[1000/786] w-[60vw] max-w-sm'
+      }
     >
       {show && (
         <img

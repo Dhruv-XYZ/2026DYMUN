@@ -85,11 +85,12 @@ export function Hero({ ready }: { ready: boolean }) {
         </Suspense>
       )}
 
-      <div className="relative px-4 md:px-8">
+      <div className="relative px-4 md:px-8 lg:w-[60%]">
         <HeroWordmark sectionRef={sectionRef} interactive={cursorEffects} active={ready} />
       </div>
 
-      <HeroLogo />
+      <HeroLogo placement="below" />
+      <HeroLogo placement="side" />
 
       <div className="relative mt-auto grid gap-10 px-5 pt-10 pb-8 md:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-end lg:gap-16">
         {/* Screen readers get one steady sentence instead of a word that keeps changing. */}
