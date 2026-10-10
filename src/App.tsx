@@ -1,13 +1,10 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { AnimatePresence } from 'motion/react'
-import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { AppErrorBoundary } from '@/components/AppErrorBoundary'
 import { DebugBadge } from '@/components/DebugBadge'
-import { Dock } from '@/components/Dock'
-import { Logo } from '@/components/Logo'
+import { Navbar } from '@/components/Navbar'
 import { Preloader } from '@/components/Preloader'
-import { SchoolChip } from '@/components/SchoolChip'
-import { site } from '@/data/site.js'
 import { useDeviceProfile } from '@/hooks/use-device'
 import { useEffectsReady } from '@/hooks/use-effects-ready'
 import Home from '@/pages/Home'
@@ -72,19 +69,6 @@ function ScrollManager() {
   return null
 }
 
-/** The wordmark top left and the school's logo top right, on every page. */
-function Header() {
-  return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex items-start justify-between px-4 pt-4 lg:px-8 lg:pt-5">
-      {/* The wordmark is a solid pill (see Logo), the same at every size. */}
-      <Link to="/" aria-label={`${site.name}, home`} className="pointer-events-auto">
-        <Logo />
-      </Link>
-      <SchoolChip />
-    </header>
-  )
-}
-
 export default function App() {
   const [loading, setLoading] = useState(() => !hasPreloaded())
 
@@ -110,8 +94,7 @@ export default function App() {
         {window.location.search.includes('debug') && <DebugBadge />}
         <ScrollManager />
         {!loading && <PageBackdrop />}
-        <Header />
-        <Dock />
+        <Navbar />
 
         <main id="main">
           <Suspense fallback={<div data-tone="dark" className="min-h-[100svh] bg-ink" />}>

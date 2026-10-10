@@ -1,4 +1,4 @@
-import { Component, lazy, Suspense, useRef, useState } from 'react'
+import { Component, lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { MoveHorizontal } from 'lucide-react'
 import { useInView } from 'motion/react'
@@ -11,16 +11,26 @@ import { committeeCount, gradeMax, gradeMin, gradeRange } from '@/lib/committees
 import { cn } from '@/lib/utils'
 
 // Heavy for what the first screen needs, so it loads on its own.
-const GlobeStage = lazy(() => import('./GlobeStage'))
+const loadGlobe = () => import('./GlobeStage')
+const GlobeStage = lazy(loadGlobe)
 
 /**
  * A still globe drawn in SVG. Shown on phones, low-power devices and when reduced
  * motion is on, and as the stand-in while the 3D globe loads.
  */
-function StaticGlobe() {
+function StaticGlobe({ spin = false }: { spin?: boolean }) {
   const r = 170
   const parallels = [-60, -30, 0, 30, 60]
   const meridians = [0, 30, 60, 90, 120, 150]
+
+  // Each meridian's width follows |cos(longitude)|. Turning the globe is just that
+  // longitude advancing, so animating the width turns the picture, with no script.
+  const SPIN_SECONDS = 28
+  const STEPS = 36
+  const spinValues = (lng: number) =>
+    Array.from({ length: STEPS + 1 }, (_, i) =>
+      Math.abs(r * Math.cos(((lng + (180 * i) / STEPS) * Math.PI) / 180)).toFixed(1),
+    ).join(';')
 
   return (
     <svg viewBox="0 0 400 400" role="img" aria-label="Globe" className="h-full w-full">
@@ -40,7 +50,16 @@ function StaticGlobe() {
             cy="200"
             rx={Math.abs(r * Math.cos((lng * Math.PI) / 180))}
             ry={r}
-          />
+          >
+            {spin && (
+              <animate
+                attributeName="rx"
+                values={spinValues(lng)}
+                dur={`${SPIN_SECONDS}s`}
+                repeatCount="indefinite"
+              />
+            )}
+          </ellipse>
         ))}
       </g>
       <circle cx="200" cy="200" r={r} className="fill-none stroke-gold" strokeWidth="1.5" />
@@ -83,6 +102,19 @@ export function About() {
   // switch the real globe on with a button.
   const [forced, setForced] = useState(false)
   const stillOnly = (reducedMotion || lowPower) && !forced
+
+  // Fetch the 3D globe and its two map images a couple of seconds after this section
+  // arrives, so by the time it scrolls into view it can start turning at once.
+  useEffect(() => {
+    if (stillOnly) return
+    const timer = window.setTimeout(() => {
+      void loadGlobe()
+      for (const url of ['/textures/earth-water.jpg', '/textures/earth-topology.jpg']) {
+        new Image().src = url
+      }
+    }, 2000)
+    return () => window.clearTimeout(timer)
+  }, [stillOnly])
 
   const stageRef = useRef<HTMLDivElement>(null)
   // Start loading the globe a little before it scrolls in; render it only while visible.
@@ -146,11 +178,11 @@ export function About() {
         <div className="mx-auto w-full max-w-[52rem]">
           <div ref={stageRef} className="relative aspect-square w-full">
             {stillOnly ? (
-              <StaticGlobe />
+              <StaticGlobe spin={!reducedMotion} />
             ) : (
               near && (
-                <GlobeBoundary fallback={<StaticGlobe />}>
-                  <Suspense fallback={<StaticGlobe />}>
+                <GlobeBoundary fallback={<StaticGlobe spin={!reducedMotion} />}>
+                  <Suspense fallback={<StaticGlobe spin={!reducedMotion} />}>
                     <GlobeStage active={visible} still={reducedMotion} />
                   </Suspense>
                 </GlobeBoundary>

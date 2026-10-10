@@ -4,7 +4,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { schoolCard, site } from '@/data/site.js'
 
 /**
- * The school's logo, top right of every page, on a cream chip so its red shield and gold
+ * The school's logo, in the navigation bar, on a cream chip so its red shield and gold
  * lettering stand out from the dark page. Hover it, focus it or tap it and a small card
  * drops down with the school's name and address and a button to the school's website.
  */
@@ -45,7 +45,7 @@ export function SchoolChip() {
   return (
     <div
       ref={rootRef}
-      className="pointer-events-auto relative"
+      className="relative"
       onMouseEnter={show}
       onMouseLeave={hideSoon}
       onFocus={show}
@@ -59,7 +59,7 @@ export function SchoolChip() {
         aria-controls={panelId}
         aria-label={`${site.school}: about the school`}
         onClick={() => setOpen((value) => !value)}
-        className="inline-flex items-center rounded-full bg-cream px-3.5 py-2 shadow-[0_8px_24px_rgba(0,0,0,0.45)] ring-2 ring-gold transition-transform duration-200 hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange lg:px-5 lg:py-2.5"
+        className="inline-flex items-center bg-cream px-2.5 py-1.5 ring-1 ring-gold transition-colors duration-200 hover:bg-cream/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange lg:px-3.5 lg:py-2"
       >
         <img
           src={site.schoolLogoSrc}
@@ -67,7 +67,7 @@ export function SchoolChip() {
           width={1000}
           height={326}
           decoding="async"
-          className="h-6 w-auto lg:h-9"
+          className="h-6 w-auto lg:h-8"
         />
       </button>
 
@@ -80,7 +80,7 @@ export function SchoolChip() {
             exit={{ opacity: 0, y: reduced ? 0 : -6 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             // pt-3 is part of the panel, so the pointer never leaves it on the way down.
-            className="absolute top-full right-0 z-50 w-[min(20rem,calc(100vw-2rem))] pt-3"
+            className="absolute top-full left-0 z-50 w-[min(20rem,calc(100vw-2rem))] pt-3"
           >
             <div className="bg-ink-raised p-5 text-text shadow-[0_24px_60px_rgba(0,0,0,0.6)] ring-1 ring-gold/60">
               <p className="text-lg leading-tight font-extrabold tracking-[-0.01em]">{site.school}</p>

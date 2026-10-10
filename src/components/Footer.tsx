@@ -37,7 +37,7 @@ export function Footer() {
   ].filter((social) => social.href)
 
   return (
-    <footer data-tone="dark" className="grain relative isolate bg-ink text-text max-md:pb-20">
+    <footer data-tone="dark" className="grain relative isolate bg-ink text-text">
       <div className="grid gap-12 px-5 pt-20 md:grid-cols-[1.2fr_1fr_1fr] md:px-10 md:pt-28">
         <div>
           <Logo className="text-2xl" />
