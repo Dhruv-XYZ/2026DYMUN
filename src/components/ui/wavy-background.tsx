@@ -5,7 +5,8 @@ import { cn } from "@/lib/utils";
 
 // The DYMUN palette: orange and golds. Kept outside the component so the default
 // array is the same on every render.
-const DEFAULT_COLORS = ["#ff7a1a", "#e6c877", "#c9a24b", "#ff7a1a", "#8a6d2b"];
+// Orange and amber only. Gold and dark gold looked olive green once blurred and faded.
+const DEFAULT_COLORS = ["#ff7a1a", "#ff7a1a", "#4a2205", "#ff7a1a", "#e6c877"];
 
 interface WavyBackgroundProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
