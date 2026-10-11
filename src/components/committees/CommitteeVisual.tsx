@@ -93,6 +93,14 @@ export function CommitteeVisual({
         ))}
       </div>
 
+      {committee.fullName ? (
+        <p
+          className="absolute inset-x-0 bottom-0 px-[6cqw] pb-[7cqh] text-center font-bold tracking-[0.02em] text-text uppercase"
+          style={{ fontSize: 'clamp(0.7rem, 3.4cqw, 1.15rem)', textShadow: '0 1px 14px var(--color-ink)' }}
+        >
+          {committee.fullName}
+        </p>
+      ) : null}
     </div>
   )
 }

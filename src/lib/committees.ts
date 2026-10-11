@@ -3,6 +3,8 @@ import { committeeGroups } from '@/data/committees.js'
 export interface Committee {
   id: string
   name: string
+  /** The spelled-out name, where it is confirmed. */
+  fullName: string | null
   /** `null` until the agenda is announced. */
   agenda: string | null
   /** False for a committee that has no agenda at all (International Press). */
@@ -35,6 +37,7 @@ export const groups: CommitteeGroup[] = committeeGroups.map((group) => {
     committees: group.committees.map((committee) => ({
       id: committee.id,
       name: committee.name,
+      fullName: committee.fullName ?? null,
       agenda: committee.agenda ?? null,
       hasAgenda: !committee.noAgenda,
       groupId: group.id,

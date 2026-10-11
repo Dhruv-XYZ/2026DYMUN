@@ -31,18 +31,21 @@ export const committeeGroups = [
       },
       {
         id: 'sdg-11',
+        fullName: 'Sustainable Cities and Communities',
         name: 'SDG 11',
         agenda:
           'Discussing solutions for the environmental and public impact of the construction of AI data centres',
       },
       {
         id: 'sdg-4',
+        fullName: 'Quality Education',
         name: 'SDG 4',
         agenda:
           'Ensuring Equitable Access to Artificial Intelligence in Education While Protecting Educational Quality and Student Privacy.',
       },
       {
         id: 'sdg-15',
+        fullName: 'Life on Land',
         name: 'SDG 15',
         agenda:
           'Addressing the depletion and extinction of living organisms and biodiversity on land and water and discussing sustainable solutions for preserving vulnerable populations and their habitats.',
@@ -56,18 +59,21 @@ export const committeeGroups = [
     committees: [
       {
         id: 'unhrc',
+        fullName: 'United Nations Human Rights Council',
         name: 'UNHRC',
         agenda:
           'Addressing Systematic Human Rights Violations and the Protection of Civilians Amid Myanmar’s Ongoing Political and Armed Conflict.',
       },
       {
         id: 'disec',
+        fullName: 'Disarmament and International Security Committee',
         name: 'DISEC',
         agenda:
           'Establishing International Regulations on Lethal Autonomous Weapons Systems and Preventing the Loss of Meaningful Human Control Over the Use of Force.',
       },
       {
         id: 'unodc',
+        fullName: 'United Nations Office on Drugs and Crime',
         name: 'UNODC',
         agenda:
           'Countering the Convergence of Drug Trafficking, Organized Crime and Illicit Financial Networks in the Age of Synthetic Drugs',
@@ -80,12 +86,14 @@ export const committeeGroups = [
       },
       {
         id: 'fifa',
+        fullName: 'Fédération Internationale de Football Association',
         name: 'FIFA',
         agenda:
           'Deliberating the role of the FIFA presidency and hosting countries in the politicisation and privatisation of the FIFA world cup, and its impact on international football',
       },
       {
         id: 'copous',
+        fullName: 'Committee on the Peaceful Uses of Outer Space',
         name: 'COPOUS',
         agenda:
           'Establishing an International Legal Framework for the Extraction and Utilization of Lunar Resources by States and Private Entities.',
@@ -99,12 +107,14 @@ export const committeeGroups = [
     committees: [
       {
         id: 'icj',
+        fullName: 'International Court of Justice',
         name: 'ICJ',
         agenda:
           'Application of the definitive settlement of the land boundary dispute between Guyana and Venezuela',
       },
       {
         id: 'unsc',
+        fullName: 'United Nations Security Council',
         name: 'UNSC',
         agenda:
           'Combating Terrorism in Cabo Delgado: Forming links between extremism and Transnational Networks',
@@ -117,11 +127,13 @@ export const committeeGroups = [
       },
       {
         id: 'aippm',
+        fullName: 'All India Political Parties Meet',
         name: 'AIPPM',
         agenda: 'India’s Strategic Autonomy in an Era of Global Conflict',
       },
       {
         id: 'ecosoc',
+        fullName: 'Economic and Social Council',
         name: 'ECOSOC',
         agenda:
           'The Weaponisation of Global Finance: Sanctions, Sovereign Debt and Economic Warfare',
