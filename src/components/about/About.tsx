@@ -1,4 +1,4 @@
-import { Component, lazy, Suspense, useEffect, useRef } from 'react'
+import { Component, Fragment, lazy, Suspense, useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
 import { MoveHorizontal } from 'lucide-react'
 import { useInView } from 'motion/react'
@@ -71,15 +71,45 @@ function StaticGlobe({ spin = false }: { spin?: boolean }) {
  * If the 3D globe cannot start (no WebGL, a blocked download), show the still globe
  * instead of letting the error take the whole page down.
  */
-class GlobeBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
-  state = { failed: false }
+class GlobeBoundary extends Component<
+  { fallback: ReactNode; children: ReactNode },
+  { failed: boolean; reason: string; attempt: number }
+> {
+  state = { failed: false, reason: '', attempt: 0 }
 
-  static getDerivedStateFromError() {
-    return { failed: true }
+  static getDerivedStateFromError(error: unknown) {
+    const reason = error instanceof Error ? error.message : String(error)
+    return { failed: true, reason }
+  }
+
+  componentDidCatch(error: unknown) {
+    // Kept on window and in the console so a failure in some browser can be diagnosed.
+    ;(window as unknown as { __globeError?: unknown }).__globeError = error
+    console.error('3D globe failed to start:', error)
   }
 
   render() {
-    return this.state.failed ? this.props.fallback : this.props.children
+    if (!this.state.failed) {
+      return <Fragment key={this.state.attempt}>{this.props.children}</Fragment>
+    }
+    return (
+      <>
+        {this.props.fallback}
+        <p
+          role="status"
+          className="absolute inset-x-0 bottom-0 bg-ink/90 p-3 text-center text-xs leading-snug text-text"
+        >
+          The 3D globe could not start in this browser ({this.state.reason.slice(0, 140) || 'unknown error'}).{' '}
+          <button
+            type="button"
+            className="underline"
+            onClick={() => this.setState((state) => ({ failed: false, reason: '', attempt: state.attempt + 1 }))}
+          >
+            Try again
+          </button>
+        </p>
+      </>
+    )
   }
 }
 
