@@ -54,10 +54,12 @@ export function Committees() {
             // moves to the left edge and fades out toward the text.
             panelClassName="top-0 h-[100svh] md:-mr-10 xl:mr-0 xl:-ml-10 xl:[mask-image:linear-gradient(to_right,#000_50%,transparent_100%)]"
             titleClassName="display-sm text-fg"
+            subtitleClassName="mt-3 text-sm font-semibold tracking-[0.14em] text-gold uppercase md:text-base"
             descriptionClassName="mt-5 max-w-[46ch] text-lg leading-relaxed font-bold text-fg md:text-xl"
             content={group.committees.map((committee) => ({
               id: committee.id,
               title: committee.name,
+              subtitle: committee.fullName,
               description: committee.hasAgenda ? (committee.agenda ?? copy.agendaPending) : null,
               footer: (
                 <Link

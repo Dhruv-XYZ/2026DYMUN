@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 export interface StickyScrollItem {
   id: string;
   title: ReactNode;
+  /** Under the title, for example the spelled-out name. */
+  subtitle?: ReactNode;
   /** Leave empty for an item with no text under its title. */
   description?: ReactNode;
   /** Under the description, for example a button to the item's own page. */
@@ -32,6 +34,7 @@ export const StickyScroll = ({
   className,
   itemClassName,
   titleClassName,
+  subtitleClassName,
   descriptionClassName,
   panelClassName,
   stackedVisualClassName,
@@ -43,6 +46,7 @@ export const StickyScroll = ({
   className?: string;
   itemClassName?: string;
   titleClassName?: string;
+  subtitleClassName?: string;
   descriptionClassName?: string;
   /** Classes for the sticky panel on the right. */
   panelClassName?: string;
@@ -91,6 +95,7 @@ export const StickyScroll = ({
               {item.visual}
             </div>
             <PlainTitle className={titleClassName}>{item.title}</PlainTitle>
+            {item.subtitle ? <p className={subtitleClassName}>{item.subtitle}</p> : null}
             {item.description ? <p className={descriptionClassName}>{item.description}</p> : null}
             {item.footer}
           </div>
@@ -130,6 +135,15 @@ export const StickyScroll = ({
             >
               {item.title}
             </MotionTitle>
+            {item.subtitle ? (
+              <motion.p
+                initial={false}
+                animate={{ opacity: activeCard === index ? 1 : 0.46 }}
+                className={subtitleClassName}
+              >
+                {item.subtitle}
+              </motion.p>
+            ) : null}
             {item.description ? (
               <motion.p
                 initial={false}

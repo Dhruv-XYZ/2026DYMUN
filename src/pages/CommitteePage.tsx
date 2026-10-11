@@ -64,6 +64,11 @@ export default function CommitteePage() {
         <h1 id="committee-title" className="display-section mt-8 break-words">
           {committee.name}
         </h1>
+        {committee.fullName ? (
+          <p className="mt-4 text-base font-semibold tracking-[0.14em] text-gold uppercase md:text-xl">
+            {committee.fullName}
+          </p>
+        ) : null}
         <p className="mt-5 text-xl font-extrabold tracking-[-0.02em] text-tone uppercase md:text-3xl">
           {group.name}, {group.grades}
         </p>
