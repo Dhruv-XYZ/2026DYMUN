@@ -50,8 +50,9 @@ export function Committees() {
             titleAs="h4"
             className="mt-12 lg:mt-0"
             // The picture of the active committee runs the full height of the screen, from
-            // the top edge to the bottom, and out to the right edge of the page.
-            panelClassName="top-0 h-[100svh] md:-mr-10"
+            // the top edge to the bottom, out to the right edge of the page. From 1280px it
+            // moves to the left edge and fades out toward the text.
+            panelClassName="top-0 h-[100svh] md:-mr-10 xl:mr-0 xl:-ml-10 xl:[mask-image:linear-gradient(to_right,#000_50%,transparent_100%)]"
             titleClassName="display-sm text-fg"
             descriptionClassName="mt-5 max-w-[46ch] text-lg leading-relaxed font-bold text-fg md:text-xl"
             content={group.committees.map((committee) => ({

@@ -104,11 +104,11 @@ export const StickyScroll = ({
   return (
     <div
       className={cn(
-        "relative grid grid-cols-1 gap-x-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]",
+        "relative grid grid-cols-1 gap-x-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]",
         className,
       )}
     >
-      <div>
+      <div className="xl:order-2">
         {content.map((item, index) => (
           <div
             key={item.id}
@@ -146,7 +146,7 @@ export const StickyScroll = ({
         ))}
       </div>
 
-      <div className="relative hidden lg:block">
+      <div className="relative hidden lg:block xl:order-1">
         <div
           className={cn(
             "sticky top-[14vh] h-[72vh] overflow-hidden",
