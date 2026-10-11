@@ -198,7 +198,7 @@ export function About() {
         </div>
 
         <div className="mx-auto w-full max-w-[52rem]">
-          <div ref={stageRef} className="relative aspect-square w-full">
+          <div ref={stageRef} id="globe" className="relative aspect-square w-full scroll-mt-28">
             {near && (
               <GlobeBoundary fallback={<StaticGlobe spin />}>
                 <Suspense fallback={<StaticGlobe spin />}>
