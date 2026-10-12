@@ -2,20 +2,20 @@
 
 :root {
   font-family: 'DM Sans', sans-serif;
-  color: #17211d;
-  background: #fbfcf8;
+  color: #171611;
+  background: #f8f5f0;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --paper: #fbfcf8;
-  --mist: #eff2ec;
-  --ink: #17211d;
-  --muted: #69716d;
-  --line: #d9ded8;
-  --red: #b94737;
-  --acid: #d8ee63;
+  --paper: #f8f5f0;
+  --mist: #f1ecdf;
+  --ink: #171611;
+  --muted: #5f584f;
+  --line: #d7ceb1;
+  --red: #b89752;
+  --acid: #d2af5d;
   --display: 'Playfair Display', Georgia, serif;
 }
 
