@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { HashRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 
+const logoUrl = `${import.meta.env.BASE_URL}logo.jpeg`
+
 const navigation = [
   { label: 'Home', to: '/' },
   { label: 'About', to: '/about' },
@@ -115,7 +117,7 @@ function PageShell({ menuOpen, setMenuOpen, closeMenu, children }) {
     <>
       <header className="site-header">
         <NavLink className="brand" to="/" onClick={closeMenu} aria-label="DYMUN home">
-          <img className="brand__logo" src="/logo.jpeg" alt="D. Y. Patil International School, Navi Mumbai" />
+          <img className="brand__logo" src={logoUrl} alt="D. Y. Patil International School, Navi Mumbai" />
           <span className="brand__text">
             <strong>DYMUN</strong>
             <small>Model United Nations / 2026</small>
@@ -162,7 +164,7 @@ function PageShell({ menuOpen, setMenuOpen, closeMenu, children }) {
         <div className="site-footer__main">
           <div className="footer-brand">
             <NavLink className="brand brand--footer" to="/">
-              <img className="brand__logo" src="/logo.jpeg" alt="D. Y. Patil International School, Navi Mumbai" />
+              <img className="brand__logo" src={logoUrl} alt="D. Y. Patil International School, Navi Mumbai" />
               <span className="brand__text"><strong>DYMUN</strong><small>Ideas into action.</small></span>
             </NavLink>
             <p>A Model United Nations experience by D. Y. Patil International School, Navi Mumbai.</p>
