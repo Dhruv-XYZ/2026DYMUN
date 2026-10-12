@@ -181,7 +181,7 @@ body {
 }
 
 .hero__content {
-  width: min(820px, 74%);
+  width: min(1040px, 82%);
   margin-left: max(10vw, 48px);
   padding: 72px 0 104px;
   animation: rise-in 680ms ease-out both;
@@ -222,8 +222,8 @@ body {
 }
 
 .hero h1 {
-  max-width: 870px;
-  font-size: clamp(52px, 7vw, 120px);
+  max-width: 1040px;
+  font-size: clamp(52px, 5vw, 90px);
   line-height: 0.94;
   letter-spacing: -0.045em;
   color: white;
