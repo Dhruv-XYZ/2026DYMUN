@@ -13,6 +13,25 @@ const navigation = [
   { label: 'Registration', to: '/registration' },
 ]
 
+const communityPillars = [
+  { title: 'Research forward', detail: 'Delegates arrive prepared with policy context, national priorities, and a clear sense of what they want to achieve.' },
+  { title: 'Dialogue with purpose', detail: 'Every speech becomes part of a larger negotiation: listening, bridging, and finding practical solutions.' },
+  { title: 'Leadership in practice', detail: 'DYMUN helps students build confidence in public communication, collaboration, and ethical decision-making.' },
+]
+
+const detailHighlights = [
+  { title: 'Who it is for', text: 'Students from schools and colleges ready to practise diplomacy, sharpen public speaking, and explore international issues.' },
+  { title: 'Conference flow', text: 'Three days of committee work, panel introductions, negotiation, and final resolutions that reflect collective effort.' },
+  { title: 'What delegates gain', text: 'Confidence in debate, stronger research habits, and a clearer understanding of how global systems operate in practice.' },
+]
+
+const leadershipFocus = [
+  'Conference vision and delegate experience',
+  'Committee coordination and issue framing',
+  'Operational planning and smooth execution',
+  'Research support and procedural guidance',
+]
+
 const principles = [
   {
     number: '01',
@@ -326,6 +345,11 @@ function AboutPage() {
         <div className="page-hero__inner section-wrap">
           <div className="section-label"><span className="section-label__dot" /> About DYMUN</div>
           <h1>Conference culture shaped by research, dialogue, and action.</h1>
+          <div className="page-hero__meta">
+            <span>3 day conference</span>
+            <span>14 committees</span>
+            <span>400+ delegates</span>
+          </div>
         </div>
       </section>
 
@@ -340,8 +364,10 @@ function AboutPage() {
             listen carefully in committee, and negotiate with respect toward a practical, workable outcome.
           </p>
         </div>
-        <div className="story-panel">
-          <h3>What makes DYMUN different</h3>
+
+        <div className="story-panel feature-panel">
+          <span className="feature-panel__label">DYMUN in practice</span>
+          <h3>Where research becomes diplomacy.</h3>
           <ul>
             <li>High-quality committee experience</li>
             <li>Debate with academic seriousness</li>
@@ -351,12 +377,29 @@ function AboutPage() {
       </section>
 
       <section className="section-wrap values-section">
-        <div className="section-label"><span className="section-label__dot" /> Our values</div>
+        <div className="section-header section-header--split">
+          <div>
+            <div className="section-label"><span className="section-label__dot" /> Our values</div>
+          </div>
+          <p>The conference is built around thoughtful engagement, institutional discipline, and a shared commitment to better conversations.</p>
+        </div>
         <div className="value-grid">
           {values.map((value) => (
             <article className="info-card" key={value.title}>
               <h3>{value.title}</h3>
               <p>{value.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section-wrap pillar-section">
+        <div className="pillar-grid">
+          {communityPillars.map((pillar) => (
+            <article className="info-card info-card--feature" key={pillar.title}>
+              <span className="info-card__eyebrow">Focus</span>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.detail}</p>
             </article>
           ))}
         </div>
@@ -372,6 +415,36 @@ function DetailsPage() {
         <div className="page-hero__inner section-wrap">
           <div className="section-label"><span className="section-label__dot" /> Conference details</div>
           <h1>Everything delegates need to know before the first gavel.</h1>
+          <div className="page-hero__meta">
+            <span>October 2026</span>
+            <span>Navi Mumbai</span>
+            <span>Business formal</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-wrap details-showcase">
+        <div className="details-panel">
+          <h3>At a glance</h3>
+          <ul>
+            <li>Registration and orientation set the tone for the conference.</li>
+            <li>Delegates work through briefings, speeches, amendments, and negotiation.</li>
+            <li>Final resolutions reflect sustained research and collaborative diplomacy.</li>
+          </ul>
+        </div>
+        <div className="detail-feature">
+          <h3>What committee life looks like</h3>
+          <div className="timeline">
+            {agenda.map((entry) => (
+              <div className="timeline-item" key={entry.day}>
+                <span>{entry.day}</span>
+                <div>
+                  <strong>{entry.title}</strong>
+                  <p>{entry.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -381,6 +454,18 @@ function DetailsPage() {
             <article className="info-card" key={detail.title}>
               <h3>{detail.title}</h3>
               <p>{detail.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section-wrap pillar-section">
+        <div className="pillar-grid">
+          {detailHighlights.map((highlight) => (
+            <article className="info-card info-card--feature" key={highlight.title}>
+              <span className="info-card__eyebrow">Insight</span>
+              <h3>{highlight.title}</h3>
+              <p>{highlight.text}</p>
             </article>
           ))}
         </div>
@@ -396,6 +481,21 @@ function CommitteesPage() {
         <div className="page-hero__inner section-wrap">
           <div className="section-label"><span className="section-label__dot" /> Committees</div>
           <h1>Choose a room where your ideas can take shape.</h1>
+        </div>
+      </section>
+
+      <section className="section-wrap committees-overview">
+        <div className="spotlight-card">
+          <div>
+            <div className="section-label"><span className="section-label__dot" /> Committee focus</div>
+            <h2>Debate the issues that move the world.</h2>
+          </div>
+          <p>From security and public health to governance and culture, each committee is designed to be research-driven, collaborative, and high-stakes.</p>
+        </div>
+        <div className="metric-stack">
+          <div><strong>14</strong><span>committee tracks</span></div>
+          <div><strong>80</strong><span>largest delegation</span></div>
+          <div><strong>3</strong><span>days of debate</span></div>
         </div>
       </section>
 
@@ -421,6 +521,21 @@ function TeamPage() {
         <div className="page-hero__inner section-wrap">
           <div className="section-label"><span className="section-label__dot" /> OC & EB</div>
           <h1>The team behind the conference.</h1>
+        </div>
+      </section>
+
+      <section className="section-wrap team-overview">
+        <div className="leadership-card">
+          <p className="eyebrow">Leadership</p>
+          <h2>Guiding the conference from vision to execution.</h2>
+        </div>
+        <div className="leadership-list">
+          {leadershipFocus.map((point) => (
+            <div key={point} className="leadership-list__item">
+              <span aria-hidden="true">↗</span>
+              <p>{point}</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -507,6 +622,10 @@ function RegistrationPage() {
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', 'classic')
+  }, [])
 
   function closeMenu() {
     setMenuOpen(false)

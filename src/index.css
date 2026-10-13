@@ -16,7 +16,36 @@
   --line: #d7ceb1;
   --red: #b89752;
   --acid: #d2af5d;
+  --panel: #fffdf9;
+  --panel-strong: #eef3f1;
+  --shadow: rgba(15, 42, 56, 0.12);
   --display: 'Playfair Display', Georgia, serif;
+}
+
+:root[data-theme='midnight'] {
+  --paper: #091a23;
+  --mist: #102c39;
+  --ink: #edf5f6;
+  --muted: #bacfd6;
+  --line: rgba(190, 216, 224, 0.18);
+  --red: #d8b66b;
+  --acid: #f0d28a;
+  --panel: #112a36;
+  --panel-strong: #0f2330;
+  --shadow: rgba(0, 0, 0, 0.38);
+}
+
+:root[data-theme='ivory'] {
+  --paper: #f6f3eb;
+  --mist: #efe6cf;
+  --ink: #182a32;
+  --muted: #58676d;
+  --line: #d7cab0;
+  --red: #1a5f7d;
+  --acid: #caa75f;
+  --panel: #fffef9;
+  --panel-strong: #f4f1e6;
+  --shadow: rgba(20, 52, 63, 0.1);
 }
 
 * {
