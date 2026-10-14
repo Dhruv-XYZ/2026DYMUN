@@ -66,8 +66,8 @@ function CommitteesMenu({
       </a>
 
       {open && (
-        <div className="absolute top-full right-0 z-10 pt-3">
-          <div className="grid w-[min(52rem,92vw)] grid-cols-3 gap-8 border border-gold/40 bg-ink p-7 text-text">
+        <div className="absolute top-full left-1/2 z-10 -translate-x-1/2 pt-3">
+          <div className="grid w-[min(52rem,calc(100vw-2rem))] grid-cols-3 gap-8 border border-gold/40 bg-ink p-7 text-text">
             {groups.map((group) => (
               <div key={group.id}>
                 <p className="label text-gold-light">{group.grades}</p>
