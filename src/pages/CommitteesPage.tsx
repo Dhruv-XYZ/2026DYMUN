@@ -1,15 +1,15 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Reveal } from '@/components/Reveal'
-import { Section, SectionHeading } from '@/components/Section'
+import { Section } from '@/components/Section'
 import { committeePage, pages, sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { usePageMeta } from '@/hooks/use-page-meta'
-import { committeeCount, groups } from '@/lib/committees'
+import { groups } from '@/lib/committees'
 
 /**
- * /committees: every committee on one page, as a plain index. Number, name and agenda
- * in open rows separated by hairlines, grouped under the giant outline grade labels.
+ * /committees: every committee on one page, as a plain index. Name, full form and agenda
+ * in open rows, grouped under plain grade headings. No numbers and no dividers.
  */
 export default function CommitteesPage() {
   const copy = sections.committees
@@ -17,40 +17,39 @@ export default function CommitteesPage() {
   usePageMeta('committees')
 
   return (
-    <Section tone="cream" labelledBy="committees-page-title" className="pb-24 md:pb-36">
-      <SectionHeading
-        level={1}
+    <Section tone="cream" labelledBy="committees-page-title" className="border-t-0 pt-28 pb-24 md:pt-36 md:pb-36">
+      <h1
         id="committees-page-title"
-        number={String(committeeCount)}
-        label={copy.label}
-        lead={pages.committees.lead}
-        accent={pages.committees.accent}
-      />
+        className="px-5 text-[clamp(2.75rem,8vw,7rem)] leading-none font-extrabold tracking-[-0.04em] text-fg md:px-10"
+      >
+        {copy.label}
+      </h1>
 
       {groups.map((group) => (
-        <div key={group.id} className="px-5 pt-16 md:px-10 md:pt-28">
+        <div key={group.id} className="px-5 pt-14 md:px-10 md:pt-20">
           <Reveal>
-            <p className="label text-fg-muted">{group.name}</p>
-            <h2 className="display-section text-outline mt-3">{group.grades}</h2>
+            <h2 className="text-3xl font-extrabold tracking-[-0.02em] text-fg md:text-5xl">{group.grades}</h2>
           </Reveal>
 
-          <ol className="mt-8 border-t border-line md:mt-12">
+          <ol className="mt-6 md:mt-10">
             {group.committees.map((committee) => (
               <li
                 key={committee.id}
-                className="grid gap-x-10 gap-y-3 border-b border-line py-7 md:grid-cols-[3.5rem_minmax(0,0.8fr)_minmax(0,1.2fr)] md:py-9"
+                className="grid gap-x-10 gap-y-3 py-6 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:py-8"
               >
-                <span className="label text-tone md:pt-3">
-                  {String(committee.index + 1).padStart(2, '0')}
-                </span>
-                <h3 className="display-sm">
-                  <Link
-                    to={`/committees/${committee.id}`}
-                    className="transition-colors duration-200 hover:text-orange"
-                  >
-                    {committee.name}
-                  </Link>
-                </h3>
+                <div>
+                  <h3 className="display-sm">
+                    <Link
+                      to={`/committees/${committee.id}`}
+                      className="transition-colors duration-200 hover:text-orange"
+                    >
+                      {committee.name}
+                    </Link>
+                  </h3>
+                  {committee.fullName && (
+                    <p className="mt-2 text-base font-medium text-fg-muted md:text-lg">{committee.fullName}</p>
+                  )}
+                </div>
                 <div>
                   {committee.hasAgenda && (
                     <p className="max-w-[60ch] text-base leading-relaxed font-bold text-fg md:text-lg">
