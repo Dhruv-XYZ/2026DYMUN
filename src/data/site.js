@@ -64,9 +64,9 @@ export const seo = {
   },
   team: {
     path: '/team',
-    title: "The Secretariat | DYMUN '26 Model UN, Navi Mumbai",
+    title: "The Team | DYMUN '26 Model UN, Navi Mumbai",
     description:
-      'Meet the secretariat behind DYMUN 2026, the two-day Model UN conference at D Y Patil International School, Navi Mumbai, for students in Grades 3 to 12.',
+      'Meet the team behind DYMUN 2026, the two-day Model UN conference at D Y Patil International School, Navi Mumbai, for students in Grades 3 to 12.',
   },
   about: {
     path: '/about',
@@ -147,7 +147,7 @@ export const sections = {
   team: {
     label: 'Team',
     lead: 'The',
-    accent: 'secretariat',
+    accent: 'team',
   },
   /** The statement over the waves, from the tagline. `lines[1]` is the serif accent. */
   interlude: {

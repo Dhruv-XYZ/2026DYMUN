@@ -19,7 +19,7 @@ function initialsOf(name: string): string {
 }
 
 /**
- * The Secretariat as focus cards. A member without a photo gets a tile with their
+ * The team as focus cards. A member without a photo gets a tile with their
  * initials; a placeholder entry gets its slot number instead, since it has no name yet.
  */
 export function Team({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
@@ -43,7 +43,6 @@ export function Team({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
       <SectionHeading
         level={headingLevel}
         id="team-title"
-        number="04"
         label={copy.label}
         lead={copy.lead}
         accent={copy.accent}

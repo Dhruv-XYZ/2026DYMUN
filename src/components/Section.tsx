@@ -62,7 +62,8 @@ export function SectionHeading({
   className,
 }: {
   id: string
-  number: string
+  /** The outline number on the right. Leave out for none. */
+  number?: string
   /** Not shown. Kept so callers can still say what a section is called. */
   label?: string
   lead: string
@@ -89,12 +90,14 @@ export function SectionHeading({
             />
           </Heading>
         </div>
-        <span
-          aria-hidden="true"
-          className="display-section text-outline hidden shrink-0 md:block"
-        >
-          {number}
-        </span>
+        {number && (
+          <span
+            aria-hidden="true"
+            className="display-section text-outline hidden shrink-0 md:block"
+          >
+            {number}
+          </span>
+        )}
       </div>
       <div className="hairline mt-10 md:mt-14" />
     </header>
