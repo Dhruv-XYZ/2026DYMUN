@@ -73,19 +73,11 @@ export function Hero() {
 
       <HeroLogo placement="below" />
 
-      <div className="relative mt-auto grid gap-10 px-5 pt-10 pb-8 md:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-end lg:gap-16">
-        {/* Screen readers get one steady sentence instead of a word that keeps changing. */}
-        <h1 aria-label={`${site.name}. ${hero.spoken}`} className="display-hero">
-          <span aria-hidden="true" className="block">
-            <span className="block">{hero.lead}</span>
-            <span className="serif-accent block text-[1.06em] text-gold-light">
-              {hero.words[0]}
-            </span>
-            <span className="block">{hero.close}</span>
-          </span>
-        </h1>
+      <div className="relative mt-auto px-5 pt-10 pb-8 md:px-10">
+        {/* The page heading is kept for screen readers and search engines. */}
+        <h1 className="sr-only">{`${site.name}. ${hero.spoken}`}</h1>
 
-        <div className="flex flex-col gap-7 lg:pb-4">
+        <div className="flex flex-col gap-7">
           <p className="max-w-[36ch] text-base text-text-muted md:text-lg">{site.tagline}</p>
 
           <div className="flex flex-wrap items-center gap-x-8 gap-y-5">
