@@ -3,12 +3,9 @@ import { ChevronDown, Menu, X } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { SchoolChip } from '@/components/SchoolChip'
 import { nav, site } from '@/data/site.js'
-import { useActiveSection, useAnchorNavigate } from '@/hooks/use-active-section'
+import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { groups } from '@/lib/committees'
 import { cn } from '@/lib/utils'
-
-// Committees has no section on the home page any more: it lives in the drop-down.
-const sectionIds = nav.filter((item) => item.id !== 'committees').map((item) => item.id)
 
 /** The Committees link with a drop-down of every committee, grouped by grade. */
 function CommitteesMenu({ active }: { active: boolean }) {
@@ -97,18 +94,16 @@ export function Navbar() {
   const navigate = useAnchorNavigate()
   const [open, setOpen] = useState(false)
 
-  const onHome = pathname === '/'
-  const section = useActiveSection(sectionIds, onHome)
-  // On the home page the active item follows the scroll; on any other page it is the
-  // nav item that owns that page, if there is one.
-  const activeId = onHome
-    ? (section ?? 'home')
-    : (nav.find((item) => pathname === item.path || pathname.startsWith(`${item.path}/`))?.id ?? null)
+  // The active item is the one that owns the page being shown.
+  const activeId =
+    nav.find((item) =>
+      item.path === '/' ? pathname === '/' : pathname === item.path || pathname.startsWith(`${item.path}/`),
+    )?.id ?? null
 
   const items = nav.map((item) => ({
     id: item.id,
     label: item.label,
-    href: item.id === 'home' ? '/' : item.id === 'committees' ? '/committees' : `/#${item.id}`,
+    href: item.path,
     active: item.id === activeId,
   }))
   const lastId = items[items.length - 1]?.id

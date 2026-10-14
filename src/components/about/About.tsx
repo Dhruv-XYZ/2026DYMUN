@@ -14,7 +14,7 @@ function fill(text: string): string {
 }
 
 /** What DYMUN is: a few lines and three numbers, with the conference emblem beside them. */
-export function About() {
+export function About({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
   const copy = sections.about
   const word = copy.accent.toUpperCase()
 
@@ -26,9 +26,10 @@ export function About() {
   ]
 
   return (
-    <Section id="about" tone="cream" labelledBy="about-title" className="pb-20 md:pb-32">
+    <Section id="about" tone="cream" labelledBy="about-title" className="min-h-[80svh] pt-20 pb-20 md:pt-24 md:pb-32">
       <SectionHeading
         id="about-title"
+        level={headingLevel}
         number="01"
         label={copy.label}
         lead={copy.lead}

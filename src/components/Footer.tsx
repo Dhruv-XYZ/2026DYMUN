@@ -22,7 +22,7 @@ export function Footer() {
     // A section with a page of its own links to that page; the rest scroll to the section.
     ...nav.map((item) => ({
       label: item.label,
-      href: item.path ?? (item.id === 'home' ? '/' : `/#${item.id}`),
+      href: item.path,
     })),
     { label: sections.contact.label, href: '/contact' },
   ]

@@ -26,7 +26,6 @@ component to change wording.
 | Name, tagline, date, venue, contact details, social links, logo | `src/data/site.js` (`site`) |
 | Navigation, hero words, section headings and short copy | `src/data/site.js` (`nav`, `hero`, `sections`, `pages`, `footer`) |
 | Committees and agendas | `src/data/committees.js` |
-| Schedule | `src/data/schedule.js` |
 | Secretariat (name, role, photo, bio; shown in the hover card, with a skeleton for anything missing) | `src/data/team.js` |
 | Registration rows (Executive Board, Delegate), fees, and the registration button links | `src/data/registration.js` |
 | Enquiry form: Web3Forms key, wording, spam limits | `src/data/enquiry.js` |
@@ -71,7 +70,6 @@ and optional phone numbers and schools, so agree with the school where that data
 - [ ] Fees and what each covers, and the Executive Board and Delegate registration links (`registrationTiers` in `src/data/registration.js`)
 - [ ] Photos (`public/gallery/`)
 - [ ] Secretariat names, roles and photos (`team.js`)
-- [ ] Schedule: order of events and timings (`schedule.js`)
 - [ ] Contact email and phone, social links (`site.contact`, `site.socials`)
 - [ ] Web3Forms access key (`WEB3FORMS_ACCESS_KEY` in `src/data/enquiry.js`), and where enquiries should be emailed
 - [ ] Full committee names, if you want them shown beside the abbreviations
@@ -88,7 +86,7 @@ src/
   hooks/        device profile, active section, page title
   components/
     ui/         the Aceternity components, adapted (see below)
-    hero/ about/ committees/ schedule/ gallery/ team/ register/
+    hero/ about/ committees/ gallery/ team/ register/
     Section.tsx Reveal.tsx Logo.tsx Preloader.tsx Dock.tsx Footer.tsx
   pages/        Home, plus /committees /team /gallery /contact and not found
   index.css     colour tokens, type utilities, grain
@@ -164,7 +162,6 @@ those changes.
 | loader (Loader One) | Preloader |
 | floating-dock | Navigation |
 | text-hover-effect | Hero and footer wordmarks |
-| timeline | Schedule |
 | 3d-marquee | Gallery (columns loop endlessly, neighbours in opposite directions) |
 | focus-cards, tooltip-card | Team (the hover card follows the cursor) |
 | stateful-button, cover | Register |

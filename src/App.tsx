@@ -9,6 +9,8 @@ const Footer = lazy(() => import('@/components/Footer').then((m) => ({ default: 
 
 // The other pages load only when someone opens them.
 const CommitteesPage = lazy(() => import('@/pages/CommitteesPage'))
+const AboutPage = lazy(() => import('@/pages/AboutPage'))
+const RegisterPage = lazy(() => import('@/pages/RegisterPage'))
 const TeamPage = lazy(() => import('@/pages/TeamPage'))
 const GalleryPage = lazy(() => import('@/pages/GalleryPage'))
 const ContactPage = lazy(() => import('@/pages/ContactPage'))
@@ -52,6 +54,8 @@ export default function App() {
           <Suspense fallback={<div data-tone="dark" className="min-h-[100svh] bg-ink" />}>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/register" element={<RegisterPage />} />
               <Route path="/committees" element={<CommitteesPage />} />
               <Route path="/committees/:id" element={<CommitteePage />} />
               <Route path="/team" element={<TeamPage />} />

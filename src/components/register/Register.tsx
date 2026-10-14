@@ -16,14 +16,15 @@ const registerButtonClass =
  * The closing call to action: the headline, three open rows for the ways to attend
  * (name on the left, fee on the right, details on hover), then the form.
  */
-export function Register() {
+export function Register({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
   const navigate = useAnchorNavigate()
   const copy = sections.register
 
   return (
-    <Section id="register" tone="cream" noise labelledBy="register-title" className="pb-24 md:pb-36">
+    <Section id="register" tone="cream" noise labelledBy="register-title" className="pt-20 pb-24 md:pt-24 md:pb-36">
       <SectionHeading
         id="register-title"
+        level={headingLevel}
         number="05"
         label={copy.label}
         lead={copy.lead}

@@ -204,7 +204,7 @@ export default function CommitteePage() {
           )}
         </div>
 
-        <Link to="/#register" className={buttonClass}>
+        <Link to="/register" className={buttonClass}>
           {copy.register}
           <ArrowUpRight aria-hidden="true" className="h-5 w-5" />
         </Link>

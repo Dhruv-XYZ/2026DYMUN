@@ -72,6 +72,18 @@ export const seo = {
     description:
       'Photos from DYMUN, the Model UN conference at D Y Patil International School, Navi Mumbai: delegates, committees and ceremonies.',
   },
+  about: {
+    path: '/about',
+    title: "About DYMUN '26 | Model UN, D Y Patil International School",
+    description:
+      'What DYMUN is: the two-day Model UN conference at D Y Patil International School, Navi Mumbai, for Grades 3 to 12, with 17 committees from Primary to High School.',
+  },
+  register: {
+    path: '/register',
+    title: "Register for DYMUN '26 | Executive Board and Delegates",
+    description:
+      'Register for DYMUN 2026, the Model UN conference at D Y Patil International School, Navi Mumbai: join as an Executive Board member or a delegate, or send an enquiry.',
+  },
   contact: {
     path: '/contact',
     title: "Contact the DYMUN '26 Team | Model UN, Navi Mumbai",
@@ -94,15 +106,14 @@ export const footer = {
   photoCredit: 'Hero photo: United Nations General Assembly Hall, Basil D Soufi, CC BY-SA 3.0, via Wikimedia Commons',
 }
 
-/** Navigation. `id` is the section on the home page, `path` its own page if it has one. */
+/** Navigation. Every item is its own page; only the home page loads at first. */
 export const nav = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
+  { id: 'home', label: 'Home', path: '/' },
+  { id: 'about', label: 'About', path: '/about' },
   { id: 'committees', label: 'Committees', path: '/committees' },
-  { id: 'schedule', label: 'Schedule' },
   { id: 'gallery', label: 'Gallery', path: '/gallery' },
   { id: 'team', label: 'Team', path: '/team' },
-  { id: 'register', label: 'Register' },
+  { id: 'register', label: 'Register', path: '/register' },
 ]
 
 export const hero = {
@@ -138,12 +149,6 @@ export const sections = {
     accent: 'committee',
     agendaPending: 'Agenda to be announced',
     allLink: 'See all committees',
-  },
-  schedule: {
-    label: 'Schedule',
-    lead: 'Two days,',
-    accent: 'one agenda',
-    note: 'Timings will be announced.', // TODO: replace once the programme is final
   },
   gallery: {
     label: 'Gallery',
