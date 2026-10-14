@@ -60,7 +60,7 @@ export function About({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
                 key={stat.label}
                 className={cn('flex flex-col-reverse pt-6', index > 0 && 'border-l border-line pl-4 md:pl-6')}
               >
-                <dt className="label mt-3 text-fg-muted max-md:text-[0.68rem] max-md:tracking-[0.08em]">
+                <dt className="label mt-3 text-fg-muted max-md:text-[0.68rem] max-md:tracking-[0.03em]">
                   {stat.label}
                 </dt>
                 <dd className="text-[clamp(2.25rem,4.6vw,5rem)] leading-none font-black tracking-[-0.05em] whitespace-nowrap">

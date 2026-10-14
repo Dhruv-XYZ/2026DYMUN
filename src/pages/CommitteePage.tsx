@@ -17,7 +17,7 @@ const initialsOf = (name: string) =>
     .join('')
 
 const buttonClass =
-  'inline-flex h-14 shrink-0 items-center justify-center gap-3 rounded-full bg-orange px-9 text-[0.8rem] font-semibold tracking-[0.2em] text-ink uppercase transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]'
+  'inline-flex h-14 shrink-0 items-center justify-center gap-3 rounded-full bg-orange px-9 text-[0.8rem] font-semibold tracking-[0.04em] text-ink uppercase transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]'
 
 /** /committees/:id. One committee: its agenda, a description, and its two chairs. */
 export default function CommitteePage() {
@@ -65,7 +65,7 @@ export default function CommitteePage() {
           {committee.name}
         </h1>
         {committee.fullName ? (
-          <p className="mt-4 text-base font-semibold tracking-[0.14em] text-tone uppercase md:text-xl">
+          <p className="mt-4 text-base font-semibold tracking-[0.03em] text-tone uppercase md:text-xl">
             {committee.fullName}
           </p>
         ) : null}

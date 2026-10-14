@@ -347,7 +347,7 @@ export function EnquiryForm() {
           type="submit"
           state={status === 'loading' ? 'loading' : status === 'success' ? 'success' : 'idle'}
           disabled={status === 'loading'}
-          className="h-14 px-10 text-[0.8rem] font-semibold tracking-[0.2em] uppercase"
+          className="h-14 px-10 text-[0.8rem] font-semibold tracking-[0.04em] uppercase"
         >
           {copy.submit}
         </StatefulButton>

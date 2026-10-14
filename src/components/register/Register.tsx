@@ -10,7 +10,7 @@ import { EnquiryForm } from './EnquiryForm'
 
 /** The orange pill used for the registration button inside each dropdown. */
 const registerButtonClass =
-  'inline-flex h-14 shrink-0 items-center justify-center rounded-full bg-orange px-10 text-[0.8rem] font-semibold tracking-[0.2em] text-ink uppercase transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]'
+  'inline-flex h-14 shrink-0 items-center justify-center rounded-full bg-orange px-10 text-[0.8rem] font-semibold tracking-[0.04em] text-ink uppercase transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]'
 
 /**
  * The closing call to action: the headline, three open rows for the ways to attend

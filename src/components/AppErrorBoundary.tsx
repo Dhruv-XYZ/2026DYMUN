@@ -35,7 +35,7 @@ export class AppErrorBoundary extends Component<{ children: ReactNode }, { faile
         <button
           type="button"
           onClick={() => window.location.reload()}
-          className="rounded-full bg-orange px-9 py-4 text-[0.8rem] font-semibold tracking-[0.2em] text-ink uppercase"
+          className="rounded-full bg-orange px-9 py-4 text-[0.8rem] font-semibold tracking-[0.04em] text-ink uppercase"
         >
           Reload the page
         </button>

@@ -90,7 +90,7 @@ export function SchoolChip() {
                 href={site.schoolUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-orange px-6 text-[0.75rem] font-semibold tracking-[0.16em] whitespace-nowrap text-ink uppercase transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-orange px-6 text-[0.75rem] font-semibold tracking-[0.03em] whitespace-nowrap text-ink uppercase transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
               >
                 {schoolCard.button}
                 <ArrowUpRight aria-hidden="true" className="h-4 w-4" />

@@ -52,7 +52,7 @@ export function Hero() {
           <a
             href="/register"
             onClick={navigate}
-            className="inline-flex h-12 items-center justify-center rounded-full bg-orange px-9 text-[0.8rem] font-semibold tracking-[0.2em] text-ink uppercase transition-colors duration-200 hover:bg-gold-light"
+            className="inline-flex h-12 items-center justify-center rounded-full bg-orange px-9 text-[0.8rem] font-semibold tracking-[0.04em] text-ink uppercase transition-colors duration-200 hover:bg-gold-light"
           >
             {hero.primaryCta}
           </a>

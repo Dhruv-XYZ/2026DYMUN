@@ -36,7 +36,7 @@ function CommitteesMenu({ active }: { active: boolean }) {
         aria-controls="committees-menu"
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          'inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[0.72rem] font-semibold tracking-[0.2em] uppercase transition-colors duration-200',
+          'inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[0.72rem] font-semibold tracking-[0.04em] uppercase transition-colors duration-200',
           active ? 'bg-ink text-orange' : 'text-fg-muted hover:text-fg',
         )}
       >
@@ -148,7 +148,7 @@ export function Navbar() {
                 onClick={navigate}
                 aria-current={item.active ? 'true' : undefined}
                 className={cn(
-                  'relative rounded-full px-4 py-2.5 text-[0.72rem] font-semibold tracking-[0.2em] uppercase transition-colors duration-200',
+                  'relative rounded-full px-4 py-2.5 text-[0.72rem] font-semibold tracking-[0.04em] uppercase transition-colors duration-200',
                   item.id === lastId
                     ? 'ml-3 bg-orange text-ink hover:bg-gold-light'
                     : item.active

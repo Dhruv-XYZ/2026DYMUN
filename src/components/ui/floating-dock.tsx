@@ -157,7 +157,7 @@ const FloatingDockDesktop = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18 }}
-            className="block text-[0.65rem] font-medium tracking-[0.3em] whitespace-nowrap text-text uppercase"
+            className="block text-[0.65rem] font-medium tracking-[0.04em] whitespace-nowrap text-text uppercase"
           >
             {shownTitle}
           </motion.span>
