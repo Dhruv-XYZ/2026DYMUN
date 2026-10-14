@@ -45,8 +45,8 @@ export function Hero() {
           <span className="serif-accent ml-2 text-[0.5em] text-gold-light">{site.edition}</span>
         </p>
 
-        <p className="label mt-6 text-text">{site.date}</p>
-        <p className="label mt-2 text-text">{site.venueLine}</p>
+        <p className="mt-6 text-xl font-extrabold tracking-[0.02em] text-text uppercase md:text-2xl">{site.date}</p>
+        <p className="mt-1 text-xl font-extrabold tracking-[0.02em] text-text uppercase md:text-2xl">{site.venueLine}</p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
           <a
