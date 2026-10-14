@@ -95,9 +95,10 @@ export function Footer() {
         />
       </div>
 
-      <p className="px-5 pt-6 pb-10 text-center text-lg font-semibold md:pb-14 md:text-xl">
+      <p className="px-5 pt-6 pb-4 text-center text-lg font-semibold md:text-xl">
         {footer.credit}
       </p>
+      <p className="px-5 pb-10 text-center text-xs text-text-muted md:pb-14">{footer.photoCredit}</p>
     </footer>
   )
 }

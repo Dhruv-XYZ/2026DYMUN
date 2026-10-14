@@ -33,6 +33,34 @@ export function Hero() {
       data-tone="dark"
       className="relative flex min-h-[100svh] flex-col overflow-x-clip bg-ink pt-24 pb-20 text-text md:pt-28 md:pb-0"
     >
+      {/* The United Nations General Assembly Hall, under a dark linear gradient so the type
+          on top stays readable. Decorative; the credit is in the footer. */}
+      <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
+        <img
+          src="/hero/un-general-assembly.jpg"
+          alt=""
+          width={1600}
+          height={1067}
+          fetchPriority="high"
+          decoding="async"
+          className="h-full w-full object-cover object-center"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(180deg, rgb(10 10 10 / 0.7) 0%, rgb(10 10 10 / 0.3) 38%, rgb(10 10 10 / 0.68) 72%, var(--color-ink) 100%)',
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(90deg, rgb(10 10 10 / 0.55) 0%, transparent 60%)',
+          }}
+        />
+      </div>
+
       {/* From 1024px the emblem stands beside the wordmark and is exactly as tall as it:
           the wordmark takes 76.2% of the row and the emblem the rest, which makes both
           the same height. Below 1024px the emblem sits under the wordmark instead. */}
