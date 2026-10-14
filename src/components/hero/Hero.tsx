@@ -69,7 +69,7 @@ export function Hero() {
             {hero.primaryCta}
           </a>
           <a
-            href="/#committees"
+            href="/committees"
             onClick={navigate}
             className="group inline-flex items-center gap-2 text-sm font-medium text-text underline decoration-gold/60 decoration-1 underline-offset-8 transition-colors duration-200 hover:text-orange hover:decoration-orange"
           >

@@ -164,7 +164,6 @@ those changes.
 | loader (Loader One) | Preloader |
 | floating-dock | Navigation |
 | text-hover-effect | Hero and footer wordmarks |
-| sticky-scroll-reveal | Committees |
 | timeline | Schedule |
 | 3d-marquee | Gallery (columns loop endlessly, neighbours in opposite directions) |
 | focus-cards, tooltip-card | Team (the hover card follows the cursor) |

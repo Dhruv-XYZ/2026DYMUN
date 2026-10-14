@@ -43,7 +43,7 @@ export function Team({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
       <SectionHeading
         level={headingLevel}
         id="team-title"
-        number="05"
+        number="04"
         label={copy.label}
         lead={copy.lead}
         accent={copy.accent}

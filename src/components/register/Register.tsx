@@ -24,7 +24,7 @@ export function Register() {
     <Section id="register" tone="cream" noise labelledBy="register-title" className="pb-24 md:pb-36">
       <SectionHeading
         id="register-title"
-        number="06"
+        number="05"
         label={copy.label}
         lead={copy.lead}
         accent={copy.accent}

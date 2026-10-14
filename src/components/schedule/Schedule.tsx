@@ -14,7 +14,7 @@ export function Schedule() {
     <Section id="schedule" tone="cream" noise labelledBy="schedule-title">
       <SectionHeading
         id="schedule-title"
-        number="03"
+        number="02"
         label={copy.label}
         lead={copy.lead}
         accent={copy.accent}

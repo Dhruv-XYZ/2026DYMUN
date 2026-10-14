@@ -34,7 +34,7 @@ export default function ContactPage() {
       <SectionHeading
         level={1}
         id="contact-page-title"
-        number="07"
+        number="06"
         label={copy.label}
         lead={copy.lead}
         accent={copy.accent}

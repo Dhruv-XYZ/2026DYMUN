@@ -21,7 +21,7 @@ export function Gallery() {
     <Section id="gallery" tone="cream" labelledBy="gallery-title">
       <SectionHeading
         id="gallery-title"
-        number="04"
+        number="03"
         label={copy.label}
         lead={copy.lead}
         accent={copy.accent}

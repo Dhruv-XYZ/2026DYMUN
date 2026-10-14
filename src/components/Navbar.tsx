@@ -7,7 +7,8 @@ import { useActiveSection, useAnchorNavigate } from '@/hooks/use-active-section'
 import { groups } from '@/lib/committees'
 import { cn } from '@/lib/utils'
 
-const sectionIds = nav.map((item) => item.id)
+// Committees has no section on the home page any more: it lives in the drop-down.
+const sectionIds = nav.filter((item) => item.id !== 'committees').map((item) => item.id)
 
 /** The Committees link with a drop-down of every committee, grouped by grade. */
 function CommitteesMenu({ active }: { active: boolean }) {
@@ -107,7 +108,7 @@ export function Navbar() {
   const items = nav.map((item) => ({
     id: item.id,
     label: item.label,
-    href: item.id === 'home' ? '/' : `/#${item.id}`,
+    href: item.id === 'home' ? '/' : item.id === 'committees' ? '/committees' : `/#${item.id}`,
     active: item.id === activeId,
   }))
   const lastId = items[items.length - 1]?.id

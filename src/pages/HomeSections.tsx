@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { About } from '@/components/about/About'
-import { Committees } from '@/components/committees/Committees'
 import { Gallery } from '@/components/gallery/Gallery'
 import { Register } from '@/components/register/Register'
 import { Schedule } from '@/components/schedule/Schedule'
@@ -20,7 +19,6 @@ export default function HomeSections() {
   return (
     <>
       <About />
-      <Committees />
       <Schedule />
       <Gallery />
       <Team />
