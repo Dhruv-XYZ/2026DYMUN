@@ -18,7 +18,7 @@ export function Gallery() {
   const near = useInView(stageRef, { once: true, margin: '500px 0px' })
 
   return (
-    <Section id="gallery" tone="dark" labelledBy="gallery-title">
+    <Section id="gallery" tone="cream" labelledBy="gallery-title">
       <SectionHeading
         id="gallery-title"
         number="04"

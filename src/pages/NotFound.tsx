@@ -11,7 +11,7 @@ export default function NotFound() {
   usePageMeta('notFound', { noindex: true })
 
   return (
-    <Section tone="dark" labelledBy="not-found-title" className="min-h-[100svh] pb-24 md:pb-36">
+    <Section tone="cream" labelledBy="not-found-title" className="min-h-[100svh] pb-24 md:pb-36">
       <SectionHeading
         level={1}
         id="not-found-title"

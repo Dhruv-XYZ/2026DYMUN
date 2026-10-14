@@ -48,7 +48,7 @@ export default function CommitteePage() {
   const agenda = committee.agenda ?? sections.committees.agendaPending
 
   return (
-    <Section tone="dark" labelledBy="committee-title" className="pb-24 md:pb-36">
+    <Section tone="cream" labelledBy="committee-title" className="pb-24 md:pb-36">
       <header className="px-5 pt-28 md:px-10 md:pt-40">
         <Link
           to="/committees"
@@ -65,7 +65,7 @@ export default function CommitteePage() {
           {committee.name}
         </h1>
         {committee.fullName ? (
-          <p className="mt-4 text-base font-semibold tracking-[0.14em] text-gold uppercase md:text-xl">
+          <p className="mt-4 text-base font-semibold tracking-[0.14em] text-tone uppercase md:text-xl">
             {committee.fullName}
           </p>
         ) : null}

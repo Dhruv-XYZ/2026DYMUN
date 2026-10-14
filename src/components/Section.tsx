@@ -37,7 +37,7 @@ export function Section({
       data-tone={tone}
       aria-labelledby={labelledBy}
       className={cn(
-        'relative isolate w-full overflow-x-clip bg-surface text-fg',
+        'relative isolate w-full overflow-x-clip border-t border-line bg-surface text-fg',
         grain && !noise && 'grain',
         className,
       )}

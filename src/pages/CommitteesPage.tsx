@@ -17,7 +17,7 @@ export default function CommitteesPage() {
   usePageMeta('committees')
 
   return (
-    <Section tone="dark" labelledBy="committees-page-title" className="pb-24 md:pb-36">
+    <Section tone="cream" labelledBy="committees-page-title" className="pb-24 md:pb-36">
       <SectionHeading
         level={1}
         id="committees-page-title"

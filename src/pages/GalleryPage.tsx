@@ -9,7 +9,7 @@ export default function GalleryPage() {
   usePageMeta('gallery')
 
   return (
-    <Section tone="dark" labelledBy="gallery-page-title" className="pb-24 md:pb-36">
+    <Section tone="cream" labelledBy="gallery-page-title" className="pb-24 md:pb-36">
       <SectionHeading
         level={1}
         id="gallery-page-title"

@@ -39,7 +39,7 @@ export function Team({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
   }))
 
   return (
-    <Section id="team" tone="dark" labelledBy="team-title" className="pb-24 md:pb-36">
+    <Section id="team" tone="cream" labelledBy="team-title" className="pb-24 md:pb-36">
       <SectionHeading
         level={headingLevel}
         id="team-title"
