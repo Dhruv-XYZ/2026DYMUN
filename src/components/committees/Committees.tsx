@@ -18,13 +18,12 @@ import { CommitteeVisual } from './CommitteeVisual'
  * of case.
  */
 export function Committees() {
-  const { compact, lowPower, reducedMotion } = useDeviceProfile()
+  const { compact, lowPower } = useDeviceProfile()
   const navigate = useAnchorNavigate()
   const copy = sections.committees
 
   // Phones, tablets and low-power devices get the plain stacked list with still visuals.
   const stacked = compact || lowPower
-  const animated = !stacked && !reducedMotion
 
   return (
     <Section id="committees" tone="dark" labelledBy="committees-title" className="pb-24 md:pb-36">
@@ -72,7 +71,7 @@ export function Committees() {
                 </Link>
               ),
               visual: (
-                <CommitteeVisual committee={committee} animated={animated} />
+                <CommitteeVisual committee={committee} animated={false} />
               ),
             }))}
           />

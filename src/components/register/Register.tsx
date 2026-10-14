@@ -1,16 +1,12 @@
-import { lazy, Suspense } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { OnScreen } from '@/components/OnScreen'
 import { Reveal } from '@/components/Reveal'
 import { Section, SectionHeading } from '@/components/Section'
 import { enquiryForm } from '@/data/enquiry.js'
 import { registrationButton, registrationTiers } from '@/data/registration.js'
 import { sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
-import { useDeviceProfile } from '@/hooks/use-device'
 import { EnquiryForm } from './EnquiryForm'
 
-const CoverWord = lazy(() => import('./CoverWord'))
 
 /** The orange pill used for the registration button inside each dropdown. */
 const registerButtonClass =
@@ -21,12 +17,8 @@ const registerButtonClass =
  * (name on the left, fee on the right, details on hover), then the form.
  */
 export function Register() {
-  const { touch, reducedMotion, lowPower } = useDeviceProfile()
   const navigate = useAnchorNavigate()
   const copy = sections.register
-
-  // The warp-speed word needs a cursor to hover with, and is skipped where it would lag.
-  const warp = !touch && !reducedMotion && !lowPower
 
   return (
     <Section id="register" tone="cream" noise labelledBy="register-title" className="pb-24 md:pb-36">
@@ -35,17 +27,7 @@ export function Register() {
         number="06"
         label={copy.label}
         lead={copy.lead}
-        accent={
-          warp ? (
-            <OnScreen fallback={copy.accent}>
-              <Suspense fallback={copy.accent}>
-                <CoverWord>{copy.accent}</CoverWord>
-              </Suspense>
-            </OnScreen>
-          ) : (
-            copy.accent
-          )
-        }
+        accent={copy.accent}
       />
 
       {/* Two rows, Executive Board and Delegate. Each opens a dropdown with the

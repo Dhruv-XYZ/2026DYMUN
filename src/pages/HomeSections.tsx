@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { About } from '@/components/about/About'
 import { Committees } from '@/components/committees/Committees'
 import { Gallery } from '@/components/gallery/Gallery'
-import { Interlude } from '@/components/interlude/Interlude'
 import { Register } from '@/components/register/Register'
 import { Schedule } from '@/components/schedule/Schedule'
 import { Team } from '@/components/team/Team'
@@ -25,7 +24,6 @@ export default function HomeSections() {
       <Schedule />
       <Gallery />
       <Team />
-      <Interlude />
       <Register />
     </>
   )

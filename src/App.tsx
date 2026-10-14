@@ -1,28 +1,11 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
-import { AnimatePresence } from 'motion/react'
+import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { AppErrorBoundary } from '@/components/AppErrorBoundary'
 import { DebugBadge } from '@/components/DebugBadge'
 import { Navbar } from '@/components/Navbar'
-import { Preloader } from '@/components/Preloader'
-import { useDeviceProfile } from '@/hooks/use-device'
-import { useEffectsReady } from '@/hooks/use-effects-ready'
 import Home from '@/pages/Home'
 
 const Footer = lazy(() => import('@/components/Footer').then((m) => ({ default: m.Footer })))
-const PageVortex = lazy(() => import('@/components/PageVortex'))
-
-/** The very faint vortex over the whole page. Still for reduced motion and weak devices. */
-function PageBackdrop() {
-  const { reducedMotion, lowPower, small } = useDeviceProfile()
-  const effectsReady = useEffectsReady()
-  if (!effectsReady) return null
-  return (
-    <Suspense fallback={null}>
-      <PageVortex still={reducedMotion || lowPower} small={small} />
-    </Suspense>
-  )
-}
 
 // The other pages load only when someone opens them.
 const CommitteesPage = lazy(() => import('@/pages/CommitteesPage'))
@@ -31,25 +14,6 @@ const GalleryPage = lazy(() => import('@/pages/GalleryPage'))
 const ContactPage = lazy(() => import('@/pages/ContactPage'))
 const CommitteePage = lazy(() => import('@/pages/CommitteePage'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
-
-/** Set once the preloader has played, so it is skipped for the rest of the session. */
-const SESSION_KEY = 'dymun26:preloaded'
-
-function hasPreloaded(): boolean {
-  try {
-    return sessionStorage.getItem(SESSION_KEY) === '1'
-  } catch {
-    return true // storage blocked: skip the preloader rather than replay it every time
-  }
-}
-
-function markPreloaded() {
-  try {
-    sessionStorage.setItem(SESSION_KEY, '1')
-  } catch {
-    // storage blocked: nothing to remember
-  }
-}
 
 /** Scrolls to the section named in the address (/#register), or to the top of a new page. */
 function ScrollManager() {
@@ -70,13 +34,6 @@ function ScrollManager() {
 }
 
 export default function App() {
-  const [loading, setLoading] = useState(() => !hasPreloaded())
-
-  const finishLoading = useCallback(() => {
-    markPreloaded()
-    setLoading(false)
-  }, [])
-
   return (
     <AppErrorBoundary>
       <BrowserRouter>
@@ -87,19 +44,14 @@ export default function App() {
           Skip to content
         </a>
 
-        <AnimatePresence>
-          {loading && <Preloader key="preloader" onDone={finishLoading} />}
-        </AnimatePresence>
-
         {window.location.search.includes('debug') && <DebugBadge />}
         <ScrollManager />
-        {!loading && <PageBackdrop />}
         <Navbar />
 
         <main id="main">
           <Suspense fallback={<div data-tone="dark" className="min-h-[100svh] bg-ink" />}>
             <Routes>
-              <Route path="/" element={<Home ready={!loading} />} />
+              <Route path="/" element={<Home />} />
               <Route path="/committees" element={<CommitteesPage />} />
               <Route path="/committees/:id" element={<CommitteePage />} />
               <Route path="/team" element={<TeamPage />} />

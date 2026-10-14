@@ -9,14 +9,13 @@ const WAKE_EVENTS = ['pointerdown', 'wheel', 'scroll', 'keydown', 'touchstart'] 
 /**
  * The landing page. Sections alternate dark and cream:
  * hero (dark), about (cream), committees (dark), schedule (cream), gallery (dark),
- * team (dark), the wavy statement (dark), register (cream), then the dark footer.
- * `ready` is false while the preloader is still on screen.
+ * team (dark), register (cream), then the dark footer.
  *
  * The hero is in the first download so it paints quickly. The rest is a second chunk,
  * brought in a few seconds after load, or at once if the visitor scrolls, touches or
  * presses a key first (and a link such as /#register counts too).
  */
-export default function Home({ ready = true }: { ready?: boolean }) {
+export default function Home() {
   usePageMeta('home')
   const [more, setMore] = useState(() => window.location.hash.length > 1)
 
@@ -33,7 +32,7 @@ export default function Home({ ready = true }: { ready?: boolean }) {
 
   return (
     <>
-      <Hero ready={ready} />
+      <Hero />
       {more ? (
         <Suspense fallback={<div aria-hidden="true" className="min-h-[100svh]" />}>
           <HomeSections />

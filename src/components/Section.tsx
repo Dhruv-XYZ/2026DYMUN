@@ -1,38 +1,8 @@
-import { useRef } from 'react'
 import type { ReactNode } from 'react'
 import { MaskedLines } from '@/components/Reveal'
-import { NoiseBackground } from '@/components/ui/noise-background'
 import { cn } from '@/lib/utils'
 
 export type Tone = 'dark' | 'cream'
-
-/**
- * The texture of a cream section: Aceternity's noise background, with its warm glow
- * under film grain. It is held still: animating a glow across a whole section meant
- * repainting the section every frame, which Safari could not keep up with.
- *
- * It is laid over the section's content and multiplied in, like a tint on a print.
- * That way it colours the filled-in letters of outline type exactly as it colours the
- * paper around them, so they still look empty.
- */
-function NoiseLayer() {
-  const ref = useRef<HTMLDivElement>(null)
-
-  return (
-    <div
-      ref={ref}
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-20 mix-blend-multiply"
-    >
-      <NoiseBackground
-        containerClassName="absolute inset-0"
-        animating={false}
-        strength={0.45}
-        speed={0.06}
-      />
-    </div>
-  )
-}
 
 /**
  * A full-width band of the page. `tone` switches every colour inside it between the
@@ -72,7 +42,6 @@ export function Section({
         className,
       )}
     >
-      {noise && <NoiseLayer />}
       {children}
     </section>
   )

@@ -1,70 +1,25 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import type { RefObject } from 'react'
 import { ArrowDownRight } from 'lucide-react'
-import { MaskedLines } from '@/components/Reveal'
-import { ContainerTextFlip } from '@/components/ui/container-text-flip'
-import { MagneticButton } from '@/components/ui/magnetic-button'
-import { MovingBorderButton } from '@/components/ui/moving-border'
 import { TextHoverEffect } from '@/components/ui/text-hover-effect'
 import { hero, site } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
-import { useDeviceProfile } from '@/hooks/use-device'
-import { useEffectsReady } from '@/hooks/use-effects-ready'
 
 import { HeroLogo } from './HeroLogo'
 
-const HeroWaves = lazy(() => import('./HeroWaves'))
-
-/**
- * The giant outline wordmark. It follows the cursor anywhere in the hero, not only
- * over the letters. Kept as its own component so cursor movement re-renders just this.
- */
-function HeroWordmark({
-  sectionRef,
-  interactive,
-  active,
-}: {
-  sectionRef: RefObject<HTMLElement | null>
-  interactive: boolean
-  active: boolean
-}) {
-  const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null)
-
-  useEffect(() => {
-    const section = sectionRef.current
-    if (!section || !interactive) return
-
-    const move = (event: PointerEvent) => setPointer({ x: event.clientX, y: event.clientY })
-    const leave = () => setPointer(null)
-    section.addEventListener('pointermove', move)
-    section.addEventListener('pointerleave', leave)
-    return () => {
-      section.removeEventListener('pointermove', move)
-      section.removeEventListener('pointerleave', leave)
-    }
-  }, [sectionRef, interactive])
-
+/** The giant outline wordmark. It draws itself on once and then holds still. */
+function HeroWordmark() {
   return (
     <TextHoverEffect
       text={site.shortName.toUpperCase()}
-      pointer={interactive ? pointer : null}
-      interactive={interactive}
-      active={active}
+      interactive={false}
+      active
       alignStart
       duration={0.12}
     />
   )
 }
 
-/** `ready` turns true when the preloader has left; the entrance waits for it. */
-export function Hero({ ready }: { ready: boolean }) {
-  const { reducedMotion, touch, lowPower, small } = useDeviceProfile()
-  const effectsReady = useEffectsReady()
-  const sectionRef = useRef<HTMLElement>(null)
+export function Hero() {
   const navigate = useAnchorNavigate()
-
-  // Cursor effects only where there is a real cursor and motion is welcome.
-  const cursorEffects = !touch && !reducedMotion
 
   const facts = [
     { term: 'Date', value: site.date === 'TBA' ? 'Date TBA' : site.date },
@@ -74,24 +29,16 @@ export function Hero({ ready }: { ready: boolean }) {
 
   return (
     <section
-      ref={sectionRef}
       id="home"
       data-tone="dark"
-      className="grain relative flex min-h-[100svh] flex-col overflow-x-clip bg-ink pt-24 pb-20 text-text md:pt-28 md:pb-0"
+      className="relative flex min-h-[100svh] flex-col overflow-x-clip bg-ink pt-24 pb-20 text-text md:pt-28 md:pb-0"
     >
-      {/* Orange and gold waves at the very back. */}
-      {effectsReady && (
-        <Suspense fallback={null}>
-          <HeroWaves still={reducedMotion || lowPower} small={small} />
-        </Suspense>
-      )}
-
       {/* From 1024px the emblem stands beside the wordmark and is exactly as tall as it:
           the wordmark takes 76.2% of the row and the emblem the rest, which makes both
           the same height. Below 1024px the emblem sits under the wordmark instead. */}
       <div className="relative px-4 md:px-8 lg:flex lg:items-stretch">
         <div className="min-w-0 lg:w-[76.2%]">
-          <HeroWordmark sectionRef={sectionRef} interactive={cursorEffects} active={ready} />
+          <HeroWordmark />
         </div>
         <HeroLogo placement="side" />
       </div>
@@ -102,24 +49,11 @@ export function Hero({ ready }: { ready: boolean }) {
         {/* Screen readers get one steady sentence instead of a word that keeps changing. */}
         <h1 aria-label={`${site.name}. ${hero.spoken}`} className="display-hero">
           <span aria-hidden="true" className="block">
-            <MaskedLines show={ready} lines={[hero.lead]} />
-            <span className="block">
-              <ContainerTextFlip
-                words={hero.words}
-                paused={reducedMotion || !ready}
-                className="serif-accent text-[1.06em] text-gold-light"
-              />
+            <span className="block">{hero.lead}</span>
+            <span className="serif-accent block text-[1.06em] text-gold-light">
+              {hero.words[0]}
             </span>
-            <MaskedLines
-              show={ready}
-              delay={0.2}
-              lines={[
-                <span key="close" className="relative inline-block">
-                  <span className="shiny inline-block">{hero.close}</span>
-                  <span className="shiny-outline absolute inset-0">{hero.close}</span>
-                </span>,
-              ]}
-            />
+            <span className="block">{hero.close}</span>
           </span>
         </h1>
 
@@ -127,26 +61,13 @@ export function Hero({ ready }: { ready: boolean }) {
           <p className="max-w-[36ch] text-base text-text-muted md:text-lg">{site.tagline}</p>
 
           <div className="flex flex-wrap items-center gap-x-8 gap-y-5">
-            <MagneticButton
-              strength={0.35}
-              maxDistance={16}
-              disabled={!cursorEffects}
-              className="-m-3 p-3"
+            <a
+              href="/#register"
+              onClick={navigate}
+              className="inline-flex h-12 items-center justify-center rounded-full bg-orange px-9 text-[0.8rem] font-semibold tracking-[0.2em] text-ink uppercase transition-colors duration-200 hover:bg-gold-light"
             >
-              <MovingBorderButton
-                as="a"
-                href="/#register"
-                onClick={navigate}
-                borderRadius="999px"
-                rx="28"
-                ry="28"
-                duration={3200}
-                paused={reducedMotion}
-                className="px-9 text-[0.8rem] tracking-[0.2em] uppercase"
-              >
-                {hero.primaryCta}
-              </MovingBorderButton>
-            </MagneticButton>
+              {hero.primaryCta}
+            </a>
 
             <a
               href="/#committees"
