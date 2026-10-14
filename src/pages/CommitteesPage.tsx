@@ -7,9 +7,16 @@ import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { usePageMeta } from '@/hooks/use-page-meta'
 import { groups } from '@/lib/committees'
 
+/** Tile colours, taken in turn: ink, deep amber, dark gold. `sub` is the full-form colour on each. */
+const TILES = [
+  { bg: 'bg-ink', sub: 'text-gold-light' },
+  { bg: 'bg-amber-deep', sub: 'text-gold-light' },
+  { bg: 'bg-gold-dark', sub: 'text-text' },
+]
+
 /**
- * /committees: every committee on one page, as a plain index. Name, full form and agenda
- * in open rows, grouped under plain grade headings. No numbers and no dividers.
+ * /committees: every committee as a colour tile (name and full form), grouped under plain
+ * grade headings. A tile opens the committee's own page, which has the agenda.
  */
 export default function CommitteesPage() {
   const copy = sections.committees
@@ -25,52 +32,39 @@ export default function CommitteesPage() {
         {copy.label}
       </h1>
 
-      {groups.map((group) => (
+      {groups.map((group, groupIndex) => (
         <div key={group.id} className="px-5 pt-14 md:px-10 md:pt-20">
           <Reveal>
             <h2 className="text-3xl font-extrabold tracking-[-0.02em] text-fg md:text-5xl">{group.grades}</h2>
           </Reveal>
 
-          <ol className="mt-6 md:mt-10">
-            {group.committees.map((committee) => (
-              <li
-                key={committee.id}
-                className="grid gap-x-10 gap-y-3 py-6 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:py-8"
-              >
-                <div>
-                  <h3 className="display-sm">
-                    <Link
-                      to={`/committees/${committee.id}`}
-                      className="transition-colors duration-200 hover:text-orange"
-                    >
-                      {committee.name}
-                    </Link>
-                  </h3>
-                  {committee.fullName && (
-                    <p className="mt-2 text-base font-medium text-fg-muted md:text-lg">{committee.fullName}</p>
-                  )}
-                </div>
-                <div>
-                  {committee.hasAgenda && (
-                    <p className="max-w-[60ch] text-base leading-relaxed font-bold text-fg md:text-lg">
-                      {committee.agenda ?? copy.agendaPending}
-                    </p>
-                  )}
+          <ul className="mt-6 grid gap-4 sm:grid-cols-2 md:mt-10 lg:grid-cols-3 lg:gap-5">
+            {group.committees.map((committee, i) => {
+              const tile = TILES[(i + groupIndex) % TILES.length]
+              return (
+                <li key={committee.id}>
                   <Link
                     to={`/committees/${committee.id}`}
                     aria-label={`${committeePage.view}: ${committee.name}`}
-                    className="group mt-5 inline-flex items-center gap-2 text-base font-semibold text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors duration-200 hover:text-orange hover:decoration-orange"
+                    className={`group relative flex h-48 flex-col justify-end rounded-3xl p-6 transition-transform duration-200 hover:-translate-y-1 md:h-56 md:p-7 ${tile.bg}`}
                   >
-                    {committeePage.view}
-                    <ArrowUpRight
-                      aria-hidden="true"
-                      className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    />
+                    <span className="absolute top-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-orange text-ink md:top-6 md:right-6">
+                      <ArrowUpRight
+                        aria-hidden="true"
+                        className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
+                    </span>
+                    <span className="text-[clamp(2.25rem,4vw,3.5rem)] leading-none font-black tracking-[-0.04em] text-text">
+                      {committee.name}
+                    </span>
+                    {committee.fullName && (
+                      <span className={`mt-2 text-base font-semibold ${tile.sub}`}>{committee.fullName}</span>
+                    )}
                   </Link>
-                </div>
-              </li>
-            ))}
-          </ol>
+                </li>
+              )
+            })}
+          </ul>
         </div>
       ))}
 
