@@ -1,22 +1,13 @@
-import { useRef } from 'react'
-import { useInView } from 'motion/react'
 import { Logo } from '@/components/Logo'
-import { TextHoverEffect } from '@/components/ui/text-hover-effect'
 import { footer, nav, sections, site } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
-import { useDeviceProfile } from '@/hooks/use-device'
 
 const linkClass =
   'text-text underline decoration-transparent decoration-1 underline-offset-4 transition-colors duration-200 hover:text-orange hover:decoration-orange'
 
-/** Site footer: links, the school, contact placeholders, the giant wordmark and a credit line. */
+/** Site footer: the banner, then links, the school and contact details. */
 export function Footer() {
-  const { touch, reducedMotion } = useDeviceProfile()
   const navigate = useAnchorNavigate()
-
-  // The wordmark draws itself on once it is on screen.
-  const wordmarkRef = useRef<HTMLDivElement>(null)
-  const seen = useInView(wordmarkRef, { once: true, margin: '0px 0px -12% 0px' })
 
   const links = [
     // A section with a page of its own links to that page; the rest scroll to the section.
@@ -34,7 +25,17 @@ export function Footer() {
 
   return (
     <footer data-tone="dark" className="relative isolate bg-ink text-text">
-      <div className="grid gap-12 px-5 pt-20 md:grid-cols-[1.2fr_1fr_1fr] md:px-10 md:pt-28">
+      <img
+        src="/footer/footer-banner.webp"
+        alt={`${site.name}, ${site.school}, ${site.city}`}
+        width={1400}
+        height={400}
+        loading="lazy"
+        decoding="async"
+        className="block h-auto w-full"
+      />
+
+      <div className="grid gap-12 px-5 pt-14 md:grid-cols-[1.2fr_1fr_1fr] md:px-10 md:pt-20">
         <div>
           <Logo className="text-2xl" />
           <p className="mt-5 max-w-[30ch] text-text-muted">{site.venue}</p>
@@ -85,20 +86,7 @@ export function Footer() {
         </div>
       </div>
 
-      {/* The wordmark, shown in full. The outline draws itself on when it scrolls into view. */}
-      <div ref={wordmarkRef} aria-hidden="true" className="relative mt-16 px-3 md:mt-24 md:px-6">
-        <TextHoverEffect
-          text={site.name.toUpperCase()}
-          interactive={!touch && !reducedMotion}
-          active={seen}
-          duration={0.12}
-        />
-      </div>
-
-      <p className="px-5 pt-6 pb-4 text-center text-lg font-semibold md:text-xl">
-        {footer.credit}
-      </p>
-      <p className="px-5 pb-10 text-center text-xs text-text-muted md:pb-14">{footer.photoCredit}</p>
+      <p className="px-5 pt-14 pb-10 text-center text-xs text-text-muted md:pb-14">{footer.photoCredit}</p>
     </footer>
   )
 }
