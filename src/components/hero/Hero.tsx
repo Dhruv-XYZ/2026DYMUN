@@ -21,7 +21,7 @@ export function Hero() {
     <section
       id="home"
       data-tone="dark"
-      className="relative isolate flex min-h-[88svh] items-center overflow-x-clip bg-ink pt-20 text-text md:min-h-[80svh]"
+      className="relative isolate flex min-h-[88svh] items-center justify-center overflow-x-clip bg-ink pt-20 pb-10 text-text md:min-h-[80svh]"
     >
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
         <img
@@ -35,19 +35,9 @@ export function Hero() {
         />
       </div>
 
-      {/* The dark gradient sits only behind the name, so the rest of the photo stays clear. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(ellipse 36% 48% at 50% 54%, rgb(10 10 10 / 0.92) 0%, rgb(10 10 10 / 0.78) 50%, transparent 100%)',
-        }}
-      />
-
       <h1 className="sr-only">{`${site.name}. ${hero.spoken}`}</h1>
 
-      <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center px-5 py-16 text-center md:py-24">
+      <div className="relative mx-5 flex w-full max-w-xl flex-col items-center border border-gold/40 bg-ink/85 px-6 py-10 text-center md:mx-10 md:px-10 md:py-12">
         <img
           src={site.munLogoSrc}
           alt=""
@@ -56,7 +46,7 @@ export function Hero() {
           decoding="async"
           className="h-20 w-auto md:h-24"
         />
-        <p aria-hidden="true" className="display mt-6 text-[clamp(3.5rem,12vw,7rem)] leading-[0.9]">
+        <p aria-hidden="true" className="display mt-6 text-[clamp(3.25rem,11vw,5.75rem)] leading-[0.9]">
           {site.shortName}
           <span className="serif-accent ml-2 text-[0.5em] text-gold-light">{site.edition}</span>
         </p>
