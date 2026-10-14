@@ -51,7 +51,7 @@ export default function App() {
         <Navbar />
 
         <main id="main">
-          <Suspense fallback={<div data-tone="dark" className="min-h-[100svh] bg-ink" />}>
+          <Suspense fallback={<div data-tone="cream" className="min-h-[100svh] bg-cream" />}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<AboutPage />} />

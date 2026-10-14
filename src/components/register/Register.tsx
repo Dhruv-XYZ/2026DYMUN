@@ -1,39 +1,37 @@
 import { ChevronDown } from 'lucide-react'
-import { Reveal } from '@/components/Reveal'
-import { Section, SectionHeading } from '@/components/Section'
-import { enquiryForm } from '@/data/enquiry.js'
+import { Section } from '@/components/Section'
 import { registrationButton, registrationTiers } from '@/data/registration.js'
 import { sections } from '@/data/site.js'
-import { useAnchorNavigate } from '@/hooks/use-active-section'
-import { EnquiryForm } from './EnquiryForm'
 
+const titleClass =
+  'px-5 text-[clamp(2.75rem,8vw,7rem)] leading-none font-extrabold tracking-[-0.04em] text-fg md:px-10'
 
 /** The orange pill used for the registration button inside each dropdown. */
 const registerButtonClass =
   'inline-flex h-14 shrink-0 items-center justify-center rounded-full bg-orange px-10 text-[0.8rem] font-semibold tracking-[0.04em] text-ink uppercase transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]'
 
 /**
- * The closing call to action: the headline, three open rows for the ways to attend
- * (name on the left, fee on the right, details on hover), then the form.
+ * Register: a plain title, then one row for each way to attend (name on the left, fee on
+ * the right). Each row opens to its details and the registration button.
  */
 export function Register({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
-  const navigate = useAnchorNavigate()
   const copy = sections.register
 
   return (
-    <Section id="register" tone="cream" noise labelledBy="register-title" className="pt-20 pb-24 md:pt-24 md:pb-36">
-      <SectionHeading
-        id="register-title"
-        level={headingLevel}
-        number="05"
-        label={copy.label}
-        lead={copy.lead}
-        accent={copy.accent}
-      />
+    <Section id="register" tone="cream" labelledBy="register-title" className="border-t-0 pt-28 pb-24 md:pt-36 md:pb-36">
+      {headingLevel === 1 ? (
+        <h1 id="register-title" className={titleClass}>
+          {copy.label}
+        </h1>
+      ) : (
+        <h2 id="register-title" className={titleClass}>
+          {copy.label}
+        </h2>
+      )}
 
       {/* Two rows, Executive Board and Delegate. Each opens a dropdown with the
           registration button, which links to `registerUrl` in src/data/registration.js. */}
-      <div className="border-b border-line">
+      <div className="mt-10 border-b border-line md:mt-14">
         {registrationTiers.map((tier, index) => (
           <details
             key={tier.id}
@@ -68,28 +66,6 @@ export function Register({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
         ))}
       </div>
 
-      <div className="grid gap-10 px-5 pt-20 md:px-10 md:pt-28 lg:grid-cols-[minmax(0,0.5fr)_minmax(0,1fr)]">
-        <Reveal>
-          <p className="text-2xl font-extrabold tracking-[-0.02em] uppercase">{enquiryForm.title}</p>
-          <p className="mt-4 max-w-[28ch] text-fg-muted">{enquiryForm.intro}</p>
-          <a
-            href="/committees"
-            onClick={navigate}
-            className="mt-6 inline-block text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors hover:text-orange hover:decoration-orange"
-          >
-            Read every committee agenda
-          </a>
-          <br />
-          <a
-            href="/contact"
-            onClick={navigate}
-            className="mt-3 inline-block text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors hover:text-orange hover:decoration-orange"
-          >
-            Contact details
-          </a>
-        </Reveal>
-        <EnquiryForm />
-      </div>
     </Section>
   )
 }

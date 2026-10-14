@@ -84,7 +84,7 @@ export const seo = {
     path: '/register',
     title: "Register for DYMUN '26 | Executive Board and Delegates",
     description:
-      'Register for DYMUN 2026, the Model UN conference at D Y Patil International School, Navi Mumbai: join as an Executive Board member or a delegate, or send an enquiry.',
+      'Register for DYMUN 2026, the Model UN conference at D Y Patil International School, Navi Mumbai: join as an Executive Board member or as a delegate, with fees and how to register.',
   },
   contact: {
     path: '/contact',

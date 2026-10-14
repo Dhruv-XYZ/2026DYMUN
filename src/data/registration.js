@@ -4,8 +4,7 @@
  *
  * TODO: replace. For each row set `registerUrl` to the registration form link, for example
  * 'https://forms.gle/abc123'. Until it is set the button is shown but does nothing. Fees
- * and details are placeholders too. The enquiry form under the rows is separate: see
- * src/data/enquiry.js.
+ * and details are placeholders too.
  */
 export const registrationTiers = [
   {
