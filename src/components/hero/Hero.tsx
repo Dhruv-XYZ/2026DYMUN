@@ -11,12 +11,6 @@ import { useAnchorNavigate } from '@/hooks/use-active-section'
 export function Hero() {
   const navigate = useAnchorNavigate()
 
-  const facts = [
-    { term: 'Date', value: site.date === 'TBA' ? 'Date TBA' : site.date },
-    { term: 'Venue', value: `${site.schoolShort}, ${site.city}` },
-    { term: 'Length', value: site.duration },
-  ]
-
   return (
     <section
       id="home"
@@ -51,14 +45,8 @@ export function Hero() {
           <span className="serif-accent ml-2 text-[0.5em] text-gold-light">{site.edition}</span>
         </p>
 
-        <dl className="mt-6 flex flex-wrap justify-center gap-x-7 gap-y-1.5">
-          {facts.map((fact) => (
-            <div key={fact.term}>
-              <dt className="sr-only">{fact.term}</dt>
-              <dd className="label text-text">{fact.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <p className="label mt-6 text-text">{site.date}</p>
+        <p className="label mt-2 text-text">{site.venueLine}</p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
           <a

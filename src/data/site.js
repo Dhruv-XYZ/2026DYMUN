@@ -26,7 +26,9 @@ export const site = {
   city: 'Navi Mumbai',
   venue: 'D Y Patil International School, Navi Mumbai', // TODO: replace once the venue is confirmed
 
-  date: 'TBA', // TODO: replace with the conference dates
+  date: '4 & 5 December',
+  /** The short venue line on the home page. */
+  venueLine: 'DYPIS Nerul',
   days: 2,
   duration: 'Two days',
 

@@ -5,7 +5,7 @@ import { useAnchorNavigate } from '@/hooks/use-active-section'
 const linkClass =
   'text-text underline decoration-transparent decoration-1 underline-offset-4 transition-colors duration-200 hover:text-orange hover:decoration-orange'
 
-/** Site footer: the banner, then links, the school and contact details. */
+/** Site footer: links, the school and contact details, then the banner at the very bottom. */
 export function Footer() {
   const navigate = useAnchorNavigate()
 
@@ -25,16 +25,6 @@ export function Footer() {
 
   return (
     <footer data-tone="dark" className="relative isolate bg-ink text-text">
-      <img
-        src="/footer/footer-banner.webp"
-        alt={`${site.name}, ${site.school}, ${site.city}`}
-        width={1400}
-        height={400}
-        loading="lazy"
-        decoding="async"
-        className="block h-auto w-full"
-      />
-
       <div className="grid gap-12 px-5 pt-14 md:grid-cols-[1.2fr_1fr_1fr] md:px-10 md:pt-20">
         <div>
           <Logo className="text-2xl" />
@@ -86,7 +76,16 @@ export function Footer() {
         </div>
       </div>
 
-      <p className="px-5 pt-14 pb-10 text-center text-xs text-text-muted md:pb-14">{footer.photoCredit}</p>
+      <p className="px-5 py-10 text-center text-xs text-text-muted md:py-14">{footer.photoCredit}</p>
+      <img
+        src="/footer/footer-banner.webp"
+        alt={`${site.name}, ${site.school}, ${site.city}`}
+        width={1400}
+        height={400}
+        loading="lazy"
+        decoding="async"
+        className="block h-auto w-full"
+      />
     </footer>
   )
 }
