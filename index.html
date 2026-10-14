@@ -31,8 +31,6 @@
       html {
         background: #0a0a0a;
       }
-      /* Painted straight from the HTML, so something is on screen before the script runs.
-         React replaces it as soon as the page mounts. */
       #boot-error {
         position: fixed;
         left: 0;
@@ -45,20 +43,10 @@
         color: #ede6d6;
         background: #141414;
       }
-      #shell {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font: 900 min(36vw, 52vh) / 1 "DM Sans", system-ui, sans-serif;
-        letter-spacing: -0.04em;
-        color: #1d1809;
-      }
     </style>
     <script>
       // If the page cannot start (an old browser, a blocked file), say so on screen
-      // instead of leaving a dark page. React replaces the shell once it starts.
+      // instead of leaving a dark page. React replaces the empty #shell once it starts.
       (function () {
         function show(message) {
           var shell = document.getElementById('shell')
@@ -85,7 +73,7 @@
     </script>
   </head>
   <body>
-    <div id="root"><div id="shell">DYMUN</div></div>
+    <div id="root"><div id="shell"></div></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

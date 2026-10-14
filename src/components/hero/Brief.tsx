@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Section } from '@/components/Section'
+import { PhotoCarousel } from './PhotoCarousel'
 import { sections, site } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 
@@ -27,6 +28,8 @@ export function Brief() {
           <ArrowUpRight aria-hidden="true" className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </a>
       </div>
+
+      <PhotoCarousel />
     </Section>
   )
 }
