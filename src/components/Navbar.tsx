@@ -10,63 +10,47 @@ import { cn } from '@/lib/utils'
 const sectionIds = nav.map((item) => item.id)
 
 /** The Committees link with a drop-down of every committee, grouped by grade. */
-function CommitteesMenu({
-  active,
-  navigate,
-}: {
-  active: boolean
-  navigate: ReturnType<typeof useAnchorNavigate>
-}) {
+function CommitteesMenu({ active }: { active: boolean }) {
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
-  const timer = useRef(0)
-  const show = () => {
-    window.clearTimeout(timer.current)
-    setOpen(true)
-  }
-  const hideSoon = () => {
-    window.clearTimeout(timer.current)
-    timer.current = window.setTimeout(() => setOpen(false), 160)
-  }
-  useEffect(() => () => window.clearTimeout(timer.current), [])
+
+  // It opens only on a click of the button, and closes on Escape or a click elsewhere.
   useEffect(() => {
     if (!open) return
     const onKey = (event: KeyboardEvent) => event.key === 'Escape' && setOpen(false)
+    const onPointer = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false)
+    }
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    window.addEventListener('pointerdown', onPointer)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('pointerdown', onPointer)
+    }
   }, [open])
 
   return (
-    <div
-      ref={rootRef}
-      className="relative"
-      onMouseEnter={show}
-      onMouseLeave={hideSoon}
-      onFocus={show}
-      onBlur={(event) => {
-        if (!rootRef.current?.contains(event.relatedTarget as Node)) hideSoon()
-      }}
-    >
-      <a
-        href="/committees"
-        onClick={(event) => {
-          setOpen(false)
-          navigate(event)
-        }}
+    <div ref={rootRef} className="relative">
+      <button
+        type="button"
         aria-haspopup="true"
         aria-expanded={open}
-        aria-current={active ? 'true' : undefined}
+        aria-controls="committees-menu"
+        onClick={() => setOpen((value) => !value)}
         className={cn(
           'inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[0.72rem] font-semibold tracking-[0.2em] uppercase transition-colors duration-200',
           active ? 'bg-ink text-orange' : 'text-fg-muted hover:text-fg',
         )}
       >
         Committees
-        <ChevronDown aria-hidden="true" className="h-3.5 w-3.5" />
-      </a>
+        <ChevronDown
+          aria-hidden="true"
+          className={cn('h-3.5 w-3.5 transition-transform duration-200', open && 'rotate-180')}
+        />
+      </button>
 
       {open && (
-        <div className="absolute top-full left-1/2 z-10 -translate-x-1/2 pt-3">
+        <div id="committees-menu" className="absolute top-full left-1/2 z-10 -translate-x-1/2 pt-3">
           <div className="grid w-[min(52rem,calc(100vw-2rem))] grid-cols-3 gap-8 border border-gold/40 bg-ink p-7 text-text">
             {groups.map((group) => (
               <div key={group.id}>
@@ -86,6 +70,13 @@ function CommitteesMenu({
                 </ul>
               </div>
             ))}
+            <Link
+              to="/committees"
+              onClick={() => setOpen(false)}
+              className="col-span-3 border-t border-gold/30 pt-5 text-sm font-semibold text-gold-light transition-colors duration-200 hover:text-orange"
+            >
+              All committees and agendas
+            </Link>
           </div>
         </div>
       )}
@@ -153,7 +144,7 @@ export function Navbar() {
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
           {items.map((item) =>
             item.id === 'committees' ? (
-              <CommitteesMenu key={item.id} active={item.active} navigate={navigate} />
+              <CommitteesMenu key={item.id} active={item.active} />
             ) : (
               <a
                 key={item.id}
