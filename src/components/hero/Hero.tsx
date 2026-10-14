@@ -21,7 +21,7 @@ export function Hero() {
     <section
       id="home"
       data-tone="dark"
-      className="relative flex min-h-[92svh] items-end overflow-x-clip bg-ink pt-24 pb-10 text-text md:min-h-[80svh] md:items-center md:pb-14"
+      className="relative isolate flex min-h-[88svh] items-center overflow-x-clip bg-ink pt-20 text-text md:min-h-[80svh]"
     >
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
         <img
@@ -33,39 +33,35 @@ export function Hero() {
           decoding="async"
           className="h-full w-full object-cover object-center"
         />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(90deg, rgb(10 10 10 / 0.72) 0%, rgb(10 10 10 / 0.25) 60%, rgb(10 10 10 / 0.1) 100%)',
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(180deg, transparent 60%, var(--color-ink) 100%)',
-          }}
-        />
       </div>
+
+      {/* The dark gradient sits only behind the name, so the rest of the photo stays clear. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 36% 48% at 50% 54%, rgb(10 10 10 / 0.92) 0%, rgb(10 10 10 / 0.78) 50%, transparent 100%)',
+        }}
+      />
 
       <h1 className="sr-only">{`${site.name}. ${hero.spoken}`}</h1>
 
-      <div className="relative mx-5 w-full max-w-md border border-gold/40 bg-ink/85 p-6 md:mx-10 md:p-9 lg:mx-[8vw]">
+      <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center px-5 py-16 text-center md:py-24">
         <img
           src={site.munLogoSrc}
           alt=""
           width={1000}
           height={786}
           decoding="async"
-          className="h-16 w-auto md:h-20"
+          className="h-20 w-auto md:h-24"
         />
-        <p aria-hidden="true" className="display mt-6 text-[clamp(3.25rem,10vw,5.5rem)] leading-[0.9]">
+        <p aria-hidden="true" className="display mt-6 text-[clamp(3.5rem,12vw,7rem)] leading-[0.9]">
           {site.shortName}
           <span className="serif-accent ml-2 text-[0.5em] text-gold-light">{site.edition}</span>
         </p>
 
-        <dl className="mt-6 space-y-1.5 text-text-muted">
+        <dl className="mt-6 flex flex-wrap justify-center gap-x-7 gap-y-1.5">
           {facts.map((fact) => (
             <div key={fact.term}>
               <dt className="sr-only">{fact.term}</dt>
@@ -74,7 +70,7 @@ export function Hero() {
           ))}
         </dl>
 
-        <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
           <a
             href="/#register"
             onClick={navigate}
