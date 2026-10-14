@@ -74,7 +74,7 @@ export const TextHoverEffect = ({
       if (alignStart) {
         const context = document.createElement("canvas").getContext("2d");
         if (context) {
-          context.font = `900 ${FONT_SIZE}px "Bricolage Grotesque", sans-serif`;
+          context.font = `900 ${FONT_SIZE}px "DM Sans", sans-serif`;
           const metrics = context.measureText(text);
           setBearing(Math.max(0, -metrics.actualBoundingBoxLeft));
         }

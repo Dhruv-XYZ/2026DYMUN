@@ -11,6 +11,23 @@
  * so a stray default class (one of Tailwind's own greys or blues) cannot render.
  * `npm run audit:palette` checks the source for anything outside this list.
  */
+/* DM Sans is the only typeface on the site. Both files are variable: every weight from 100 to 1000. */
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url("/fonts/DMSans-Variable.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "DM Sans";
+  font-style: italic;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url("/fonts/DMSans-Italic-Variable.ttf") format("truetype");
+}
+
 @theme static {
   --color-*: initial;
 
@@ -31,8 +48,8 @@
   --color-white: #fff;
 
   --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: "Bricolage Grotesque", "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  --font-display: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -284,7 +301,7 @@
 /*
  * Outline type: a 1px accent line around letters that look empty.
  *
- * The display font is a variable font whose letter shapes overlap inside (the stem and bowl of a
+ * DM Sans is a variable font whose letter shapes overlap inside (the stem and bowl of a
  * D, the strokes of an M). A plain text stroke draws those hidden seams. So the stroke
  * is 2px, painted first, and the fill is painted over it in the section's own
  * background colour. That covers the inner half of the stroke and every seam, leaving
@@ -296,7 +313,7 @@
   paint-order: stroke fill;
 }
 
-/* The one serif italic accent word in a headline. */
+/* The one italic accent word in a headline (DM Sans Italic). */
 @utility serif-accent {
   font-family: var(--font-serif);
   font-style: italic;

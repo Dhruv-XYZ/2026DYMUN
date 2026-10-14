@@ -24,26 +24,8 @@
     <meta name="twitter:title" content="%SEO_TITLE%" />
     <meta name="twitter:description" content="%SEO_DESCRIPTION%" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Fonts load without blocking the first paint: preload, then switch the stylesheet on. -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:opsz,wght@9..40,400..1000&family=Fraunces:ital,opsz,wght@1,9..144,400..600&display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:opsz,wght@9..40,400..1000&family=Fraunces:ital,opsz,wght@1,9..144,400..600&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:opsz,wght@9..40,400..1000&family=Fraunces:ital,opsz,wght@1,9..144,400..600&display=swap"
-      />
-    </noscript>
+    <!-- DM Sans, the only typeface on the site, served from this site (public/fonts). -->
+    <link rel="preload" as="font" type="font/ttf" href="/fonts/DMSans-Variable.ttf" crossorigin />
     <!-- Keeps the first paint dark while the stylesheet and script load. -->
     <style>
       html {
@@ -58,7 +40,7 @@
         bottom: 0;
         margin: 0;
         padding: 1.25rem;
-        font: 500 0.9rem / 1.5 system-ui, sans-serif;
+        font: 500 0.9rem / 1.5 "DM Sans", system-ui, sans-serif;
         text-align: center;
         color: #ede6d6;
         background: #141414;
@@ -69,7 +51,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font: 900 min(36vw, 52vh) / 1 system-ui, sans-serif;
+        font: 900 min(36vw, 52vh) / 1 "DM Sans", system-ui, sans-serif;
         letter-spacing: -0.04em;
         color: #1d1809;
       }
