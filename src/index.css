@@ -313,11 +313,11 @@
   paint-order: stroke fill;
 }
 
-/* The one italic accent word in a headline (DM Sans Italic). */
+/* The accent word in a headline: upright, the same as the rest (no italic on the site). */
 @utility serif-accent {
   font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
+  font-style: normal;
+  font-weight: inherit;
   letter-spacing: -0.02em;
   text-transform: none;
 }

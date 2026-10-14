@@ -42,7 +42,7 @@ export function Hero() {
         />
         <p aria-hidden="true" className="display mt-6 text-[clamp(3.25rem,11vw,5.75rem)] leading-[0.9]">
           {site.shortName}
-          <span className="serif-accent ml-2 text-[0.5em] text-gold-light">{site.edition}</span>
+          <span className="ml-2 text-[0.5em] text-gold-light">{site.edition}</span>
         </p>
 
         <p className="mt-6 text-[1.0625rem] font-extrabold tracking-[0.02em] text-text uppercase md:text-[1.275rem]">{site.date}</p>

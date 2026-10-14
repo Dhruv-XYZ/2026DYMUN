@@ -27,7 +27,7 @@ export class AppErrorBoundary extends Component<{ children: ReactNode }, { faile
         className="flex min-h-[100svh] flex-col items-start justify-center gap-8 bg-ink px-5 text-text md:px-10"
       >
         <p className="display-section">
-          Something <span className="serif-accent text-gold-light">broke.</span>
+          Something broke.
         </p>
         <p className="max-w-[40ch] text-lg text-text-muted">
           The page did not load properly. Check your connection and try again.

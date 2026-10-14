@@ -163,7 +163,7 @@ export default function CommitteePage() {
                     </div>
                   </div>
                   <p className="sr-only">{copy.messageTitle}</p>
-                  <blockquote className={`mt-6 text-lg leading-relaxed italic md:text-xl ${chair.message ? 'text-fg' : 'text-fg-muted'}`}>
+                  <blockquote className={`mt-6 text-lg leading-relaxed md:text-xl ${chair.message ? 'text-fg' : 'text-fg-muted'}`}>
                     “{chair.message || copy.messagePending}”
                   </blockquote>
                 </div>

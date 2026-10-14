@@ -48,7 +48,7 @@ export function Section({
 }
 
 /**
- * Section title: a giant headline whose last line is the accent (serif italic by
+ * Section title: a giant headline whose last line is the accent (same weight and colour by
  * default), and the section number in outline type. There is no small label above the
  * headline; the headline is the first thing in the section.
  */
@@ -57,7 +57,7 @@ export function SectionHeading({
   number,
   lead,
   accent,
-  accentClassName = 'serif-accent text-[1.08em] text-tone',
+  accentClassName = 'text-fg',
   level = 2,
   className,
 }: {

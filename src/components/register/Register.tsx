@@ -4,7 +4,7 @@ import { registrationButton, registrationTiers } from '@/data/registration.js'
 import { sections } from '@/data/site.js'
 
 const titleClass =
-  'px-5 text-[clamp(2.75rem,8vw,7rem)] leading-none font-extrabold tracking-[-0.04em] text-fg md:px-10'
+  'px-5 text-[clamp(4rem,13vw,11rem)] leading-[0.9] font-black tracking-[-0.05em] text-fg md:px-10'
 
 /** The orange pill used for the registration button inside each dropdown. */
 const registerButtonClass =
@@ -12,7 +12,7 @@ const registerButtonClass =
 
 /**
  * Register: a plain title, then one row for each way to attend (name on the left, fee on
- * the right). Each row opens to its details and the registration button.
+ * the right once it is set; "TBA" is not shown). Each row opens to its details and the registration button.
  */
 export function Register({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
   const copy = sections.register
@@ -38,12 +38,14 @@ export function Register({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
             className={`group ${index > 0 ? 'border-t border-line' : ''}`}
           >
             <summary className="flex cursor-pointer list-none items-center justify-between gap-6 px-5 py-7 marker:hidden md:px-10 md:py-9 [&::-webkit-details-marker]:hidden">
-              <span className="display-row">{tier.name}</span>
+              <span className="text-3xl font-extrabold tracking-[-0.03em] uppercase md:text-5xl">{tier.name}</span>
               <span className="flex items-center gap-4 md:gap-8">
-                <span className="display-row text-outline">{tier.fee}</span>
+                {tier.fee && !/^TBA$/i.test(tier.fee.trim()) && (
+                  <span className="text-3xl font-extrabold tracking-[-0.03em] md:text-5xl">{tier.fee}</span>
+                )}
                 <ChevronDown
                   aria-hidden="true"
-                  className="h-8 w-8 shrink-0 text-tone transition-transform duration-300 group-open:rotate-180 md:h-12 md:w-12"
+                  className="h-7 w-7 shrink-0 text-tone transition-transform duration-300 group-open:rotate-180 md:h-9 md:w-9"
                   strokeWidth={2.5}
                 />
               </span>
