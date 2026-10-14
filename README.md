@@ -32,7 +32,6 @@ component to change wording.
 | Enquiry form: Web3Forms key, wording, spam limits | `src/data/enquiry.js` |
 | Each committee's own page (/committees/uncsa, ...): description and its two chairs (name, photo, bio, message) | `src/data/committeeDetails.js` (wording in `committeePage`, `src/data/site.js`) |
 | School logo dropdown (address, website link) | `schoolUrl`, `schoolAddress` in `src/data/site.js`, wording in `schoolCard` |
-| United Nations landmarks on the About globe (place, text, photo in `public/landmarks`, photo credit) | `src/data/landmarks.js` |
 | Participating schools (not shown while empty) | `src/data/schools.js` |
 
 Anything still unknown is marked `// TODO: replace` in those files. Search for `TODO` to
@@ -104,9 +103,8 @@ stray lines. The `text-outline` utility strokes first and then paints the fill o
 in the section's background colour, which leaves a clean outline.
 
 **Slower devices.** `useDeviceProfile` (in `src/hooks/use-device.ts`) reports phones,
-low-power devices and the reduced-motion setting. On those the 3D globe becomes a still
-SVG, the lined "DYMUN" word becomes plain outline type, cursor effects are off, the
-committees are a simple stacked list and looping animation stops.
+low-power devices and the reduced-motion setting. On those the committees are a simple
+stacked list and looping animation stops.
 
 ## SEO
 
@@ -125,8 +123,8 @@ What is in place, and what only you can do.
   the app with a 200 status on a single-page site, so that tag keeps them out of search.
 - HTTPS enforced with an HSTS header, plus basic security headers (`vercel.json`). Vercel also
   redirects http to https by itself.
-- Every image has `alt` text (decorative placeholders have an empty one on purpose), the
-  globe has a spoken label, and links between pages use descriptive text.
+- Every image has `alt` text (decorative ones have an empty one on purpose), and
+  links between pages use descriptive text.
 - Internal links: Home to Committees, Gallery and Team pages; Register to Committees and
   Contact; the footer links to every page.
 
@@ -166,9 +164,6 @@ those changes.
 | loader (Loader One) | Preloader |
 | floating-dock | Navigation |
 | text-hover-effect | Hero and footer wordmarks |
-| container-text-flip | Hero headline |
-| magnetic-button, moving-border | Register button in the hero |
-| 3d-globe, canvas-text | About |
 | sticky-scroll-reveal | Committees |
 | timeline | Schedule |
 | 3d-marquee | Gallery (columns loop endlessly, neighbours in opposite directions) |

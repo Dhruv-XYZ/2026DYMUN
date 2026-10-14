@@ -131,16 +131,6 @@ export const sections = {
       'Diplomacy, debate and bold ideas, where the leaders of tomorrow take on the challenges of today.',
     ],
     stats: { days: 'Days', committees: 'Committees', grades: 'Grades' },
-    /** The text beside the globe. */
-    globe: {
-      country: 'India',
-      caption: 'Delegates, chairs and ideas from every corner. Drag the globe to look around.',
-      hint: 'Drag to spin. Select DYPIS to zoom, or a gold dot for a landmark',
-      /** The name on the globe's marker. Click it to play the zoom. */
-      marker: 'DYPIS',
-      /** The video that plays when the marker is clicked: public/globe-zoom.mp4. */
-      zoom: { video: '/globe-zoom.mp4', close: 'Close', label: 'Zooming in on DYPIS' },
-    },
   },
   committees: {
     label: 'Committees',
