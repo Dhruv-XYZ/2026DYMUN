@@ -46,14 +46,14 @@ in the photo carousel on the home page automatically, and the placeholder tiles 
 being used. Team photos go in `public/team/`, with the path set in `team.js`.
 
 **Logo.** Put the file in `public/` and set `logoSrc` in `site.js` (for example
-`'/logo.svg'`). The text wordmark is replaced everywhere. `public/favicon.svg` is a
-placeholder mark too.
+`'/logo.svg'`). The text wordmark is replaced everywhere. The favicon is the DYMUN emblem
+(`public/favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`).
 
 ## Needs from the team
 
 - [ ] Conference date (`site.date`)
 - [ ] Venue confirmation (`site.venue`)
-- [ ] Logo file (`site.logoSrc`) and favicon
+- [ ] Logo file (`site.logoSrc`)
 - [ ] Fees and what each covers, and the Executive Board and Delegate registration links (`registrationTiers` in `src/data/registration.js`)
 - [ ] Photos (`public/gallery/`)
 - [ ] Secretariat names, roles and photos (`team.js`)

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Placeholder mark: an outline D in gold on ink, with an orange dot.
-       TODO: replace with the real DYMUN logo when it is supplied. -->
-  <rect width="64" height="64" fill="#0a0a0a" />
-  <path d="M17 13h13c12.5 0 20 7.6 20 19s-7.5 19-20 19H17z" fill="none" stroke="#c9a24b" stroke-width="3.5" stroke-linejoin="round" />
-  <circle cx="50" cy="51" r="4" fill="#ff7a1a" />
-</svg>
