@@ -64,10 +64,10 @@ export function SchoolChip() {
         <img
           src={site.schoolLogoSrc}
           alt=""
-          width={1000}
-          height={326}
+          width={732}
+          height={266}
           decoding="async"
-          className="h-6 w-auto lg:h-8"
+          className="h-7 w-auto lg:h-10"
         />
       </button>
 

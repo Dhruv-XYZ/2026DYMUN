@@ -20,6 +20,7 @@ export const committeeGroups = [
     committees: [
       {
         id: 'uncsa',
+        fullName: 'United Nations Council on Superhuman Activities',
         name: 'UNCSA',
         agenda:
           'With the multiverse collapsing, should superheroes be allowed to travel through time to alter events or sacrifice them to save millions elsewhere?',
