@@ -12,7 +12,6 @@ const CommitteesPage = lazy(() => import('@/pages/CommitteesPage'))
 const AboutPage = lazy(() => import('@/pages/AboutPage'))
 const RegisterPage = lazy(() => import('@/pages/RegisterPage'))
 const TeamPage = lazy(() => import('@/pages/TeamPage'))
-const GalleryPage = lazy(() => import('@/pages/GalleryPage'))
 const ContactPage = lazy(() => import('@/pages/ContactPage'))
 const CommitteePage = lazy(() => import('@/pages/CommitteePage'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
@@ -59,7 +58,6 @@ export default function App() {
               <Route path="/committees" element={<CommitteesPage />} />
               <Route path="/committees/:id" element={<CommitteePage />} />
               <Route path="/team" element={<TeamPage />} />
-              <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

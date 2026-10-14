@@ -68,12 +68,6 @@ export const seo = {
     description:
       'Meet the secretariat behind DYMUN 2026, the two-day Model UN conference at D Y Patil International School, Navi Mumbai, for students in Grades 3 to 12.',
   },
-  gallery: {
-    path: '/gallery',
-    title: "Gallery | DYMUN '26 Model UN Conference, Navi Mumbai",
-    description:
-      'Photos from DYMUN, the Model UN conference at D Y Patil International School, Navi Mumbai: delegates, committees and ceremonies.',
-  },
   about: {
     path: '/about',
     title: "About DYMUN '26 | Model UN, D Y Patil International School",
@@ -112,7 +106,6 @@ export const nav = [
   { id: 'home', label: 'Home', path: '/' },
   { id: 'about', label: 'About', path: '/about' },
   { id: 'committees', label: 'Committees', path: '/committees' },
-  { id: 'gallery', label: 'Gallery', path: '/gallery' },
   { id: 'team', label: 'Team', path: '/team' },
   { id: 'register', label: 'Register', path: '/register' },
 ]
@@ -150,11 +143,6 @@ export const sections = {
     accent: 'committee',
     agendaPending: 'Agenda to be announced',
     allLink: 'See all committees',
-  },
-  gallery: {
-    label: 'Gallery',
-    lead: 'DYMUN in',
-    accent: 'pictures',
   },
   team: {
     label: 'Team',
@@ -207,15 +195,12 @@ export const committeePage = {
   view: 'View committee',
 }
 
-/** Words used only on the separate pages (/committees, /gallery, /contact, not found). */
+/** Words used only on the separate pages (/committees, /contact, not found). */
 export const pages = {
   committees: {
     lead: 'All',
     accent: 'committees',
     registerLink: 'Register for a committee',
-  },
-  gallery: {
-    link: 'Open the gallery',
   },
   team: {
     link: 'Meet the team',

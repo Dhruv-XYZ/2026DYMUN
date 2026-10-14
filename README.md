@@ -42,7 +42,7 @@ Set `agenda: null` for a committee whose agenda is not announced; the site then 
 counted from this file, so they update themselves.
 
 **Photos.** Drop image files (jpg, png, webp or avif) into `public/gallery/`. They appear
-in the Gallery section and on `/gallery` automatically, and the placeholder tiles stop
+in the photo carousel on the home page automatically, and the placeholder tiles stop
 being used. Team photos go in `public/team/`, with the path set in `team.js`.
 
 **Logo.** Put the file in `public/` and set `logoSrc` in `site.js` (for example
@@ -72,9 +72,9 @@ src/
   hooks/        device profile, active section, page title
   components/
     ui/         the Aceternity components, adapted (see below)
-    hero/ about/ committees/ gallery/ team/ register/
+    hero/ about/ committees/ team/ register/
     Section.tsx Reveal.tsx Logo.tsx Preloader.tsx Dock.tsx Footer.tsx
-  pages/        Home, plus /committees /team /gallery /contact and not found
+  pages/        Home, plus /about /committees /team /register /contact and not found
   index.css     colour tokens, type utilities, grain
 ```
 
@@ -109,7 +109,7 @@ What is in place, and what only you can do.
   redirects http to https by itself.
 - Every image has `alt` text (decorative ones have an empty one on purpose), and
   links between pages use descriptive text.
-- Internal links: Home to Committees, Gallery and Team pages; Register to Committees and
+- Internal links: Home to Committees and Team pages; Register to Committees and
   Contact; the footer links to every page.
 
 **Still to do once the site is live**
@@ -148,7 +148,6 @@ those changes.
 | loader (Loader One) | Preloader |
 | floating-dock | Navigation |
 | text-hover-effect | Hero and footer wordmarks |
-| 3d-marquee | Gallery (columns loop endlessly, neighbours in opposite directions) |
 | focus-cards, tooltip-card | Team (the hover card follows the cursor) |
 | noise-background | Texture of the cream sections |
 | vortex | A very faint field of orange and gold streaks fixed behind the whole page (`components/PageVortex.tsx`) |
