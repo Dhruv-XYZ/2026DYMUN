@@ -1,85 +1,78 @@
-import { useEffect, useRef, useState } from 'react'
+import { type RefObject, useEffect, useRef, useState } from 'react'
 import { ChevronDown, Menu, X } from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
+import { Button as AriaButton } from 'react-aria-components'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Dropdown } from '@/components/base/dropdown/dropdown'
 import { SchoolChip } from '@/components/SchoolChip'
 import { nav, site } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { groups } from '@/lib/committees'
 import { cn } from '@/lib/utils'
 
-/** The Committees link with a drop-down of every committee, grouped by grade. */
-function CommitteesMenu({ active }: { active: boolean }) {
-  const [open, setOpen] = useState(false)
-  const rootRef = useRef<HTMLDivElement>(null)
+const committeeItem =
+  'block cursor-pointer py-[5px] text-sm font-semibold outline-hidden transition-colors duration-200 data-focus-visible:underline data-focused:text-orange'
 
-  // It opens only on a click of the button, and closes on Escape or a click elsewhere.
-  useEffect(() => {
-    if (!open) return
-    const onKey = (event: KeyboardEvent) => event.key === 'Escape' && setOpen(false)
-    const onPointer = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false)
-    }
-    window.addEventListener('keydown', onKey)
-    window.addEventListener('pointerdown', onPointer)
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      window.removeEventListener('pointerdown', onPointer)
-    }
-  }, [open])
+/**
+ * The Committees link with a drop-down of every committee, grouped by grade, built on the
+ * Untitled UI dropdown (react-aria: arrow keys, Escape and click-away come with it). The
+ * box is anchored to the whole bar, so it sits centred on the page and touches its bottom edge.
+ */
+function CommitteesMenu({ active, anchorRef }: { active: boolean; anchorRef: RefObject<HTMLElement | null> }) {
+  const navigate = useNavigate()
 
   return (
-    <div ref={rootRef} className="relative">
-      <button
-        type="button"
-        aria-haspopup="true"
-        aria-expanded={open}
-        aria-controls="committees-menu"
-        onClick={() => setOpen((value) => !value)}
-        className={cn(
-          'inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[0.72rem] font-semibold tracking-[0.04em] uppercase transition-colors duration-200',
-          active ? 'bg-ink text-orange' : 'text-fg-muted hover:text-fg',
-        )}
+    <Dropdown.Root>
+      <AriaButton
+        className={({ isFocusVisible }) =>
+          cn(
+            'group inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2.5 text-[0.72rem] font-semibold tracking-[0.04em] uppercase outline-hidden transition-colors duration-200',
+            active ? 'bg-ink text-orange' : 'text-fg-muted hover:text-fg',
+            isFocusVisible && 'outline-2 outline-offset-2 outline-orange',
+          )
+        }
       >
         Committees
         <ChevronDown
           aria-hidden="true"
-          className={cn('h-3.5 w-3.5 transition-transform duration-200', open && 'rotate-180')}
+          className="h-3.5 w-3.5 transition-transform duration-200 group-aria-expanded:rotate-180"
         />
-      </button>
+      </AriaButton>
 
-      {open && (
-        // Centred on the page (not the button, which sits far right), touching the bar's bottom edge.
-        <div id="committees-menu" className="fixed top-[calc(4.5rem+1px)] left-1/2 z-10 -translate-x-1/2">
-          <div className="grid w-[min(52rem,calc(100vw-2rem))] grid-cols-3 gap-8 border border-gold/40 bg-ink p-7 text-text">
-            {groups.map((group) => (
-              <div key={group.id}>
-                <p className="label text-gold-light">{group.grades}</p>
-                <ul className="mt-4 space-y-2.5">
-                  {group.committees.map((committee) => (
-                    <li key={committee.id}>
-                      <Link
-                        to={`/committees/${committee.id}`}
-                        onClick={() => setOpen(false)}
-                        className="text-sm font-semibold text-text transition-colors duration-200 hover:text-orange"
-                      >
-                        {committee.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-            <Link
-              to="/committees"
-              onClick={() => setOpen(false)}
-              className="col-span-3 border-t border-gold/30 pt-5 text-sm font-semibold text-gold-light transition-colors duration-200 hover:text-orange"
-            >
+      <Dropdown.Popover
+        triggerRef={anchorRef}
+        placement="bottom"
+        offset={0}
+        className="z-[60] w-[min(52rem,calc(100vw-2rem))] rounded-none border border-gold/40 bg-ink text-text shadow-none ring-0"
+      >
+        <Dropdown.Menu
+          aria-label="Committees"
+          onAction={(key) => navigate(key === 'all' ? '/committees' : `/committees/${key}`)}
+          className="grid grid-cols-3 gap-x-8 p-7"
+        >
+          {groups.map((group) => (
+            <Dropdown.Section key={group.id}>
+              <Dropdown.SectionHeader className="label mb-3 text-gold-light">{group.grades}</Dropdown.SectionHeader>
+              {group.committees.map((committee) => (
+                <Dropdown.Item
+                  key={committee.id}
+                  id={committee.id}
+                  textValue={committee.name}
+                  unstyled
+                  className={cn(committeeItem, 'text-text')}
+                >
+                  {committee.name}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Section>
+          ))}
+          <Dropdown.Section aria-label="All committees" className="col-span-3 mt-5 border-t border-gold/30 pt-4">
+            <Dropdown.Item id="all" textValue="All committees and agendas" unstyled className={cn(committeeItem, 'text-gold-light')}>
               All committees and agendas
-            </Link>
-          </div>
-        </div>
-      )}
-    </div>
+            </Dropdown.Item>
+          </Dropdown.Section>
+        </Dropdown.Menu>
+      </Dropdown.Popover>
+    </Dropdown.Root>
   )
 }
 
@@ -94,6 +87,7 @@ export function Navbar() {
   const { pathname } = useLocation()
   const navigate = useAnchorNavigate()
   const [open, setOpen] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
 
   // The active item is the one that owns the page being shown.
   const activeId =
@@ -119,7 +113,7 @@ export function Navbar() {
   }, [open])
 
   return (
-    <header data-tone="cream" className="fixed inset-x-0 top-0 z-50 border-b border-line bg-cream text-fg">
+    <header ref={headerRef} data-tone="cream" className="fixed inset-x-0 top-0 z-50 border-b border-line bg-cream text-fg">
       <div className="flex h-16 items-center justify-between gap-4 px-4 lg:h-[4.5rem] lg:px-8">
         {/* Brand: DYMUN emblem | school logo */}
         <div className="flex min-w-0 items-center gap-3 lg:gap-5">
@@ -141,7 +135,7 @@ export function Navbar() {
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
           {items.map((item) =>
             item.id === 'committees' ? (
-              <CommitteesMenu key={item.id} active={item.active} />
+              <CommitteesMenu key={item.id} active={item.active} anchorRef={headerRef} />
             ) : (
               <a
                 key={item.id}
