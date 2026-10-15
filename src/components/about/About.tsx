@@ -30,7 +30,6 @@ export function About({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
       <SectionHeading
         id="about-title"
         level={headingLevel}
-        number="01"
         label={copy.label}
         lead={copy.lead}
         accentClassName="inline-block"
