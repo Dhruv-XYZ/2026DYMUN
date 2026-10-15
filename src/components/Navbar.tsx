@@ -48,8 +48,8 @@ function CommitteesMenu({ active }: { active: boolean }) {
       </button>
 
       {open && (
-        // Centred on the page (not the button, which sits far right), just under the bar.
-        <div id="committees-menu" className="fixed top-[4.5rem] left-1/2 z-10 -translate-x-1/2 pt-3">
+        // Centred on the page (not the button, which sits far right), touching the bar's bottom edge.
+        <div id="committees-menu" className="fixed top-[calc(4.5rem+1px)] left-1/2 z-10 -translate-x-1/2">
           <div className="grid w-[min(52rem,calc(100vw-2rem))] grid-cols-3 gap-8 border border-gold/40 bg-ink p-7 text-text">
             {groups.map((group) => (
               <div key={group.id}>
