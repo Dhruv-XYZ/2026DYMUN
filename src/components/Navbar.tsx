@@ -8,6 +8,7 @@ import { nav, site } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { groups } from '@/lib/committees'
 import { cn } from '@/lib/utils'
+import { withBase } from '@/lib/base'
 
 const committeeItem =
   'block cursor-pointer py-[5px] text-sm font-semibold outline-hidden transition-colors duration-200 data-focus-visible:underline data-focused:text-orange'
@@ -119,7 +120,7 @@ export function Navbar() {
         <div className="flex min-w-0 items-center gap-3 lg:gap-5">
           <Link to="/" aria-label={`${site.name}, home`} className="shrink-0">
             <img
-              src={site.munLogoSrc}
+              src={withBase(site.munLogoSrc)}
               alt=""
               width={1000}
               height={786}
@@ -139,7 +140,7 @@ export function Navbar() {
             ) : (
               <a
                 key={item.id}
-                href={item.href}
+                href={withBase(item.href)}
                 onClick={navigate}
                 aria-current={item.active ? 'true' : undefined}
                 className={cn(
@@ -180,7 +181,7 @@ export function Navbar() {
             {items.map((item) => (
               <li key={item.id} className="border-b border-line">
                 <a
-                  href={item.href}
+                  href={withBase(item.href)}
                   onClick={(event) => {
                     setOpen(false)
                     navigate(event)

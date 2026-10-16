@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { schoolCard, site } from '@/data/site.js'
+import { withBase } from '@/lib/base'
 
 /**
  * The school's logo, in the navigation bar, on a cream chip so its red shield and gold
@@ -62,7 +63,7 @@ export function SchoolChip() {
         className="inline-flex items-center bg-cream px-2.5 py-1.5 ring-1 ring-gold transition-colors duration-200 hover:bg-cream/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange lg:px-3.5 lg:py-2"
       >
         <img
-          src={site.schoolLogoSrc}
+          src={withBase(site.schoolLogoSrc)}
           alt=""
           width={732}
           height={266}

@@ -1,6 +1,7 @@
 import { ArrowDownRight } from 'lucide-react'
 import { hero, site } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
+import { withBase } from '@/lib/base'
 
 /**
  * The top of the home page: a wide photo of the United Nations General Assembly Hall
@@ -19,7 +20,7 @@ export function Hero() {
     >
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
         <img
-          src="/hero/un-general-assembly.jpg"
+          src={withBase('/hero/un-general-assembly.jpg')}
           alt=""
           width={1600}
           height={1067}
@@ -33,7 +34,7 @@ export function Hero() {
 
       <div className="relative mx-5 flex w-full max-w-xl flex-col items-center border border-gold/40 bg-ink/85 px-6 py-10 text-center md:mx-10 md:px-10 md:py-12">
         <img
-          src={site.munLogoSrc}
+          src={withBase(site.munLogoSrc)}
           alt=""
           width={1000}
           height={786}
@@ -50,14 +51,14 @@ export function Hero() {
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
           <a
-            href="/register"
+            href={withBase('/register')}
             onClick={navigate}
             className="inline-flex h-12 items-center justify-center rounded-full bg-orange px-9 text-[0.8rem] font-semibold tracking-[0.04em] text-ink uppercase transition-colors duration-200 hover:bg-gold-light"
           >
             {hero.primaryCta}
           </a>
           <a
-            href="/committees"
+            href={withBase('/committees')}
             onClick={navigate}
             className="group inline-flex items-center gap-2 text-sm font-medium text-text underline decoration-gold/60 decoration-1 underline-offset-8 transition-colors duration-200 hover:text-orange hover:decoration-orange"
           >

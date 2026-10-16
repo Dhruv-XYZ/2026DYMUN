@@ -6,6 +6,7 @@ import { committeePage, pages, sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { usePageMeta } from '@/hooks/use-page-meta'
 import { groups } from '@/lib/committees'
+import { withBase } from '@/lib/base'
 
 /** Tile colours, taken in turn: ink, deep amber, dark gold. `sub` is the full-form colour on each. */
 const TILES = [
@@ -70,7 +71,7 @@ export default function CommitteesPage() {
 
       <div className="px-5 pt-16 md:px-10 md:pt-24">
         <a
-          href="/register"
+          href={withBase('/register')}
           onClick={navigate}
           className="group inline-flex items-center gap-3 text-lg font-semibold text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors duration-200 hover:text-orange hover:decoration-orange"
         >

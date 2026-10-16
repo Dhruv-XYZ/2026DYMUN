@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { seo } from '@/data/site.js'
+import { withBase } from '@/lib/base'
 
 type PageKey = keyof typeof seo
 
@@ -43,7 +44,7 @@ export function usePageMeta(
 
   useEffect(() => {
     const content = override ?? seo[page]
-    const url = `${window.location.origin}${page === 'notFound' ? window.location.pathname : content.path}`
+    const url = `${window.location.origin}${page === 'notFound' ? window.location.pathname : withBase(content.path)}`
     const previousTitle = document.title
     document.title = content.title
 

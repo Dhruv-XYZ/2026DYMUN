@@ -3,6 +3,7 @@ import { Section } from '@/components/Section'
 import { PhotoCarousel } from './PhotoCarousel'
 import { sections, site } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
+import { withBase } from '@/lib/base'
 
 /** A short brief of DYMUN on a light band under the photo, with a link to the full About page. */
 export function Brief() {
@@ -20,7 +21,7 @@ export function Brief() {
         </p>
         <p className="mx-auto mt-6 max-w-[48ch] text-lg text-fg-muted">{site.tagline}</p>
         <a
-          href="/about"
+          href={withBase('/about')}
           onClick={navigate}
           className="group mt-10 inline-flex items-center gap-2 text-lg font-semibold text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors duration-200 hover:text-orange hover:decoration-orange"
         >

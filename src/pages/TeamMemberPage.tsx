@@ -4,6 +4,7 @@ import { teamMemberPage } from '@/data/site.js'
 import { usePageMeta } from '@/hooks/use-page-meta'
 import { isPending, memberPath, members, placeholderFor } from '@/lib/team'
 import NotFound from './NotFound'
+import { withBase } from '@/lib/base'
 
 const card = 'rounded-3xl bg-[color-mix(in_srgb,var(--color-cream)_55%,white)] p-7 shadow-[0_8px_28px_rgb(0_0_0/0.06)] md:p-9'
 
@@ -53,7 +54,7 @@ export default function TeamMemberPage() {
           <div className="mt-12 flex flex-col gap-8 md:mt-16 md:flex-row md:items-end md:gap-12">
             <div className="relative aspect-[4/5] w-full max-w-xs shrink-0 overflow-hidden bg-ink-raised md:w-72 lg:w-80">
               {member.photo ? (
-                <img src={member.photo} alt={name} className="absolute inset-0 h-full w-full object-cover" />
+                <img src={withBase(member.photo)} alt={name} className="absolute inset-0 h-full w-full object-cover" />
               ) : (
                 <div
                   aria-hidden="true"

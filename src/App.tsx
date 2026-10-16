@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import { BASE } from '@/lib/base'
 import { AppErrorBoundary } from '@/components/AppErrorBoundary'
 import { DebugBadge } from '@/components/DebugBadge'
 import { Navbar } from '@/components/Navbar'
@@ -38,7 +39,7 @@ function ScrollManager() {
 export default function App() {
   return (
     <AppErrorBoundary>
-      <BrowserRouter>
+      <BrowserRouter basename={BASE || '/'}>
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:bg-orange focus:px-4 focus:py-2 focus:text-ink"

@@ -4,6 +4,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { pages, sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { teamRows } from '@/data/team.js'
+import { withBase } from '@/lib/base'
 import { memberPath, members, placeholderFor } from '@/lib/team'
 
 /**
@@ -18,7 +19,7 @@ export function Team({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
   const cards = members.map((member) => ({
     title: member.name,
     subtitle: member.role,
-    src: member.photo || undefined,
+    src: member.photo ? withBase(member.photo) : undefined,
     placeholder: placeholderFor(member),
     href: memberPath(member),
   }))
@@ -41,7 +42,7 @@ export function Team({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
       {headingLevel === 2 && (
         <div className="px-5 pt-14 md:px-10">
           <a
-            href="/team"
+            href={withBase('/team')}
             onClick={navigate}
             className="group inline-flex items-center gap-3 text-lg font-semibold text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors duration-200 hover:text-orange hover:decoration-orange"
           >

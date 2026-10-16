@@ -206,6 +206,8 @@ function galleryManifest(): Plugin {
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
+  // '/' at the root of a domain (Vercel). The GitHub Pages workflow sets BASE_PATH=/2026DYMUN/.
+  base: process.env.BASE_PATH ?? '/',
   plugins: [react(), tailwindcss(), galleryManifest(), await seoFiles(), startAfterFirstPaint()],
   resolve: {
     alias: { '@': fromRoot('./src') },

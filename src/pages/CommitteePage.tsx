@@ -5,6 +5,7 @@ import { detailsFor } from '@/data/committeeDetails.js'
 import { usePageMeta } from '@/hooks/use-page-meta'
 import { allCommittees, groups } from '@/lib/committees'
 import NotFound from './NotFound'
+import { withBase } from '@/lib/base'
 
 /** Committee logos, by committee id: src/assets/committee-logos/<id>.png|webp|svg|jpg. */
 const logoFiles = import.meta.glob<string>('../assets/committee-logos/*.{png,webp,svg,jpg,jpeg}', {
@@ -141,7 +142,7 @@ export default function CommitteePage() {
                   <div className="flex items-start gap-5">
                     {chair.photo ? (
                       <img
-                        src={chair.photo}
+                        src={withBase(chair.photo)}
                         alt={chair.name}
                         width={160}
                         height={160}

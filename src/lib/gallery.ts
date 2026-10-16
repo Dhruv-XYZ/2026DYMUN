@@ -1,4 +1,5 @@
 import photos from 'virtual:gallery'
+import { withBase } from '@/lib/base'
 
 /**
  * TODO: replace with real DYMUN photos.
@@ -31,7 +32,7 @@ export const hasGalleryPhotos = photos.length > 0
 
 /** The gallery's images: the real photos, or generated placeholders while there are none. */
 export const galleryTiles: string[] = hasGalleryPhotos
-  ? photos
+  ? photos.map(withBase)
   : Array.from({ length: PLACEHOLDER_COUNT }, (_, index) => placeholderTile(index))
 
 /** Alt text for the tile at this position. Placeholders are decorative, so theirs is empty. */

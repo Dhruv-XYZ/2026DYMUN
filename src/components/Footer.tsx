@@ -1,6 +1,7 @@
 import { Logo } from '@/components/Logo'
 import { footer, nav, sections, site } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
+import { withBase } from '@/lib/base'
 
 const linkClass =
   'text-text underline decoration-transparent decoration-1 underline-offset-4 transition-colors duration-200 hover:text-orange hover:decoration-orange'
@@ -36,7 +37,7 @@ export function Footer() {
           <ul className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3">
             {links.map((link) => (
               <li key={link.href}>
-                <a href={link.href} onClick={navigate} className={linkClass}>
+                <a href={withBase(link.href)} onClick={navigate} className={linkClass}>
                   {link.label}
                 </a>
               </li>
@@ -78,7 +79,7 @@ export function Footer() {
 
       <p className="px-5 py-10 text-center text-xs text-text-muted md:py-14">{footer.photoCredit}</p>
       <img
-        src="/footer/footer-banner.webp"
+        src={withBase('/footer/footer-banner.webp')}
         alt={`${site.name}, ${site.school}, ${site.city}`}
         width={1400}
         height={400}

@@ -4,6 +4,7 @@ import { Highlight } from '@/components/ui/hero-highlight'
 import { sections, site } from '@/data/site.js'
 import { committeeCount, gradeMax, gradeMin, gradeRange } from '@/lib/committees'
 import { cn } from '@/lib/utils'
+import { withBase } from '@/lib/base'
 
 /** Fills {days}, {count} and {grades} in the copy from the data, so the numbers cannot drift. */
 function fill(text: string): string {
@@ -71,7 +72,7 @@ export function About({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
         </div>
 
         <img
-          src={site.munLogoSrc}
+          src={withBase(site.munLogoSrc)}
           alt={`${site.name} emblem`}
           width={1000}
           height={786}

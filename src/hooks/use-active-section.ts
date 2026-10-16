@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { BASE } from '@/lib/base'
 
 /**
  * Which of the given section ids is crossing the upper part of the screen.
@@ -57,7 +58,7 @@ export function useAnchorNavigate() {
       const href = event.currentTarget.getAttribute('href')
       if (!href || !href.startsWith('/')) return
       event.preventDefault()
-      navigate(href)
+      navigate(BASE && href.startsWith(BASE) ? href.slice(BASE.length) || '/' : href)
     },
     [navigate],
   )
