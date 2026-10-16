@@ -3,18 +3,9 @@ import { Link, useParams } from 'react-router-dom'
 import { committeePage, sections } from '@/data/site.js'
 import { detailsFor } from '@/data/committeeDetails.js'
 import { usePageMeta } from '@/hooks/use-page-meta'
-import { allCommittees, groups } from '@/lib/committees'
+import { allCommittees, groups, logoFor } from '@/lib/committees'
 import NotFound from './NotFound'
 import { withBase } from '@/lib/base'
-
-/** Committee logos, by committee id: src/assets/committee-logos/<id>.png|webp|svg|jpg. */
-const logoFiles = import.meta.glob<string>('../assets/committee-logos/*.{png,webp,svg,jpg,jpeg}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-})
-const logoFor = (id: string) =>
-  Object.entries(logoFiles).find(([path]) => path.split('/').pop()?.replace(/\.\w+$/, '') === id)?.[1]
 
 const initialsOf = (name: string) =>
   name
@@ -64,14 +55,14 @@ export default function CommitteePage() {
 
   return (
     <article aria-labelledby="committee-title" data-tone="cream" className="bg-surface pb-24 text-fg md:pb-36">
-      {/* Banner: the committee's logo large on the right, under a dark fade so the name reads. */}
+      {/* Banner: the committee's logo large on the right, below the nav bar so none of it is hidden, under a dark fade so the name reads. */}
       <header data-tone="dark" className="relative isolate overflow-hidden bg-ink pt-16 text-text lg:pt-[4.5rem]">
         {logo && (
           <img
             src={logo}
             alt=""
             aria-hidden="true"
-            className="absolute top-1/2 right-[4%] -z-10 h-[78%] w-auto max-w-[55%] -translate-y-1/2 object-contain opacity-90"
+            className="absolute top-24 right-[4%] bottom-8 -z-10 h-[calc(100%-8rem)] w-auto max-w-[55%] object-contain object-right opacity-90 lg:top-28 lg:h-[calc(100%-9rem)]"
           />
         )}
         <div

@@ -59,6 +59,21 @@ export const gradeRange = `${gradeMin}-${gradeMax}`
 /** Every grade the conference covers, lowest first. */
 export const gradeList = Array.from({ length: gradeMax - gradeMin + 1 }, (_, i) => gradeMin + i)
 
+/** Committee logos, by committee id: src/assets/committee-logos/<id>.png|webp|svg|jpg. */
+const logoFiles = import.meta.glob<string>('../assets/committee-logos/*.{png,webp,svg,jpg,jpeg}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+})
+const logoByName = Object.fromEntries(
+  Object.entries(logoFiles).map(([path, url]) => [path.split('/').pop()!.replace(/\.\w+$/, ''), url]),
+)
+
+/** The committee's own logo, or the UN emblem (un-emblem) for a committee without one. */
+export function logoFor(id: string): string | undefined {
+  return logoByName[id] ?? logoByName['un-emblem']
+}
+
 export function groupForGrade(grade: number): CommitteeGroup | undefined {
   return groups.find((group) => grade >= group.gradeMin && grade <= group.gradeMax)
 }
