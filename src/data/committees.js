@@ -122,6 +122,7 @@ export const committeeGroups = [
       },
       {
         id: 'ccc',
+        fullName: 'Constant Crisis Committee',
         name: 'CCC',
         agenda:
           'The Saudi War: U.S. Invasion of Saudi Arabia, the Aramco Deal and the Battle for the Gulf',
