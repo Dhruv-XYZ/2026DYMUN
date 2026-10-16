@@ -39,7 +39,7 @@ export const groups: CommitteeGroup[] = committeeGroups.map((group) => {
       name: committee.name,
       fullName: committee.fullName ?? null,
       agenda: committee.agenda ?? null,
-      hasAgenda: !committee.noAgenda,
+      hasAgenda: !(committee as { noAgenda?: boolean }).noAgenda,
       groupId: group.id,
       index: position++,
     })),
