@@ -5,6 +5,7 @@ import { Section } from '@/components/Section'
 import { pages, site } from '@/data/site.js'
 import { usePageMeta } from '@/hooks/use-page-meta'
 import { gradeList } from '@/lib/committees'
+import { withBase } from '@/lib/base'
 
 /**
  * Web3Forms access key. Set VITE_WEB3FORMS_ACCESS_KEY in the environment (in Vercel:
@@ -157,7 +158,9 @@ export default function ContactPage() {
         </h1>
         <p className="mt-6 max-w-[52ch] text-lg leading-relaxed text-fg md:text-xl">{copy.intro}</p>
 
-        <form onSubmit={onSubmit} className="mt-12 grid max-w-3xl gap-8 md:mt-16">
+        {/* On desktop the form sits on the left and the DYMUN logo on the right. */}
+        <div className="mt-12 grid gap-16 md:mt-16 lg:grid-cols-[minmax(0,48rem)_1fr]">
+        <form onSubmit={onSubmit} className="grid gap-8">
           {/* Web3Forms' spam trap: people never see or fill it. */}
           <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" className="hidden" />
 
@@ -252,6 +255,17 @@ export default function ContactPage() {
             </p>
           </div>
         </form>
+
+        <div aria-hidden="true" className="hidden lg:block">
+          <img
+            src={withBase(site.munLogoSrc)}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="sticky top-32 mx-auto w-full max-w-sm"
+          />
+        </div>
+        </div>
       </div>
     </Section>
   )
