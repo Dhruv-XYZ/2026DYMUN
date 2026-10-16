@@ -192,6 +192,7 @@ export const committeePage = {
   previous: 'Previous committee',
   next: 'Next committee',
   register: 'Register for this committee',
+  registerEb: 'Register for EB', // in place of the bio and message while a chair is not announced
   view: 'View committee',
 }
 

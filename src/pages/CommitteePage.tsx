@@ -151,13 +151,30 @@ export default function CommitteePage() {
                     <div className="min-w-0">
                       <h3 className="text-xl font-extrabold md:text-2xl">{named ? chair.name : copy.chairNamePending}</h3>
                       <p className="mt-0.5 font-bold text-tone">{chair.role || copy.chairRole}</p>
-                      <p className={`mt-2 ${chair.bio ? 'text-fg' : 'text-fg-muted'}`}>{chair.bio || copy.chairBioPending}</p>
+                      {named ? (
+                        <p className={`mt-2 ${chair.bio ? 'text-fg' : 'text-fg-muted'}`}>{chair.bio || copy.chairBioPending}</p>
+                      ) : (
+                        <Link
+                          to="/register"
+                          className="group mt-3 inline-flex items-center gap-2 font-bold text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors duration-200 hover:text-tone"
+                        >
+                          {copy.registerEb}
+                          <ArrowUpRight
+                            aria-hidden="true"
+                            className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                          />
+                        </Link>
+                      )}
                     </div>
                   </div>
-                  <p className="sr-only">{copy.messageTitle}</p>
-                  <blockquote className={`mt-6 text-lg leading-relaxed md:text-xl ${chair.message ? 'text-fg' : 'text-fg-muted'}`}>
-                    “{chair.message || copy.messagePending}”
-                  </blockquote>
+                  {named && (
+                    <>
+                      <p className="sr-only">{copy.messageTitle}</p>
+                      <blockquote className={`mt-6 text-lg leading-relaxed md:text-xl ${chair.message ? 'text-fg' : 'text-fg-muted'}`}>
+                        “{chair.message || copy.messagePending}”
+                      </blockquote>
+                    </>
+                  )}
                 </div>
               </div>
             )
