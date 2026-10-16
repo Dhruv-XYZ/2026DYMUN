@@ -17,6 +17,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # The site is served from https://dhruv-xyz.github.io/2026DYMUN/, not a domain's root.
+      BASE_PATH: /2026DYMUN/
+      SITE_URL: https://dhruv-xyz.github.io/2026DYMUN
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -29,6 +33,10 @@ jobs:
         run: npm ci
       - name: Build site
         run: npm run build
+      # Pages has no rewrites, so an address such as /2026DYMUN/team/member-1 opened
+      # directly would 404. Serving the app as the 404 page lets the router take over.
+      - name: Add SPA fallback
+        run: cp dist/index.html dist/404.html
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
