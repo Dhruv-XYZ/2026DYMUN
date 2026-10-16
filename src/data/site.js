@@ -195,6 +195,21 @@ export const committeePage = {
   view: 'View committee',
 }
 
+/**
+ * Words on each team member's own page (/team/member-1 and so on). The person's name,
+ * role, photo and bio come from team.js, and show the "pending" wording below until
+ * they are filled in.
+ */
+export const teamMemberPage = {
+  back: 'The team',
+  about: 'About',
+  namePending: 'Name to be announced',
+  rolePending: 'Role to be announced',
+  bioPending: 'More about this member of the team will be added here.',
+  previous: 'Previous',
+  next: 'Next',
+}
+
 /** Words used only on the separate pages (/committees, /contact, not found). */
 export const pages = {
   committees: {

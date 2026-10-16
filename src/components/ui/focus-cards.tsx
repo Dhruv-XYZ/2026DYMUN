@@ -1,7 +1,6 @@
-import { memo, useState } from "react";
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { Tooltip } from "@/components/ui/tooltip-card";
-import { cn } from "@/lib/utils";
 
 /** Wraps a card in the hover tooltip when it has `info`; otherwise leaves it as it is. */
 function MaybeTooltip({ info, children }: { info?: ReactNode; children: ReactNode }) {
@@ -10,6 +9,19 @@ function MaybeTooltip({ info, children }: { info?: ReactNode; children: ReactNod
     <Tooltip containerClassName="block w-full" focusable content={info}>
       {children}
     </Tooltip>
+  );
+}
+
+/** Wraps a card in a link when it has `href`; otherwise leaves it as it is. */
+function MaybeLink({ href, children }: { href?: string; children: ReactNode }) {
+  if (!href) return <>{children}</>;
+  return (
+    <Link
+      to={href}
+      className="block outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
+    >
+      {children}
+    </Link>
   );
 }
 
@@ -22,35 +34,20 @@ export type FocusCard = {
   src?: string;
   /** Short text for a tile with no photo, for example initials. */
   placeholder?: string;
+  /** Makes the whole tile a link to this page. A linked tile has no hover card. */
+  href?: string;
 };
 
 /**
- * Aceternity "Focus Cards": hover one tile and the others blur and step back.
- * Changed for DYMUN: the name and role sit under the tile as free text instead of
- * inside a dark overlay, a tile without a photo shows initials on a dark gold
- * gradient, and the colours come from the palette.
+ * Based on Aceternity "Focus Cards", with its hover blur taken out. The name and role
+ * sit under the tile as free text, a tile without a photo shows initials on a dark gold
+ * gradient, the colours come from the palette, and a tile can link to its own page.
  */
-export const Card = memo(
-  ({
-    card,
-    index,
-    hovered,
-    setHovered,
-  }: {
-    card: FocusCard;
-    index: number;
-    hovered: number | null;
-    setHovered: Dispatch<SetStateAction<number | null>>;
-  }) => (
-    <div
-      onMouseEnter={() => setHovered(index)}
-      onMouseLeave={() => setHovered(null)}
-      className={cn(
-        "transition-all duration-300 ease-out",
-        hovered !== null && hovered !== index && "scale-[0.98] blur-sm",
-      )}
-    >
-      <MaybeTooltip info={card.info}>
+export function Card({ card, className }: { card: FocusCard; className?: string }) {
+  return (
+    <div className={className}>
+      <MaybeLink href={card.href}>
+      <MaybeTooltip info={card.href ? undefined : card.info}>
       <div className="relative h-60 w-full overflow-hidden bg-ink-raised md:h-96">
         {card.src ? (
           <img
@@ -77,13 +74,6 @@ export const Card = memo(
             </span>
           </div>
         )}
-        <div
-          aria-hidden="true"
-          className={cn(
-            "absolute inset-0 ring-1 ring-gold/0 transition duration-300 ring-inset",
-            hovered === index && "ring-gold/80",
-          )}
-        />
       </div>
 
       <p className="mt-4 text-lg leading-tight font-extrabold tracking-[-0.02em] text-fg uppercase md:text-xl">
@@ -93,25 +83,51 @@ export const Card = memo(
         <p className="label mt-1.5 text-fg-muted">{card.subtitle}</p>
       )}
       </MaybeTooltip>
+      </MaybeLink>
     </div>
-  ),
-);
+  );
+}
 
-Card.displayName = "Card";
+/** Splits the cards into rows of the given sizes; anything left over goes in rows of the last size. */
+function toRows(cards: FocusCard[], sizes: number[]) {
+  const rows: FocusCard[][] = [];
+  let start = 0;
+  for (let row = 0; start < cards.length; row++) {
+    const size = sizes[Math.min(row, sizes.length - 1)];
+    rows.push(cards.slice(start, start + size));
+    start += size;
+  }
+  return rows;
+}
 
-export function FocusCards({ cards }: { cards: FocusCard[] }) {
-  const [hovered, setHovered] = useState<number | null>(null);
+/**
+ * With `rows` (such as [4, 1, 2, 4]) the tiles sit in centred rows of those sizes, each
+ * tile a quarter of the width (half on phones, where a row of 4 wraps into two rows of 2).
+ * Without it, a plain grid of 2, or 3 on wider screens.
+ */
+export function FocusCards({ cards, rows }: { cards: FocusCard[]; rows?: number[] }) {
+  if (rows?.length) {
+    return (
+      <div className="flex w-full flex-col gap-y-12">
+        {toRows(cards, rows).map((row, rowIndex) => (
+          <div key={rowIndex} className="flex flex-wrap justify-center gap-x-5 gap-y-12 md:gap-x-10">
+            {row.map((card, index) => (
+              <Card
+                key={index}
+                card={card}
+                className="w-[calc((100%-1.25rem)/2)] md:w-[calc((100%-7.5rem)/4)]"
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="grid w-full grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3 md:gap-x-10">
       {cards.map((card, index) => (
-        <Card
-          key={index}
-          card={card}
-          index={index}
-          hovered={hovered}
-          setHovered={setHovered}
-        />
+        <Card key={index} card={card} />
       ))}
     </div>
   );

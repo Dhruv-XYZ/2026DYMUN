@@ -3,39 +3,24 @@ import { FocusCards } from '@/components/ui/focus-cards'
 import { ArrowUpRight } from 'lucide-react'
 import { pages, sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
-import { team } from '@/data/team.js'
-import { TeamInfo } from './TeamInfo'
-
-/** The name every placeholder entry in src/data/team.js carries. */
-const PLACEHOLDER_NAME = 'Name TBA'
-
-function initialsOf(name: string): string {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? '')
-    .join('')
-}
+import { teamRows } from '@/data/team.js'
+import { memberPath, members, placeholderFor } from '@/lib/team'
 
 /**
- * The team as focus cards. A member without a photo gets a tile with their
+ * The team as focus cards in rows of 4, 1, 2 and 4 (set in src/data/team.js). Each tile
+ * opens that person's own page. A member without a photo gets a tile with their
  * initials; a placeholder entry gets its slot number instead, since it has no name yet.
  */
 export function Team({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
   const copy = sections.team
   const navigate = useAnchorNavigate()
 
-  const cards = team.map((member, index) => ({
+  const cards = members.map((member) => ({
     title: member.name,
     subtitle: member.role,
-    // The card that follows the cursor on hover. Missing details show as a skeleton.
-    info: <TeamInfo member={member} />,
     src: member.photo || undefined,
-    placeholder:
-      member.name && member.name !== PLACEHOLDER_NAME
-        ? initialsOf(member.name)
-        : String(index + 1).padStart(2, '0'),
+    placeholder: placeholderFor(member),
+    href: memberPath(member),
   }))
 
   return (
@@ -49,7 +34,7 @@ export function Team({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
       />
 
       <div className="px-5 pt-14 md:px-10 md:pt-20">
-        <FocusCards cards={cards} />
+        <FocusCards cards={cards} rows={teamRows} />
       </div>
 
       {/* On the home page, link through to the team's own page. */}
