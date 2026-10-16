@@ -5,7 +5,7 @@ import { usePageMeta } from '@/hooks/use-page-meta'
 const valueClass = 'display-sm break-words text-right'
 
 /**
- * /contact: email, phone and venue as three open rows. A value that has not been
+ * /contact: email, phone (once one is set) and venue as open rows. A value that has not been
  * set in src/data/site.js shows as an outline "TBA".
  */
 export default function ContactPage() {
@@ -19,11 +19,10 @@ export default function ContactPage() {
       value: site.contact.email,
       href: site.contact.email ? `mailto:${site.contact.email}` : '',
     },
-    {
-      label: words.phone,
-      value: site.contact.phone,
-      href: site.contact.phone ? `tel:${site.contact.phone.replace(/\s+/g, '')}` : '',
-    },
+    // The phone row appears only once a number is set in site.js.
+    ...(site.contact.phone
+      ? [{ label: words.phone, value: site.contact.phone, href: `tel:${site.contact.phone.replace(/\s+/g, '')}` }]
+      : []),
     { label: words.venue, value: site.venue, href: '' },
   ]
 

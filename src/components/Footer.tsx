@@ -57,15 +57,13 @@ export function Footer() {
                 <span className="text-text-muted">{footer.emailPending}</span>
               )}
             </li>
-            <li>
-              {site.contact.phone ? (
+            {site.contact.phone && (
+              <li>
                 <a href={`tel:${site.contact.phone.replace(/\s+/g, '')}`} className={linkClass}>
                   {site.contact.phone}
                 </a>
-              ) : (
-                <span className="text-text-muted">{footer.phonePending}</span>
-              )}
-            </li>
+              </li>
+            )}
             {socials.map((social) => (
               <li key={social.label}>
                 <a href={social.href} target="_blank" rel="noreferrer" className={linkClass}>

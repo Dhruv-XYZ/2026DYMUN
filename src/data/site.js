@@ -33,8 +33,8 @@ export const site = {
   duration: 'Two days',
 
   contact: {
-    email: '', // TODO: replace
-    phone: '', // TODO: replace
+    email: 'dymun@dypisnerul.in',
+    phone: '', // optional: left empty, the phone is not shown anywhere
   },
 
   socials: {
@@ -97,7 +97,6 @@ export const seo = {
 export const footer = {
   menu: 'Explore',
   emailPending: 'Email TBA', // TODO: replace by setting site.contact.email
-  phonePending: 'Phone TBA', // TODO: replace by setting site.contact.phone
   photoCredit: 'Hero photo: United Nations General Assembly Hall, Basil D Soufi, CC BY-SA 3.0, via Wikimedia Commons',
 }
 
