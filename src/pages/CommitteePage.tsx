@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
-import { committeePage, sections } from '@/data/site.js'
+import { committeePage, sections, site } from '@/data/site.js'
 import { detailsFor } from '@/data/committeeDetails.js'
 import { usePageMeta } from '@/hooks/use-page-meta'
 import { allCommittees, groups, logoFor } from '@/lib/committees'
@@ -147,10 +147,8 @@ export default function CommitteePage() {
                       >
                         {named ? (
                           initialsOf(chair.name)
-                        ) : logo ? (
-                          <img src={logo} alt="" className="h-3/5 w-3/5 object-contain" />
                         ) : (
-                          `C${index + 1}`
+                          <img src={withBase(site.munLogoSrc)} alt="" className="h-4/5 w-4/5 object-contain" />
                         )}
                       </span>
                     )}
