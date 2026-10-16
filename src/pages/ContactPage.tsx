@@ -1,4 +1,4 @@
-import { Section, SectionHeading } from '@/components/Section'
+import { Section } from '@/components/Section'
 import { pages, sections, site } from '@/data/site.js'
 import { usePageMeta } from '@/hooks/use-page-meta'
 
@@ -29,17 +29,13 @@ export default function ContactPage() {
   const anyPending = rows.some((row) => !row.value)
 
   return (
-    <Section tone="cream" noise labelledBy="contact-page-title" className="min-h-[100svh] pb-24 md:pb-36">
-      <SectionHeading
-        level={1}
-        id="contact-page-title"
-        number="06"
-        label={copy.label}
-        lead={copy.lead}
-        accent={copy.accent}
-      />
+    <Section tone="cream" noise labelledBy="contact-page-title" className="min-h-[100svh] pt-28 pb-24 md:pt-36 md:pb-36">
+      {/* No big heading on this page: the rows are the page. The title stays for screen readers. */}
+      <h1 id="contact-page-title" className="sr-only">
+        {copy.label}
+      </h1>
 
-      <dl className="border-b border-line">
+      <dl className="border-y border-line">
         {rows.map((row, index) => (
           <div
             key={row.label}
