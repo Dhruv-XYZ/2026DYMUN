@@ -37,7 +37,7 @@
   --color-gold: #c9a24b; /* primary accent */
   --color-gold-light: #e6c877; /* highlights, gradient */
   --color-gold-dark: #8a6d2b; /* accent and lines on cream */
-  --color-orange: #ff7a1a; /* energy only: primary CTA, hover, glow peaks */
+  --color-orange: #dfbe64; /* warm gold, was orange #ff7a1a. Energy only: primary CTA, hover, glow peaks */
   --color-amber-deep: #4a2205; /* gradient shadows */
   --color-amber-black: #140a02; /* gradient shadows, deepest */
   --color-text: #ede6d6; /* text on dark */
@@ -334,14 +334,14 @@
   pointer-events: none;
 }
 
-/* Gold to orange sweep. Used on one word in the hero. */
+/* Gold sweep. Used on one word in the hero. */
 @utility shiny {
   background-image: linear-gradient(
     90deg,
     #140a02 0%,
     #4a2205 12.5%,
     #e6c877 32.5%,
-    #ff7a1a 50%,
+    #dfbe64 50%,
     #4a2205 67.5%,
     #140a02 87.5%
   );
