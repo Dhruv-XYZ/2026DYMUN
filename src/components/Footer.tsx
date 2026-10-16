@@ -78,15 +78,6 @@ export function Footer() {
       </div>
 
       <p className="px-5 py-10 text-center text-xs text-text-muted md:py-14">{footer.photoCredit}</p>
-      <img
-        src={withBase('/footer/footer-banner.webp')}
-        alt={`${site.name}, ${site.school}, ${site.city}`}
-        width={1400}
-        height={400}
-        loading="lazy"
-        decoding="async"
-        className="block h-auto w-full"
-      />
     </footer>
   )
 }
