@@ -16,7 +16,6 @@ export function Footer() {
       label: item.label,
       href: item.path,
     })),
-    { label: sections.contact.label, href: '/contact' },
   ]
 
   const socials = [

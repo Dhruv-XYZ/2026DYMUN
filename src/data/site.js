@@ -106,6 +106,7 @@ export const nav = [
   { id: 'about', label: 'About', path: '/about' },
   { id: 'committees', label: 'Committees', path: '/committees' },
   { id: 'team', label: 'Team', path: '/team' },
+  { id: 'contact', label: 'Contact', path: '/contact' },
   { id: 'register', label: 'Register', path: '/register' },
 ]
 
