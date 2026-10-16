@@ -145,7 +145,13 @@ export default function CommitteePage() {
                         aria-hidden="true"
                         className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-amber-deep text-2xl font-black text-gold-light ring-2 ring-gold md:h-24 md:w-24 md:text-3xl"
                       >
-                        {named ? initialsOf(chair.name) : `C${index + 1}`}
+                        {named ? (
+                          initialsOf(chair.name)
+                        ) : logo ? (
+                          <img src={logo} alt="" className="h-3/5 w-3/5 object-contain" />
+                        ) : (
+                          `C${index + 1}`
+                        )}
                       </span>
                     )}
                     <div className="min-w-0">
