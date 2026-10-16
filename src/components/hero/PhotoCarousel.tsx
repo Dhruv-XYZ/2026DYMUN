@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useReducedMotion } from 'motion/react'
 import { galleryAlt, galleryTiles } from '@/lib/gallery'
 
-const SLIDES = galleryTiles.slice(0, 10)
+const SLIDES = galleryTiles
 const COUNT = SLIDES.length
 /** Three copies in a row, so there is always a photo on both sides: it looks endless. */
 const LOOP = [...SLIDES, ...SLIDES, ...SLIDES]
