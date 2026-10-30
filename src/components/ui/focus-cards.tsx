@@ -32,6 +32,8 @@ export type FocusCard = {
   info?: ReactNode;
   /** Photo. Without one, the tile shows `placeholder` on a dark gold gradient. */
   src?: string;
+  /** Which part of the photo to keep when it is cropped (CSS object-position). */
+  srcPosition?: string;
   /** Short text for a tile with no photo, for example initials. */
   placeholder?: string;
   /** Makes the whole tile a link to this page. A linked tile has no hover card. */
@@ -56,6 +58,7 @@ export function Card({ card, className }: { card: FocusCard; className?: string 
             loading="lazy"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: card.srcPosition }}
           />
         ) : (
           <div

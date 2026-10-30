@@ -5,6 +5,8 @@ export interface TeamMember {
   name: string
   role: string
   photo?: string
+  /** Which part of the photo to keep when a tile crops it, as CSS object-position. */
+  photoPosition?: string
   bio?: string
 }
 

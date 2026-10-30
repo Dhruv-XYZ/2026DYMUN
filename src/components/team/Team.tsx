@@ -20,6 +20,7 @@ export function Team({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
     title: member.name,
     subtitle: member.role,
     src: member.photo ? withBase(member.photo) : undefined,
+    srcPosition: member.photoPosition,
     placeholder: placeholderFor(member),
     href: memberPath(member),
   }))

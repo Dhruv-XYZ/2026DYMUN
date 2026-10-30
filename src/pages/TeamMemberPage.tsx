@@ -54,7 +54,7 @@ export default function TeamMemberPage() {
           <div className="mt-12 flex flex-col gap-8 md:mt-16 md:flex-row md:items-end md:gap-12">
             <div className="relative aspect-[4/5] w-full max-w-xs shrink-0 overflow-hidden bg-ink-raised md:w-72 lg:w-80">
               {member.photo ? (
-                <img src={withBase(member.photo)} alt={name} className="absolute inset-0 h-full w-full object-cover" />
+                <img src={withBase(member.photo)} alt={name} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: member.photoPosition }} />
               ) : (
                 <div
                   aria-hidden="true"
