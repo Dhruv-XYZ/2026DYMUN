@@ -5,7 +5,7 @@ import { Section } from '@/components/Section'
 import { committeePage, pages, sections } from '@/data/site.js'
 import { useAnchorNavigate } from '@/hooks/use-active-section'
 import { usePageMeta } from '@/hooks/use-page-meta'
-import { groups } from '@/lib/committees'
+import { groups, logoFor } from '@/lib/committees'
 import { withBase } from '@/lib/base'
 
 /** Tile colours, taken in turn: ink, deep amber, dark gold. `sub` is the full-form colour on each. */
@@ -16,7 +16,7 @@ const TILES = [
 ]
 
 /**
- * /committees: every committee as a colour tile (name and full form), grouped under plain
+ * /committees: every committee as a colour tile (logo, name and full form), grouped under plain
  * grade headings. A tile opens the committee's own page, which has the agenda.
  */
 export default function CommitteesPage() {
@@ -42,12 +42,13 @@ export default function CommitteesPage() {
           <ul className="mt-6 grid gap-4 sm:grid-cols-2 md:mt-10 lg:grid-cols-3 lg:gap-5">
             {group.committees.map((committee, i) => {
               const tile = TILES[(i + groupIndex) % TILES.length]
+              const logo = logoFor(committee.id)
               return (
                 <li key={committee.id}>
                   <Link
                     to={`/committees/${committee.id}`}
                     aria-label={`${committeePage.view}: ${committee.name}`}
-                    className={`group relative flex h-48 flex-col justify-end rounded-3xl p-6 transition-transform duration-200 hover:-translate-y-1 md:h-56 md:p-7 ${tile.bg}`}
+                    className={`group relative flex h-60 flex-col justify-end rounded-3xl p-6 transition-transform duration-200 hover:-translate-y-1 md:h-64 md:p-7 lg:h-72 ${tile.bg}`}
                   >
                     <span className="absolute top-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-orange text-ink md:top-6 md:right-6">
                       <ArrowUpRight
@@ -55,6 +56,16 @@ export default function CommitteesPage() {
                         className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                       />
                     </span>
+                    {logo && (
+                      <img
+                        src={logo}
+                        alt=""
+                        aria-hidden="true"
+                        loading="lazy"
+                        decoding="async"
+                        className="absolute top-5 left-5 h-20 w-auto max-w-[55%] object-contain md:top-6 md:left-6 md:h-24"
+                      />
+                    )}
                     <span className="text-[clamp(2.25rem,4vw,3.5rem)] leading-none font-black tracking-[-0.04em] text-text">
                       {committee.name}
                     </span>

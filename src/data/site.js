@@ -28,13 +28,13 @@ export const site = {
 
   date: '4 & 5 December',
   /** The short venue line on the home page. */
-  venueLine: 'DYPIS Nerul',
+  venueLine: 'DYPIS Navi Mumbai',
   days: 2,
   duration: 'Two days',
 
   contact: {
-    email: '', // TODO: replace
-    phone: '', // TODO: replace
+    email: 'dymun@dypisnerul.in',
+    phone: '', // optional: left empty, the phone is not shown anywhere
   },
 
   socials: {
@@ -84,7 +84,7 @@ export const seo = {
     path: '/contact',
     title: "Contact the DYMUN '26 Team | Model UN, Navi Mumbai",
     description:
-      'How to reach the DYMUN 2026 team at D Y Patil International School, Navi Mumbai, for questions about committees, registration and the conference.',
+      'Send an enquiry to the DYMUN 2026 team at D Y Patil International School, Navi Mumbai, about committees, registration or the conference.',
   },
   notFound: {
     path: '/404',
@@ -97,7 +97,6 @@ export const seo = {
 export const footer = {
   menu: 'Explore',
   emailPending: 'Email TBA', // TODO: replace by setting site.contact.email
-  phonePending: 'Phone TBA', // TODO: replace by setting site.contact.phone
   photoCredit: 'Hero photo: United Nations General Assembly Hall, Basil D Soufi, CC BY-SA 3.0, via Wikimedia Commons',
 }
 
@@ -107,6 +106,7 @@ export const nav = [
   { id: 'about', label: 'About', path: '/about' },
   { id: 'committees', label: 'Committees', path: '/committees' },
   { id: 'team', label: 'Team', path: '/team' },
+  { id: 'contact', label: 'Contact', path: '/contact' },
   { id: 'register', label: 'Register', path: '/register' },
 ]
 
@@ -161,9 +161,6 @@ export const sections = {
   },
   contact: {
     label: 'Contact',
-    lead: 'Get in',
-    accent: 'touch',
-    pending: 'Contact details will be announced.', // TODO: replace once contact details are set
   },
 }
 
@@ -192,6 +189,7 @@ export const committeePage = {
   previous: 'Previous committee',
   next: 'Next committee',
   register: 'Register for this committee',
+  registerEb: 'Register for EB', // in place of the bio and message while a chair is not announced
   view: 'View committee',
 }
 
@@ -220,11 +218,28 @@ export const pages = {
   team: {
     link: 'Meet the team',
   },
+  /** The enquiry form on /contact. It sends through Web3Forms (see ContactPage.tsx). */
   contact: {
-    email: 'Email',
-    phone: 'Phone',
-    venue: 'Venue',
-    pendingValue: 'TBA', // shown until the matching value is set in `site.contact`
+    title: 'Contact',
+    intro: 'Questions about DYMUN ’26, committees or registration? Send us a message and the team will reply by email.',
+    name: 'Name',
+    dypis: 'Are you a student at DYPIS?',
+    yes: 'Yes',
+    no: 'No',
+    grade: 'Grade',
+    gradePlaceholder: 'Choose your grade',
+    notStudent: 'Not a student (parent, teacher or other)',
+    email: 'Email address',
+    enquiry: 'Enquiry',
+    wordLimit: 500,
+    words: 'words',
+    overLimit: 'Please keep your enquiry to 500 words.',
+    captchaMissing: 'Please tick the “I am human” box before sending.',
+    submit: 'Send enquiry',
+    sending: 'Sending…',
+    sent: 'Thank you. Your enquiry has been sent, and the team will reply by email.',
+    failed: 'Sorry, your enquiry could not be sent. Please try again, or email us at',
+    notConnected: 'The form is not connected yet, so enquiries cannot be sent from here. For now, please email us at',
   },
   notFound: {
     label: 'Error 404',

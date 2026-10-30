@@ -1,20 +1,11 @@
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
-import { committeePage, sections } from '@/data/site.js'
+import { committeePage, sections, site } from '@/data/site.js'
 import { detailsFor } from '@/data/committeeDetails.js'
 import { usePageMeta } from '@/hooks/use-page-meta'
-import { allCommittees, groups } from '@/lib/committees'
+import { allCommittees, groups, logoFor } from '@/lib/committees'
 import NotFound from './NotFound'
 import { withBase } from '@/lib/base'
-
-/** Committee logos, by committee id: src/assets/committee-logos/<id>.png|webp|svg|jpg. */
-const logoFiles = import.meta.glob<string>('../assets/committee-logos/*.{png,webp,svg,jpg,jpeg}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-})
-const logoFor = (id: string) =>
-  Object.entries(logoFiles).find(([path]) => path.split('/').pop()?.replace(/\.\w+$/, '') === id)?.[1]
 
 const initialsOf = (name: string) =>
   name
@@ -64,14 +55,14 @@ export default function CommitteePage() {
 
   return (
     <article aria-labelledby="committee-title" data-tone="cream" className="bg-surface pb-24 text-fg md:pb-36">
-      {/* Banner: the committee's logo large on the right, under a dark fade so the name reads. */}
+      {/* Banner: the committee's logo large on the right, below the nav bar so none of it is hidden, under a dark fade so the name reads. */}
       <header data-tone="dark" className="relative isolate overflow-hidden bg-ink pt-16 text-text lg:pt-[4.5rem]">
         {logo && (
           <img
             src={logo}
             alt=""
             aria-hidden="true"
-            className="absolute top-1/2 right-[4%] -z-10 h-[78%] w-auto max-w-[55%] -translate-y-1/2 object-contain opacity-90"
+            className="absolute top-24 right-[4%] bottom-8 -z-10 h-[calc(100%-8rem)] w-auto max-w-[55%] object-contain object-right opacity-90 lg:top-28 lg:h-[calc(100%-9rem)]"
           />
         )}
         <div
@@ -154,19 +145,40 @@ export default function CommitteePage() {
                         aria-hidden="true"
                         className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-amber-deep text-2xl font-black text-gold-light ring-2 ring-gold md:h-24 md:w-24 md:text-3xl"
                       >
-                        {named ? initialsOf(chair.name) : `C${index + 1}`}
+                        {named ? (
+                          initialsOf(chair.name)
+                        ) : (
+                          <img src={withBase(site.munLogoSrc)} alt="" className="h-4/5 w-4/5 object-contain" />
+                        )}
                       </span>
                     )}
                     <div className="min-w-0">
                       <h3 className="text-xl font-extrabold md:text-2xl">{named ? chair.name : copy.chairNamePending}</h3>
                       <p className="mt-0.5 font-bold text-tone">{chair.role || copy.chairRole}</p>
-                      <p className={`mt-2 ${chair.bio ? 'text-fg' : 'text-fg-muted'}`}>{chair.bio || copy.chairBioPending}</p>
+                      {named ? (
+                        <p className={`mt-2 ${chair.bio ? 'text-fg' : 'text-fg-muted'}`}>{chair.bio || copy.chairBioPending}</p>
+                      ) : (
+                        <Link
+                          to="/register"
+                          className="group mt-3 inline-flex items-center gap-2 font-bold text-fg underline decoration-tone decoration-1 underline-offset-8 transition-colors duration-200 hover:text-tone"
+                        >
+                          {copy.registerEb}
+                          <ArrowUpRight
+                            aria-hidden="true"
+                            className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                          />
+                        </Link>
+                      )}
                     </div>
                   </div>
-                  <p className="sr-only">{copy.messageTitle}</p>
-                  <blockquote className={`mt-6 text-lg leading-relaxed md:text-xl ${chair.message ? 'text-fg' : 'text-fg-muted'}`}>
-                    “{chair.message || copy.messagePending}”
-                  </blockquote>
+                  {named && (
+                    <>
+                      <p className="sr-only">{copy.messageTitle}</p>
+                      <blockquote className={`mt-6 text-lg leading-relaxed md:text-xl ${chair.message ? 'text-fg' : 'text-fg-muted'}`}>
+                        “{chair.message || copy.messagePending}”
+                      </blockquote>
+                    </>
+                  )}
                 </div>
               </div>
             )

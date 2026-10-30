@@ -32,8 +32,8 @@ export const committeeGroups = [
       },
       {
         id: 'sdg-11',
-        fullName: 'Sustainable Cities and Communities',
-        name: 'SDG 11',
+        fullName: 'Sustainable Cities and Communities & Climate Action',
+        name: 'SDG 11 & 13',
         agenda:
           'Discussing solutions for the environmental and public impact of the construction of AI data centres',
       },
@@ -46,8 +46,8 @@ export const committeeGroups = [
       },
       {
         id: 'sdg-15',
-        fullName: 'Life on Land',
-        name: 'SDG 15',
+        fullName: 'Life Below Water & Life on Land',
+        name: 'SDG 14 & 15',
         agenda:
           'Addressing the depletion and extinction of living organisms and biodiversity on land and water and discussing sustainable solutions for preserving vulnerable populations and their habitats.',
       },
@@ -122,6 +122,7 @@ export const committeeGroups = [
       },
       {
         id: 'ccc',
+        fullName: 'Constant Crisis Committee',
         name: 'CCC',
         agenda:
           'The Saudi War: U.S. Invasion of Saudi Arabia, the Aramco Deal and the Battle for the Gulf',

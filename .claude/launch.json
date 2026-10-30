@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "port": 5173
+    },
+    {
+      "name": "pages-preview",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "BASE_PATH=/2026DYMUN/ npx vite preview --outDir /private/tmp/claude-501/-Users-omnakade-Desktop-Claude-Code-FinalDYMUN/92116d93-5829-4699-8660-cfd9bb1514d7/scratchpad/pages-dist --port 4173 --strictPort"
+      ],
+      "port": 4173
+    }
+  ]
+}
