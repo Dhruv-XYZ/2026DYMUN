@@ -8,7 +8,7 @@ import { withBase } from '@/lib/base'
 import { memberPath, members, placeholderFor } from '@/lib/team'
 
 /**
- * The team as focus cards in rows of 4, 1, 2 and 4 (set in src/data/team.js). Each tile
+ * The team as focus cards in rows of 4, 2 and 4 (set in src/data/team.js). Each tile
  * opens that person's own page. A member without a photo gets a tile with their
  * initials; a placeholder entry gets its slot number instead, since it has no name yet.
  */
