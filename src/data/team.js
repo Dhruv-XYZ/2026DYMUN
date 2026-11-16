@@ -11,10 +11,10 @@
  * `id` is the end of the person's page address (/team/<id>). Use lowercase words joined
  * by hyphens, such as 'mahi-singh', and keep each one unique.
  *
- * The team page shows them in rows of 4, 1, 1 and 4 (`teamRows` below), filled in this
+ * The team page shows them in rows of 4, 2 and 4 (`teamRows` below), filled in this
  * order. Anything left over after those rows goes into further rows of 4.
  */
-export const teamRows = [4, 1, 1, 4]
+export const teamRows = [4, 2, 4]
 
 export const team = [
   { id: 'delisha-tushar-goshar', name: 'Delisha Tushar Goshar', role: 'Secretary General', photo: '/team/delisha-tushar-goshar.jpg', photoPosition: 'top', bio: "Greetings, fellow visionaries, challengers and delegates. We belong in a time where thinking, questioning and speaking up have become indispensable skills. The willingness to do so requires courage, and DYMUN '26 is a cog for that very notion. Every perspective is welcome, and every argument is heard. It's time to turn some wheels and flip some tables. May the odds ever be in your favour. I'm Delisha Goshar, your Secretary General, and I'm immensely excited to see all of you. Happy debating!" },
