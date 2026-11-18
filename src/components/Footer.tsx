@@ -65,7 +65,7 @@ export function Footer() {
             )}
             {socials.map((social) => (
               <li key={social.label}>
-                <a href={social.href} target="_blank" rel="noreferrer" className={linkClass}>
+                <a href={social.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
                   {social.label}
                 </a>
               </li>
