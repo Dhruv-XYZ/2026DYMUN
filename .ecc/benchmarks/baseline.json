@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-18",
+  "branch": "build",
+  "build": {
+    "tsc_s": 2.41,
+    "oxlint_s": 0.8,
+    "vite_build_s": 1.2
+  },
+  "bundle": {
+    "main_js_gzip_kb": 194.96,
+    "main_js_kb": 606.6,
+    "css_gzip_kb": 12.18,
+    "vendor_chunk_gzip_kb": 16.15
+  },
+  "home_page_localhost_unthrottled": {
+    "ttfb_ms": 8,
+    "fcp_ms": 144,
+    "lcp_ms": 144,
+    "cls": 0,
+    "requests": 28,
+    "total_kb": 7782,
+    "img_kb": 7330,
+    "js_kb": 1
+  },
+  "after_gallery_webp": {
+    "gallery_dir_kb": 1512,
+    "was_gallery_dir_kb": 6852,
+    "home_total_kb": 2453,
+    "home_img_kb": 2002,
+    "requests": 28
+  }
+}
