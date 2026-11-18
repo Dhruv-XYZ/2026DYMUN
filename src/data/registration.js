@@ -1,20 +1,6 @@
-/**
- * Ways to register, shown as a row in the Register section. Each row opens a dropdown
- * with a registration button.
- *
- * TODO: replace. For each row set `registerUrl` to the registration form link, for example
- * 'https://forms.gle/abc123'. Until it is set the button is shown but does nothing. Fees
- * and details are placeholders too.
- */
-export const registrationTiers = [
-  {
-    id: 'delegate',
-    name: 'Delegate',
-    fee: 'TBA', // TODO: replace
-    details: 'Fee and inclusions to be announced.', // TODO: replace
-    registerUrl: '', // TODO: replace with the Delegate registration link
-  },
-]
+/** The registration form. The button on the Register page links here. */
+export const registerUrl =
+  'https://docs.google.com/forms/d/e/1FAIpQLSdlECbLO7LYx44M1AC2uz6_BZlyfE6-38amZSixg7KQ52O5bA/viewform'
 
-/** Words on the registration button inside each dropdown. */
+/** Words on the registration button. */
 export const registrationButton = 'Register now'
