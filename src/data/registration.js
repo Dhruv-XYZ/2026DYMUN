@@ -4,3 +4,9 @@ export const registerUrl =
 
 /** Words on the registration button. */
 export const registrationButton = 'Register now'
+
+/** The heading under the logo card on the Register page. */
+export const registrationHeading = ['Register now!', "DYMUN '26"]
+
+/** The line inside the logo card, under the two logos. */
+export const registrationCardLabel = 'Register now'
