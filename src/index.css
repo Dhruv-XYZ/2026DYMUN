@@ -395,3 +395,42 @@
   width: 100%;
   background: var(--tone-line);
 }
+
+/*
+ * Liquid glass (CSS tier of the liquid-glass skill) for the Register card.
+ * Glass shows what is behind it, and the cream page is flat, so the stage paints a few
+ * soft white and grey glows for the card to pick up. They stay inside the card, so the rest of the
+ * page is untouched. The tint stays colourless; the gold comes
+ * from behind. Children of the card paint no surface of their own.
+ */
+.glass-stage {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 48rem;
+}
+
+.glass-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 1.5rem;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 70% at 14% 24%, rgb(255 255 255 / 0.95), transparent 70%),
+    radial-gradient(50% 70% at 88% 26%, rgb(30 33 45 / 0.1), transparent 70%),
+    radial-gradient(55% 45% at 52% 92%, rgb(255 255 255 / 0.85), transparent 70%);
+}
+
+.glass-card {
+  border: 1px solid rgb(30 33 45 / 0.14);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.34), rgb(255 255 255 / 0.14));
+  box-shadow:
+    0 10px 24px rgb(30 33 45 / 0.12),
+    inset 0 1px 0 rgb(255 255 255 / 0.85),
+    inset 0 0 0 1px rgb(255 255 255 / 0.28),
+    inset 0 -1px 0 rgb(255 255 255 / 0.2);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
