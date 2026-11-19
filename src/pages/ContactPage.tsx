@@ -3,17 +3,17 @@ import type { FormEvent, RefObject } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Section } from '@/components/Section'
 import { pages, site } from '@/data/site.js'
+import { WEB3FORMS_ACCESS_KEY } from '@/data/config'
 import { usePageMeta } from '@/hooks/use-page-meta'
 import { gradeList } from '@/lib/committees'
 import { withBase } from '@/lib/base'
 
 /**
- * Web3Forms access key. Set VITE_WEB3FORMS_ACCESS_KEY in the environment (in Vercel:
- * Project → Settings → Environment Variables, then redeploy). The key is meant to be
- * public, so it is fine in the browser. Until it is set, the form shows a notice and
- * points people to the email address instead of sending.
+ * Web3Forms access key, from src/data/config.ts (VITE_WEB3FORMS_ACCESS_KEY, if set,
+ * overrides it). The key is meant to be public, so it is fine in the browser. If it is
+ * ever empty, the form shows a notice and points people to the email address instead.
  */
-const ACCESS_KEY: string = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY ?? ''
+const ACCESS_KEY: string = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY
 
 /**
  * hCaptcha. On Web3Forms' free plan this is their own site key (no hCaptcha account
