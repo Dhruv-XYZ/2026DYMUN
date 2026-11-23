@@ -13,6 +13,8 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "@untitledui/icons": "^0.0.23",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.1.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
     "lucide-react": "^1.53.0",
